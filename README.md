@@ -7,7 +7,7 @@ This gem aggregates ElasticSearch logics, which can be reused in LTE application
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'lte-core-elasticsearch', github: 'glomex/lte-core-elasticsearch'
+gem 'lte-core-elasticsearch', git: 'git@github.com:glomex/lte-core-elasticsearch.git'
 ```
 
 And then execute:
