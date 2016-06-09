@@ -14,5 +14,27 @@ And then execute:
 
     $ bundle
 
+## Testing
+
+You can run tests for it using docker-compose:
+
+```bash
+docker-compose up -d
+docker-compose run app
+```
+
 ## Usage
 
+The gem defines 2 models:
+
+```ruby
+LteCore::Elasticsearch::EVA
+LteCore::Elasticsearch::MES
+```
+
+For each model you can perform following index actions:
+
+```ruby
+YOUR_MODEL_CLASS.index_exists?   # returns true if index already exists
+YOUR_MODEL_CLASS.create_index    # creates index unless it exists
+```

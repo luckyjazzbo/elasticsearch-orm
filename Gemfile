@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
+  gem 'dotenv'
   gem 'pronto'
   gem 'pronto-rubocop'
   gem 'pronto-reek'

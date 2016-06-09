@@ -1,0 +1,20 @@
+version: '2'
+services:
+  app:
+    build: .
+    command: rspec
+    volumes:
+      - .:/app
+    links:
+      - eva_elasticsearch
+      - mes_elasticsearch
+
+  eva_elasticsearch:
+    image: elasticsearch:1.5.2
+    ports:
+      - 9200
+
+  mes_elasticsearch:
+    image: elasticsearch:1.5.2
+    ports:
+      - 9200
