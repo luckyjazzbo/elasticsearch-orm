@@ -8,4 +8,5 @@ group :development do
   gem 'pronto-rubocop'
   gem 'pronto-reek'
   gem 'guard-rspec'
+  gem 'terminal-notifier-guard', require: false
 end
