@@ -1,8 +1,14 @@
 RSpec.shared_context 'with test indices' do
   let(:test_elastic_url) { ENV['EVA_ELASTICSEARCH_URL'] }
   let(:test_index) { 'elastic_index' }
-  let(:test_type) { 'elastic_type' }
+  let(:test_type) { 'test_model' }
   let(:test_client) { ::Elasticsearch::Client.new(url: test_elastic_url) }
+
+  let(:test_model) do
+    class TestModel < Mes::Elastic::Model; end
+    TestModel.config(url: test_elastic_url, index: test_index)
+    TestModel
+  end
 
   def test_index_exists?
     test_client.indices.exists?(index: test_index)
