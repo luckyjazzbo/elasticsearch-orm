@@ -30,8 +30,8 @@ docker-compose run app
 The gem defines 2 models:
 
 ```ruby
-Mes::Elastic::EVA
-Mes::Elastic::MES
+Mes::EvaIndex
+Mes::MesIndex
 ```
 
 For each model you can perform following index actions:
