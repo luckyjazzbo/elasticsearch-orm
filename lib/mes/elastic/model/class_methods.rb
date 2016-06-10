@@ -6,13 +6,13 @@ module Mes
       module ClassMethods
         attr_reader :client, :index
 
-        def connect(client_config)
-          @client = ::Elasticsearch::Client.new(url: client_config[:url])
-          @index = client_config[:index]
+        def set_index(index, opts = {})
+          @client = ::Elasticsearch::Client.new(url: opts[:url] || ENV.fetch('ELASTICSEARCH_URL'))
+          @index = index
         end
 
         def index_exists?
-          client.indices.exists? index: index
+          client.indices.exists?(index: index)
         end
 
         def create_index

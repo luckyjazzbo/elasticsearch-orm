@@ -1,22 +1,21 @@
 require 'spec_helper'
 
 describe Mes::Elastic::Model do
-  let(:elastic_connection_config) { { url: ENV['EVA_ELASTICSEARCH_URL'] } }
-  let(:elastic_config) { elastic_connection_config.merge(index: 'test-index') }
-  let(:mes_elastic_config) { { url: ENV['MES_ELASTICSEARCH_URL'], index: 'other-test-index' } }
+  let(:elastic_config) { { url: ENV['EVA_ELASTICSEARCH_URL'] } }
+  let(:elastic_index) { 'test-index' }
 
   subject(:test_model) do
     class TestModel < described_class; end
-    TestModel.connect(elastic_config)
+    TestModel.set_index(elastic_index, elastic_config)
     TestModel
   end
 
   let(:client) { subject.client }
 
-  describe '.connect' do
+  describe '.set_index' do
     let(:different_test_model) do
       class DifferentTestModel < described_class; end
-      DifferentTestModel.connect(mes_elastic_config)
+      DifferentTestModel.set_index('other-test-index', url: ENV['MES_ELASTICSEARCH_URL'])
       DifferentTestModel
     end
 
@@ -24,20 +23,20 @@ describe Mes::Elastic::Model do
       stubbed_client = double
       expect(::Elasticsearch::Client)
         .to receive(:new)
-        .with(elastic_connection_config)
+        .with(elastic_config)
         .and_return(stubbed_client)
       expect(subject.client).to eq stubbed_client
     end
 
-    it 'doesn\'t use same client for different subclasses' do
+    it "doesn't use same client for different subclasses" do
       expect(subject.client).not_to eq different_test_model.client
     end
 
     it 'saves index name to class' do
-      expect(subject.index).to eq elastic_config[:index]
+      expect(subject.index).to eq elastic_index
     end
 
-    it 'doesn\'t use same index for different subclasses' do
+    it "doesn't use same index for different subclasses" do
       expect(subject.index).not_to eq different_test_model.index
     end
   end
