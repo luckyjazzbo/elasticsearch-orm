@@ -1,16 +1,13 @@
 require 'spec_helper'
 
 describe Mes::Elastic::Model do
-  let(:elastic_config) { { url: ENV['EVA_ELASTICSEARCH_URL'] } }
-  let(:elastic_index) { 'test-index' }
+  include_context 'with test indices'
 
   subject(:test_model) do
     class TestModel < described_class; end
-    TestModel.set_index(elastic_index, elastic_config)
+    TestModel.set_index(test_index, url: test_elastic_url)
     TestModel
   end
-
-  let(:client) { subject.client }
 
   describe '.set_index' do
     let(:different_test_model) do
@@ -23,7 +20,7 @@ describe Mes::Elastic::Model do
       stubbed_client = double
       expect(::Elasticsearch::Client)
         .to receive(:new)
-        .with(elastic_config)
+        .with(url: test_elastic_url)
         .and_return(stubbed_client)
       expect(subject.client).to eq stubbed_client
     end
@@ -33,7 +30,7 @@ describe Mes::Elastic::Model do
     end
 
     it 'saves index name to class' do
-      expect(subject.index).to eq elastic_index
+      expect(subject.index).to eq test_index
     end
 
     it "doesn't use same index for different subclasses" do
@@ -43,25 +40,19 @@ describe Mes::Elastic::Model do
 
   describe '.index_exists?' do
     it 'returns false for not-existing index' do
-      unless client.indices.exists? index: subject.index
-        client.indices.create index: subject.index
-      end
+      create_test_index
       expect(subject.index_exists?).to be_truthy
     end
 
     it 'returns false for not-existing index' do
-      if client.indices.exists? index: subject.index
-        client.indices.delete index: subject.index
-      end
+      drop_test_index
       expect(subject.index_exists?).to be_falsey
     end
   end
 
   describe '.create_index' do
     before do
-      if client.indices.exists? index: subject.index
-        client.indices.delete index: subject.index
-      end
+      drop_test_index
     end
 
     it 'creates index' do
@@ -72,8 +63,46 @@ describe Mes::Elastic::Model do
 
     it "doesn't fail if index exists" do
       subject.create_index
-      expect { subject.create_index }
-        .not_to raise_exception ::Elasticsearch::Transport::Transport::Errors::BadRequest
+      expect { subject.create_index }.not_to raise_error
+    end
+  end
+
+  describe '.drop_index!' do
+    before do
+      create_test_index
+    end
+
+    it 'drops index' do
+      expect { subject.drop_index! }
+        .to change { subject.index_exists? }
+        .from(true).to(false)
+    end
+
+    it "doesn't fail if index doesn't exist" do
+      subject.drop_index!
+      expect { subject.drop_index! }.not_to raise_error
+    end
+  end
+
+  describe '.purge_index!' do
+    before do
+      purge_test_index
+      index_test_document
+      test_elastic_flush
+    end
+
+    it 'empties index' do
+      expect {
+        subject.purge_index!
+        test_elastic_flush
+      }.to change {
+        count_test_documents
+      }.from(1).to(0)
+    end
+
+    it "doesn't fail if index doesn't exist" do
+      subject.drop_index!
+      expect { subject.purge_index! }.not_to raise_error
     end
   end
 end

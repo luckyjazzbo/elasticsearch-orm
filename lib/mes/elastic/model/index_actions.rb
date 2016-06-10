@@ -3,7 +3,7 @@ require 'elasticsearch'
 module Mes
   module Elastic
     class Model
-      module ClassMethods
+      module IndexActions
         attr_reader :client, :index
 
         def set_index(index, opts = {})
@@ -17,6 +17,15 @@ module Mes
 
         def create_index
           client.indices.create(index: index) unless index_exists?
+        end
+
+        def drop_index!
+          client.indices.delete(index: index) if index_exists?
+        end
+
+        def purge_index!
+          drop_index!
+          create_index
         end
       end
     end
