@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe LteCore::Elasticsearch do
+describe Mes::Elastic do
   it 'has a version number' do
-    expect(LteCore::Elasticsearch::VERSION).not_to be nil
+    expect(Mes::Elastic::VERSION).not_to be nil
   end
 
   # Simple test for docker settings
@@ -12,7 +12,7 @@ describe LteCore::Elasticsearch do
   end
 
   it 'defines EVA and MES models' do
-    expect { LteCore::Elasticsearch::EVA.new }.not_to raise_exception
-    expect { LteCore::Elasticsearch::MES.new }.not_to raise_exception
+    expect { Mes::Elastic::EVA.new }.not_to raise_exception
+    expect { Mes::Elastic::MES.new }.not_to raise_exception
   end
 end

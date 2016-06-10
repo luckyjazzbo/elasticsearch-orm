@@ -1,18 +1,18 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'lte_core/elasticsearch/version'
+require 'mes/elastic/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'lte-core-elasticsearch'
-  spec.version       = LteCore::Elasticsearch::VERSION
+  spec.name          = 'mes-elastic'
+  spec.version       = Mes::Elastic::VERSION
   spec.authors       = ['Anton Priadko']
   spec.email         = ['antonpriadko@gmail.com']
 
-  spec.summary       = 'Gem with reusable logics related to Elasticsearch for LTE'
+  spec.summary       = 'Gem with reusable logics related to Elastic for LTE'
   spec.description   =
     'This gem aggregates ElasticSearch logics, which can be reused in LTE applications'
-  spec.homepage      = 'https://github.com/glomex/lte-core-elasticsearch'
+  spec.homepage      = 'https://github.com/glomex/mes-elastic'
 
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = ''

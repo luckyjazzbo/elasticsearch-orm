@@ -1,18 +1,20 @@
 # LTE-Core-ElasticSearch
 
-This gem aggregates ElasticSearch logics, which can be reused in LTE applications
+This gem aggregates ElasticSearch logics, which can be reused in MES applications
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'lte-core-elasticsearch', git: 'git@github.com:glomex/lte-core-elasticsearch.git'
+gem 'mes-elastic', git: 'git@github.com:glomex/mes-elastic.git'
 ```
 
 And then execute:
 
-    $ bundle
+```bash
+bundle
+```
 
 ## Testing
 
@@ -28,8 +30,8 @@ docker-compose run app
 The gem defines 2 models:
 
 ```ruby
-LteCore::Elasticsearch::EVA
-LteCore::Elasticsearch::MES
+Mes::Elastic::EVA
+Mes::Elastic::MES
 ```
 
 For each model you can perform following index actions:

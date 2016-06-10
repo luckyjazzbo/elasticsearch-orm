@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-module LteCore
-  module Elasticsearch
-    describe Elasticsearch::Model do
+module Mes
+  module Elastic
+    describe Elastic::Model do
       let(:elastic_connection_config) { { url: ENV['EVA_ELASTICSEARCH_URL'] } }
       let(:elastic_config) { elastic_connection_config.merge(index: 'test-index') }
       let(:mes_elastic_config) { { url: ENV['MES_ELASTICSEARCH_URL'], index: 'other-test-index' } }
@@ -74,7 +74,7 @@ module LteCore
             .from(false).to(true)
         end
 
-        it 'doesn\'t fail if index exists' do
+        it "doesn't fail if index exists" do
           subject.create_index
           expect { subject.create_index }
             .not_to raise_exception ::Elasticsearch::Transport::Transport::Errors::BadRequest

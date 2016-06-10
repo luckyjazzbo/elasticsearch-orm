@@ -1,7 +1,7 @@
 require 'elasticsearch'
 
-module LteCore
-  module Elasticsearch
+module Mes
+  module Elastic
     class Model
       module ClassMethods
         attr_reader :client, :index

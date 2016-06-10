@@ -1,7 +1,7 @@
-require 'lte_core/elasticsearch/model'
+require 'mes/elastic/model'
 
-module LteCore
-  module Elasticsearch
+module Mes
+  module Elastic
     class EVA < Model
       connect url: ENV['EVA_ELASTICSEARCH_URL'], index: 'lte'
     end

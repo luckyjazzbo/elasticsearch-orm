@@ -1,7 +1,7 @@
 require_relative 'model/class_methods'
 
-module LteCore
-  module Elasticsearch
+module Mes
+  module Elastic
     class Model
       extend ClassMethods
     end
