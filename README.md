@@ -1,4 +1,4 @@
-# LTE-Core-ElasticSearch
+# MES-Elastic
 
 This gem aggregates ElasticSearch logics, which can be reused in MES applications
 

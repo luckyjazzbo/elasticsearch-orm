@@ -6,12 +6,12 @@ require 'mes/elastic/version'
 Gem::Specification.new do |spec|
   spec.name          = 'mes-elastic'
   spec.version       = Mes::Elastic::VERSION
-  spec.authors       = ['Anton Priadko']
+  spec.authors       = ['Anton Priadko', 'Roman Lupiichuk']
   spec.email         = ['antonpriadko@gmail.com']
 
-  spec.summary       = 'Gem with reusable logics related to Elastic for LTE'
+  spec.summary       = 'Gem with reusable logics related to ElasticSearch for MES'
   spec.description   =
-    'This gem aggregates ElasticSearch logics, which can be reused in LTE applications'
+    'This gem aggregates ElasticSearch logics, which can be reused in MES applications'
   spec.homepage      = 'https://github.com/glomex/mes-elastic'
 
   if spec.respond_to?(:metadata)
