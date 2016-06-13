@@ -4,11 +4,19 @@ module Mes
   module Elastic
     class Model
       module IndexActions
-        attr_reader :client, :index
+        attr_reader :type
 
-        def set_index(index, opts = {})
+        def config(opts = {})
           @client = ::Elasticsearch::Client.new(url: opts[:url] || ENV.fetch('ELASTICSEARCH_URL'))
-          @index = index
+          @index = opts[:index]
+        end
+
+        def client
+          @client || superclass.client
+        end
+
+        def index
+          @index || superclass.index
         end
 
         def index_exists?
@@ -26,6 +34,12 @@ module Mes
         def purge_index!
           drop_index!
           create_index
+        end
+
+        def search(body)
+          opts = { index: index, body: body }
+          opts[:type] = type unless multitype?
+          client.search(opts)
         end
       end
     end
