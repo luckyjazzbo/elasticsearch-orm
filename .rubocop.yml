@@ -1,3 +1,7 @@
+Style/FileName:
+  Exclude:
+    - 'lib/mes-elastic.rb'
+
 Style/BracesAroundHashParameters:
   Exclude:
     - 'spec/**/*'

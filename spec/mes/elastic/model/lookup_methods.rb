@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 RSpec.shared_context 'lookup methods' do
-  context 'with 2 documents in index' do
-    let(:id1) { '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5' }
-    let(:id2) { '6ee40a2c-3980-450a-b075-d43d3550b7a6' }
-    let(:title1) { 'Test 1' }
-    let(:title2) { 'Test 2' }
+  let(:id1) { '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5' }
+  let(:id2) { '6ee40a2c-3980-450a-b075-d43d3550b7a6' }
+  let(:title1) { 'Test 1' }
+  let(:title2) { 'Test 2' }
 
+  context 'with 2 documents in index' do
     before do
       test_model.field :title, :string
       test_model.purge_index!
@@ -48,6 +48,7 @@ RSpec.shared_context 'lookup methods' do
         Mes::MultitypeModel.config(url: test_elastic_url, index: test_index)
         Mes::MultitypeModel
       end
+
       after do
         undef_model :MultitypeModel
       end
@@ -59,6 +60,26 @@ RSpec.shared_context 'lookup methods' do
       it 'counts records in multitype model' do
         expect(multitype_model.count).to eq 2
       end
+    end
+  end
+
+  describe '.all' do
+    before do
+      test_model.field :title, :string
+      test_model.purge_index!
+      test_model.client.index(
+        index: test_model.index, type: test_model.type, id: id1, body: { title: title1 }
+      )
+      test_model.client.index(
+        index: test_model.index, type: test_model.type, id: id2, body: { title: title2 }
+      )
+      test_elastic_flush
+    end
+
+    it 'iterates among all documents' do
+      expect do |b|
+        test_model.all.each(&b)
+      end.to yield_control.twice
     end
   end
 end
