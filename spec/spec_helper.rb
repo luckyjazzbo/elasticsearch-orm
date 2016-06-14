@@ -5,4 +5,4 @@ Dotenv.load('.env.test', '.env')
 
 Dir[File.expand_path('../support/**/*.rb', __FILE__)].each { |file| require file }
 
-require 'mes_elastic'
+require 'mes-elastic'

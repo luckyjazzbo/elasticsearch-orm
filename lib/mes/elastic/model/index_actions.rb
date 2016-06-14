@@ -5,13 +5,20 @@ module Mes
   module Elastic
     class Model
       module IndexActions
+        attr_reader :url, :configured
+
         def config(opts = {})
-          @client = ::Elasticsearch::Client.new(url: opts[:url] || ENV.fetch('ELASTICSEARCH_URL'))
+          @url = opts[:url]
           @index = opts[:index]
+          @configured = true
         end
 
         def client
-          @client || superclass.client
+          if configured
+            @client ||= ::Elasticsearch::Client.new(url: ENV.fetch('ELASTICSEARCH_URL', url))
+          else
+            superclass.client
+          end
         end
 
         def index
