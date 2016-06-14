@@ -9,29 +9,29 @@ describe Mes::Elastic::Response do
 
   let(:mocked_response) do
     {
-      "took" => 12,
-      "timed_out" => false,
-      "_shards" => { "total" => 5, "successful" => 5, "failed" => 0},
-      "hits" => {
-        "total" => 10,
-        "max_score" => 1.0,
-        "hits" => [
+      'took' => 12,
+      'timed_out' => false,
+      '_shards' => { 'total' => 5, 'successful' => 5, 'failed' => 0 },
+      'hits' => {
+        'total' => 10,
+        'max_score' => 1.0,
+        'hits' => [
           {
-            "_index" => "elastic_index",
-            "_type"=>"test_model",
-            "_id"=>"9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5",
-            "_score"=>1.0,
-            "_source" => {
-              "title"=>"Test 1"
+            '_index' => 'elastic_index',
+            '_type' => 'test_model',
+            '_id' => '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5',
+            '_score' => 1.0,
+            '_source' => {
+              'title' => 'Test 1'
             }
           },
           {
-            "_index" => "elastic_index",
-            "_type"=>"test_model",
-            "_id"=>"6ee40a2c-3980-450a-b075-d43d3550b7a6",
-            "_score"=>1.0,
-            "_source" => {
-              "title"=>"Test 2"
+            '_index' => 'elastic_index',
+            '_type' => 'test_model',
+            '_id' => '6ee40a2c-3980-450a-b075-d43d3550b7a6',
+            '_score' => 1.0,
+            '_source' => {
+              'title' => 'Test 2'
             }
           }
         ]

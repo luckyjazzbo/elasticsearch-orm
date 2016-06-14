@@ -1,4 +1,5 @@
 require_relative 'response'
+require 'active_support/core_ext/object/deep_dup'
 
 module Mes
   module Elastic
@@ -11,23 +12,37 @@ module Mes
       end
 
       def match(params)
-        @body[:query][:match] = params
-        self
+        copy.tap do |query|
+          query.body[:query][:match] = params
+        end
       end
 
       def limit(count)
-        @body[:size] = count
-        self
+        copy.tap do |query|
+          query.body[:size] = count
+        end
       end
 
       def all
-        @body[:query][:matchAll] = {}
-        self
+        copy.tap do |query|
+          query.body[:query][:matchAll] = {}
+        end
       end
 
       def execute
         Response.new(model, model.search(body))
       end
+
+      def copy
+        dup.tap do |query|
+          query.body = body.deep_dup
+          query
+        end
+      end
+
+      protected
+
+      attr_writer :body
     end
   end
 end

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 RSpec.shared_context 'save actions' do
-  let(:id1) { "9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5" }
-  let(:title1) { "Test 1" }
-  let(:title2) { "Test 2" }
+  let(:id1) { '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5' }
+  let(:title1) { 'Test 1' }
+  let(:title2) { 'Test 2' }
 
-  context do
+  context 'with configured model' do
     before do
       test_model.field :title, :string
       test_model.purge_index!
@@ -95,7 +95,7 @@ RSpec.shared_context 'save actions' do
 
     describe '#update' do
       it 'saves not-saved document with id' do
-        obj = test_model.new(id: id1, title: title1).update
+        test_model.new(id: id1, title: title1).update
         test_elastic_flush
         loaded_record = test_model.find(id1)
         expect(loaded_record.title).to eq title1
@@ -136,7 +136,7 @@ RSpec.shared_context 'save actions' do
         expect do
           test_model.upsert(title: title1)
           test_elastic_flush
-        end.to change {test_model.count }
+        end.to change { test_model.count }
           .from(0).to(1)
       end
     end

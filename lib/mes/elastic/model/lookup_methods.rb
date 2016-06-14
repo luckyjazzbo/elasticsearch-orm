@@ -10,9 +10,7 @@ module Mes
         end
 
         def find(id)
-          query = Query.new(self)
-          query.match(_id: id)
-          response = query.execute
+          response = Query.new(self).match(_id: id).execute
           raise RecordNotFoundException if response.empty?
           response.first
         end

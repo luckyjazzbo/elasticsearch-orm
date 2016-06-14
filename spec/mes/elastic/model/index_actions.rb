@@ -23,7 +23,7 @@ RSpec.shared_context 'index actions' do
       expect(subject.client).to eq stubbed_client
     end
 
-    it "doesn't use same client for different subclasses" do
+    it 'doesn\'t use same client for different subclasses' do
       expect(subject.client).not_to eq different_test_model.client
     end
 
@@ -98,12 +98,11 @@ RSpec.shared_context 'index actions' do
     end
 
     it 'empties index' do
-      expect {
+      expect do
         subject.purge_index!
         test_elastic_flush
-      }.to change {
-        count_test_documents
-      }.from(1).to(0)
+      end.to change { count_test_documents }
+        .from(1).to(0)
     end
 
     it "doesn't fail if index doesn't exist" do

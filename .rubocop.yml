@@ -1,4 +1,8 @@
-AllCops:
+Style/BracesAroundHashParameters:
+  Exclude:
+    - 'spec/**/*'
+
+Style/ClassAndModuleChildren:
   Exclude:
     - 'spec/**/*'
 

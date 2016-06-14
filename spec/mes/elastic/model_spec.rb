@@ -5,7 +5,6 @@ require_relative 'model/mappings'
 require_relative 'model/multitype_models'
 require_relative 'model/save_actions'
 
-
 describe Mes::Elastic::Model do
   include_context 'with test indices'
   let(:subject) { test_model }
