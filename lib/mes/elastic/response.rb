@@ -11,11 +11,17 @@ module Mes
 
       def each
         hits.each do |hit|
-          yield model.build(
+          obj = model.build(
             hit['_type'],
             { 'id' => hit['_id'] }.merge(hit['_source'])
           )
+          obj.persist!
+          yield obj
         end
+      end
+
+      def total_count
+        raw_data['hits']['total']
       end
 
       def empty?

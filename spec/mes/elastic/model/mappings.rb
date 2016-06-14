@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.shared_context 'mappings' do
   describe '.field' do
     it 'defines id field by default' do
-      expect(test_model.field? :id).to be_truthy
+      expect(test_model.field?(:id)).to be_truthy
     end
 
     it 'defines a field in mapping' do

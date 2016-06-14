@@ -3,12 +3,15 @@ require 'spec_helper'
 RSpec.shared_context 'index actions' do
   describe '.config' do
     let(:different_test_model) do
-      class DifferentTestModel < described_class; end
-      DifferentTestModel.config(
+      class Mes::DifferentTestModel < described_class; end
+      Mes::DifferentTestModel.config(
         url: ENV['MES_ELASTICSEARCH_URL'],
         index: 'other-test-index'
       )
-      DifferentTestModel
+      Mes::DifferentTestModel
+    end
+    after do
+      undef_model :DifferentTestModel
     end
 
     it 'creates client with received elastic configurations' do
@@ -20,7 +23,7 @@ RSpec.shared_context 'index actions' do
       expect(subject.client).to eq stubbed_client
     end
 
-    it "doesn't use same client for different subclasses" do
+    it 'doesn\'t use same client for different subclasses' do
       expect(subject.client).not_to eq different_test_model.client
     end
 
@@ -95,12 +98,11 @@ RSpec.shared_context 'index actions' do
     end
 
     it 'empties index' do
-      expect {
+      expect do
         subject.purge_index!
         test_elastic_flush
-      }.to change {
-        count_test_documents
-      }.from(1).to(0)
+      end.to change { count_test_documents }
+        .from(1).to(0)
     end
 
     it "doesn't fail if index doesn't exist" do

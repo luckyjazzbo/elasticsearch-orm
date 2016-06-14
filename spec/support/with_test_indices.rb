@@ -5,9 +5,17 @@ RSpec.shared_context 'with test indices' do
   let(:test_client) { ::Elasticsearch::Client.new(url: test_elastic_url) }
 
   let(:test_model) do
-    class TestModel < Mes::Elastic::Model; end
-    TestModel.config(url: test_elastic_url, index: test_index)
-    TestModel
+    class Mes::TestModel < Mes::Elastic::Model; end
+    Mes::TestModel.config(url: test_elastic_url, index: test_index)
+    Mes::TestModel
+  end
+
+  after do
+    undef_model :TestModel
+  end
+
+  def undef_model(name)
+    Mes.send(:remove_const, name) if Mes.constants.include?(name)
   end
 
   def test_index_exists?
