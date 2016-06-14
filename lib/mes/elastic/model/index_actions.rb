@@ -15,7 +15,7 @@ module Mes
 
         def client
           if configured
-            @client ||= ::Elasticsearch::Client.new(url: ENV.fetch('ELASTICSEARCH_URL', url))
+            @client ||= ::Elasticsearch::Client.new(url: url || ENV.fetch('ELASTICSEARCH_URL'))
           else
             superclass.client
           end
