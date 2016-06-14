@@ -1,21 +1,27 @@
 RSpec.shared_context 'multitype models' do
   let(:parent_model) do
-    class ParentModel < described_class; end
-    ParentModel.multitype
-    ParentModel.config(url: test_elastic_url, index: test_index)
-    ParentModel
+    class Mes::ParentModel < described_class; end
+    Mes::ParentModel.multitype
+    Mes::ParentModel.config(url: test_elastic_url, index: test_index)
+    Mes::ParentModel
   end
 
   let!(:first_sub_model) do
-    class FirstSubModel < parent_model; end
-    FirstSubModel.field(:title, :string)
-    FirstSubModel
+    class Mes::FirstSubModel < parent_model; end
+    Mes::FirstSubModel.field(:title, :string)
+    Mes::FirstSubModel
   end
 
   let!(:second_sub_model) do
-    class SecondSubModel < parent_model; end
-    SecondSubModel.field(:name, :string)
-    SecondSubModel
+    class Mes::SecondSubModel < parent_model; end
+    Mes::SecondSubModel.field(:name, :string)
+    Mes::SecondSubModel
+  end
+
+  after do
+    undef_model :FirstSubModel
+    undef_model :SecondSubModel
+    undef_model :ParentModel
   end
 
   it 'doesn\'t allow to set fields for parent_model' do

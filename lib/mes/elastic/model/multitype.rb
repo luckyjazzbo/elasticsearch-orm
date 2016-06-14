@@ -10,15 +10,21 @@ module Mes
 
         def inherited(subclass)
           super
-          subclass.setup_type unless subclass.multitype?
+          subclass.setup_parent
         end
 
         def multitype
           @multitype = true
+          @descendants = {}
         end
 
         def multitype?
           @multitype
+        end
+
+        def type
+          return nil if multitype?
+          @type ||= to_s.demodulize.underscore
         end
 
         protected
@@ -31,14 +37,9 @@ module Mes
           raise UnknownTypeException
         end
 
-        def setup_type
-          @type = to_s.demodulize.underscore
-          setup_parent
-        end
-
         def setup_parent
-          superclass.descendants ||= {}
-          superclass.descendants[type] = self
+          return if multitype?
+          superclass.descendants[type] = self if superclass.multitype?
         end
       end
     end

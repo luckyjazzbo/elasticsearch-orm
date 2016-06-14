@@ -3,12 +3,15 @@ require 'spec_helper'
 RSpec.shared_context 'index actions' do
   describe '.config' do
     let(:different_test_model) do
-      class DifferentTestModel < described_class; end
-      DifferentTestModel.config(
+      class Mes::DifferentTestModel < described_class; end
+      Mes::DifferentTestModel.config(
         url: ENV['MES_ELASTICSEARCH_URL'],
         index: 'other-test-index'
       )
-      DifferentTestModel
+      Mes::DifferentTestModel
+    end
+    after do
+      undef_model :DifferentTestModel
     end
 
     it 'creates client with received elastic configurations' do

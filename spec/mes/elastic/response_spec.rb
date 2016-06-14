@@ -13,7 +13,7 @@ describe Mes::Elastic::Response do
       "timed_out" => false,
       "_shards" => { "total" => 5, "successful" => 5, "failed" => 0},
       "hits" => {
-        "total" => 1,
+        "total" => 10,
         "max_score" => 1.0,
         "hits" => [
           {
@@ -54,5 +54,11 @@ describe Mes::Elastic::Response do
 
   it 'has enumerable methods' do
     expect(subject.count).to eq 2
+  end
+
+  describe '#total_count' do
+    it 'returns total_count' do
+      expect(subject.total_count).to eq 10
+    end
   end
 end

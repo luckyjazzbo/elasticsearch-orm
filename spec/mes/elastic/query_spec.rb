@@ -19,6 +19,36 @@ describe Mes::Elastic::Query do
         .from({ query: { } }.to_s)
         .to(body_with_id_query.to_s)
     end
+
+    it 'returns self' do
+      expect(query.match(_id: '123')).to be query
+    end
+  end
+
+  describe '#all' do
+    it 'appends matchAll expresion to query' do
+      expect { query.all }
+        .to change { query.body.to_s }
+        .from({ query: { } }.to_s)
+        .to({ query: { matchAll: {} } }.to_s)
+    end
+
+    it 'returns self' do
+      expect(query.all).to be query
+    end
+  end
+
+  describe '#all' do
+    it 'appends matchAll expresion to query' do
+      expect { query.limit(12) }
+        .to change { query.body.to_s }
+        .from({ query: { } }.to_s)
+        .to({ query: { }, size: 12 }.to_s)
+    end
+
+    it 'returns self' do
+      expect(query.limit(12)).to be query
+    end
   end
 
   describe '#execute' do

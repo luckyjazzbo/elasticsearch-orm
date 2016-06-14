@@ -1,11 +1,10 @@
 require 'elasticsearch'
+require 'active_support/core_ext/hash'
 
 module Mes
   module Elastic
     class Model
       module IndexActions
-        attr_reader :type
-
         def config(opts = {})
           @client = ::Elasticsearch::Client.new(url: opts[:url] || ENV.fetch('ELASTICSEARCH_URL'))
           @index = opts[:index]
@@ -40,6 +39,13 @@ module Mes
           opts = { index: index, body: body }
           opts[:type] = type unless multitype?
           client.search(opts)
+        end
+
+        def save(attrs)
+          opts = { index: index, type: type }
+          opts[:id] = attrs[:id] if attrs.key? :id
+          opts[:body] = attrs.except(:id)
+          client.index(opts)['_id']
         end
       end
     end

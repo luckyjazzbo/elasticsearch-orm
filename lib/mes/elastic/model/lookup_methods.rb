@@ -5,6 +5,10 @@ module Mes
   module Elastic
     class Model
       module LookupMethods
+        def count
+          Query.new(self).all.limit(0).execute.total_count
+        end
+
         def find(id)
           query = Query.new(self)
           query.match(_id: id)

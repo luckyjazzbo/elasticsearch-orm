@@ -12,6 +12,17 @@ module Mes
 
       def match(params)
         @body[:query][:match] = params
+        self
+      end
+
+      def limit(count)
+        @body[:size] = count
+        self
+      end
+
+      def all
+        @body[:query][:matchAll] = {}
+        self
       end
 
       def execute
