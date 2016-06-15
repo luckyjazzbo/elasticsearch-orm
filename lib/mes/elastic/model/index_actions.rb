@@ -35,7 +35,7 @@ module Mes
         end
 
         def create_index
-          client.indices.create(index_settings.merge(index: index)) unless index_exists?
+          client.indices.create(index: index, body: { settings: index_settings }) unless index_exists?
         end
 
         def drop_index!
