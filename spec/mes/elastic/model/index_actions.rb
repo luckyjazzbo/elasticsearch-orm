@@ -6,7 +6,8 @@ RSpec.shared_context 'index actions' do
       class Mes::DifferentTestModel < described_class; end
       Mes::DifferentTestModel.config(
         url: ENV['MES_ELASTICSEARCH_URL'],
-        index: 'other-test-index'
+        index: 'other-test-index',
+        index_settings: index_settings_for_one_shard
       )
       Mes::DifferentTestModel
     end

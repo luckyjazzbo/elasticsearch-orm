@@ -9,7 +9,7 @@ require 'mes-elastic'
 
 RSpec.configure do |config|
   config.before(:all) do
-    Eva::Elastic::Resource.config(index_settings: { number_of_shards: 1, number_of_replicas: 0 })
-    Mes::Elastic::Resource.config(index_settings: { number_of_shards: 1, number_of_replicas: 0 })
+    Eva::Elastic::Resource.config(index_settings: index_settings_for_one_shard)
+    Mes::Elastic::Resource.config(index_settings: index_settings_for_one_shard)
   end
 end
