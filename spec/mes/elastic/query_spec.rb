@@ -44,6 +44,36 @@ describe Mes::Elastic::Query do
     end
   end
 
+  describe '#each' do
+    context 'with one response' do
+      let(:elastic_response) { double }
+      before do
+        expect(query).to receive(:execute).and_return elastic_response
+        expect(elastic_response)
+          .to receive(:each)
+          .and_yield(1).and_yield(2).and_yield(3)
+      end
+
+      it 'runs query and iterates on response' do
+        expect do |b|
+          query.each(&b)
+        end.to yield_control.exactly(3).times
+      end
+    end
+  end
+
+  describe '#count' do
+    let(:elastic_response) { double }
+    before do
+      expect(query).to receive(:execute).and_return elastic_response
+    end
+
+    it 'runs query and returns total_count' do
+      expect(elastic_response).to receive(:total_count).and_return 78
+      expect(query.count).to eq 78
+    end
+  end
+
   describe '#limit' do
     subject { query.limit(12) }
     it_behaves_like 'chainable query'

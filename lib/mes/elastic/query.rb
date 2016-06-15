@@ -5,6 +5,7 @@ module Mes
   module Elastic
     class Query
       attr_reader :model, :body
+      include Enumerable
 
       def initialize(model)
         @model = model
@@ -38,6 +39,14 @@ module Mes
           query.body = body.deep_dup
           query
         end
+      end
+
+      def count
+        execute.total_count
+      end
+
+      def each(&block)
+        execute.each(&block)
       end
 
       protected

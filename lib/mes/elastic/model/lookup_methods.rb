@@ -14,6 +14,12 @@ module Mes
           raise RecordNotFoundException if response.empty?
           response.first
         end
+
+        def query
+          Query.new(self)
+        end
+
+        delegate :all, to: :query
       end
     end
   end
