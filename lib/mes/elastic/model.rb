@@ -19,7 +19,8 @@ module Mes
 
       def initialize(attrs = {})
         raise IntatiatingModelWithoutType if self.class.multitype?
-        initalize_attributes
+        initialize_attributes
+        initialize_save_actions
         assign_attributes(attrs)
       end
     end

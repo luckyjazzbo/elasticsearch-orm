@@ -4,12 +4,16 @@ module Mes
   module Elastic
     class Model
       module SaveActions
+        def initialize_save_actions
+          @persisted = false
+        end
+
         def save
           assign_attribute(:id, self.class.save(attributes))
           persist!
         end
 
-        def update(attrs = {})
+        def update_attributes(attrs = {})
           assign_attributes(attrs)
           save
         end
@@ -19,11 +23,11 @@ module Mes
         end
 
         def new_record?
-          !@persisted
+          !persisted?
         end
 
         def persisted?
-          !new_record?
+          @persisted
         end
       end
 
