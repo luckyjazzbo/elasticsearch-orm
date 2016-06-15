@@ -77,9 +77,9 @@ RSpec.shared_context 'lookup methods' do
     end
 
     it 'iterates among all documents' do
-      expect do |b|
-        test_model.all.each(&b)
-      end.to yield_control.twice
+      expect { |block|
+        test_model.all.each(&block)
+      }.to yield_control.twice
     end
   end
 end

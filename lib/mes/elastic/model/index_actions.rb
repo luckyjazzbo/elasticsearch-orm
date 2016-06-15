@@ -5,16 +5,21 @@ module Mes
   module Elastic
     class Model
       module IndexActions
-        attr_reader :url, :configured
+        attr_reader :url, :index_settings
 
         def config(opts = {})
           @url = opts[:url]
           @index = opts[:index]
+          @index_settings = opts[:settings] || {}
           @configured = true
         end
 
+        def configured?
+          @configured
+        end
+
         def client
-          if configured
+          if configured?
             @client ||= ::Elasticsearch::Client.new(url: url || ENV.fetch('ELASTICSEARCH_URL'))
           else
             superclass.client
@@ -30,7 +35,7 @@ module Mes
         end
 
         def create_index
-          client.indices.create(index: index) unless index_exists?
+          client.indices.create(index_settings.merge(index: index)) unless index_exists?
         end
 
         def drop_index!

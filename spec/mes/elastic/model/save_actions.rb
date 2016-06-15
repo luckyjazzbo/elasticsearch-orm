@@ -46,11 +46,11 @@ RSpec.shared_context 'save actions' do
         obj.save
         test_elastic_flush
 
-        expect do
+        expect {
           obj.title = title2
           obj.save
           test_elastic_flush
-        end.to change { test_model.find(id1).title }
+        }.to change { test_model.find(id1).title }
           .from(title1).to(title2)
       end
     end
@@ -116,10 +116,10 @@ RSpec.shared_context 'save actions' do
         obj.save
         test_elastic_flush
 
-        expect do
+        expect {
           obj.update title: title2
           test_elastic_flush
-        end.to change { test_model.find(id1).title }
+        }.to change { test_model.find(id1).title }
           .from(title1).to(title2)
       end
     end
@@ -133,11 +133,17 @@ RSpec.shared_context 'save actions' do
       end
 
       it 'saves new document without id' do
-        expect do
+        expect {
           test_model.upsert(title: title1)
           test_elastic_flush
-        end.to change { test_model.count }
+        }.to change { test_model.count }
           .from(0).to(1)
+      end
+
+      it 'returns object' do
+        obj = test_model.upsert(title: title1)
+        test_elastic_flush
+        expect(obj).to be_a(test_model)
       end
     end
   end

@@ -98,10 +98,10 @@ RSpec.shared_context 'index actions' do
     end
 
     it 'empties index' do
-      expect do
+      expect {
         subject.purge_index!
         test_elastic_flush
-      end.to change { count_test_documents }
+      }.to change { count_test_documents }
         .from(1).to(0)
     end
 

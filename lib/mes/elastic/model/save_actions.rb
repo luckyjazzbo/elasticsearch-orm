@@ -29,7 +29,7 @@ module Mes
 
       module SaveActionsClassMethods
         def upsert(attrs = {})
-          new(attrs).save
+          new(attrs).tap(&:save)
         end
       end
     end
