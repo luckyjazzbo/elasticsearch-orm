@@ -10,7 +10,7 @@ module Mes
         def config(opts = {})
           @url = opts[:url]
           @index = opts[:index]
-          @index_settings = opts[:settings] || {}
+          @index_settings = opts[:index_settings] || {}
           @configured = true
         end
 
