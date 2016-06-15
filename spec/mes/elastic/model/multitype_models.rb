@@ -2,7 +2,10 @@ RSpec.shared_context 'multitype models' do
   let(:parent_model) do
     class Mes::ParentModel < described_class; end
     Mes::ParentModel.multitype
-    Mes::ParentModel.config(url: test_elastic_url, index: test_index)
+    Mes::ParentModel.config(
+      url: test_elastic_url,
+      index: test_index,
+      index_settings: index_settings_for_one_shard)
     Mes::ParentModel
   end
 
@@ -24,7 +27,7 @@ RSpec.shared_context 'multitype models' do
     undef_model :ParentModel
   end
 
-  it 'doesn\'t allow to set fields for parent_model' do
+  it "doesn't allow to set fields for parent_model" do
     expect { parent_model.field :some_field, :string }
       .to raise_error described_class::SettingFieldsForModelWithoutTypeException
   end

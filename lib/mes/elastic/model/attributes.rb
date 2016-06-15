@@ -6,7 +6,7 @@ module Mes
       module Attributes
         attr_reader :attributes
 
-        def initalize_attributes
+        def initialize_attributes
           @attributes ||= {}
         end
 

@@ -6,7 +6,11 @@ RSpec.shared_context 'with test indices' do
 
   let(:test_model) do
     class Mes::TestModel < Mes::Elastic::Model; end
-    Mes::TestModel.config(url: test_elastic_url, index: test_index)
+    Mes::TestModel.config(
+      url: test_elastic_url,
+      index: test_index,
+      index_settings: index_settings_for_one_shard
+    )
     Mes::TestModel
   end
 
@@ -23,7 +27,7 @@ RSpec.shared_context 'with test indices' do
   end
 
   def create_test_index
-    one_shard_only = { body: { settings: { number_of_shards: 1, number_of_replicas: 0 } } }
+    one_shard_only = { body: { settings: index_settings_for_one_shard } }
     test_client.indices.create(one_shard_only.merge(index: test_index)) unless test_index_exists?
   end
 

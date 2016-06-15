@@ -46,11 +46,11 @@ RSpec.shared_context 'save actions' do
         obj.save
         test_elastic_flush
 
-        expect do
+        expect {
           obj.title = title2
           obj.save
           test_elastic_flush
-        end.to change { test_model.find(id1).title }
+        }.to change { test_model.find(id1).title }
           .from(title1).to(title2)
       end
     end
@@ -93,9 +93,9 @@ RSpec.shared_context 'save actions' do
       end
     end
 
-    describe '#update' do
+    describe '#update_attributes' do
       it 'saves not-saved document with id' do
-        test_model.new(id: id1, title: title1).update
+        test_model.new(id: id1, title: title1).update_attributes
         test_elastic_flush
         loaded_record = test_model.find(id1)
         expect(loaded_record.title).to eq title1
@@ -103,7 +103,7 @@ RSpec.shared_context 'save actions' do
 
       it 'saves not-saved document without id' do
         obj = test_model.new(title: title1)
-        expect { obj.update }
+        expect { obj.update_attributes }
           .to change { obj.id.nil? }
           .from(true).to(false)
         test_elastic_flush
@@ -116,10 +116,10 @@ RSpec.shared_context 'save actions' do
         obj.save
         test_elastic_flush
 
-        expect do
-          obj.update title: title2
+        expect {
+          obj.update_attributes(title: title2)
           test_elastic_flush
-        end.to change { test_model.find(id1).title }
+        }.to change { test_model.find(id1).title }
           .from(title1).to(title2)
       end
     end
@@ -133,11 +133,17 @@ RSpec.shared_context 'save actions' do
       end
 
       it 'saves new document without id' do
-        expect do
+        expect {
           test_model.upsert(title: title1)
           test_elastic_flush
-        end.to change { test_model.count }
+        }.to change { test_model.count }
           .from(0).to(1)
+      end
+
+      it 'returns object' do
+        obj = test_model.upsert(title: title1)
+        test_elastic_flush
+        expect(obj).to be_a(test_model)
       end
     end
   end

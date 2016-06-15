@@ -6,7 +6,8 @@ RSpec.shared_context 'index actions' do
       class Mes::DifferentTestModel < described_class; end
       Mes::DifferentTestModel.config(
         url: ENV['MES_ELASTICSEARCH_URL'],
-        index: 'other-test-index'
+        index: 'other-test-index',
+        index_settings: index_settings_for_one_shard
       )
       Mes::DifferentTestModel
     end
@@ -98,10 +99,10 @@ RSpec.shared_context 'index actions' do
     end
 
     it 'empties index' do
-      expect do
+      expect {
         subject.purge_index!
         test_elastic_flush
-      end.to change { count_test_documents }
+      }.to change { count_test_documents }
         .from(1).to(0)
     end
 

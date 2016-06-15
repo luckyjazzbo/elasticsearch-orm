@@ -55,9 +55,9 @@ describe Mes::Elastic::Query do
       end
 
       it 'runs query and iterates on response' do
-        expect do |b|
-          query.each(&b)
-        end.to yield_control.exactly(3).times
+        expect { |block|
+          query.each(&block)
+        }.to yield_control.exactly(3).times
       end
     end
   end
