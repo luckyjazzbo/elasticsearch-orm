@@ -15,7 +15,7 @@ module Mes
         end
 
         def assign_attribute(key, value)
-          raise UnpermittedAttributeException unless attribute?(key)
+          self.class.field(key) unless attribute?(key)
           @attributes[key.to_sym] = value
         end
 
