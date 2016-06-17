@@ -41,11 +41,6 @@ RSpec.shared_context 'mappings' do
       expect(test_model.new(id: 'some id').id).to eq 'some id'
     end
 
-    it 'rejects params which do not appear in mapping on creating new instance' do
-      expect { test_model.new(wrong_field: 'value') }
-        .to raise_error described_class::UnpermittedAttributeException
-    end
-
     it 'allows fields from mapping on creating new instance' do
       expect { test_model.new(correct_field: 'value') }
         .not_to raise_error # described_class::UnpermittedAttributeException
@@ -56,9 +51,43 @@ RSpec.shared_context 'mappings' do
         .not_to raise_error # described_class::UnpermittedAttributeException
     end
 
-    it 'allows access to fields via methods' do
-      t = test_model.new('correct_field' => 'value')
-      expect(t.correct_field).to eq 'value'
+    context 'with auto-defining attributes via assign' do
+      it 'defines new field when it appears in assign' do
+        expect { test_model.new(wrong_field: 'value') }
+          .to change { test_model.mapping }
+          .from(id: :string, correct_field: :string)
+          .to(id: :string, correct_field: :string, wrong_field: :string)
+      end
+
+      it 'defines new field when it appears in assign as string' do
+        expect { test_model.new('wrong_field' => 'value') }
+          .to change { test_model.mapping }
+          .from(id: :string, correct_field: :string)
+          .to(id: :string, correct_field: :string, wrong_field: :string)
+      end
+
+      it 'doesn\'t throw expections when wrong_field passed' do
+        expect { test_model.new(wrong_field: 'value') }
+          .not_to raise_error described_class::UnpermittedAttributeException
+      end
+
+      it 'allows access to fields via methods' do
+        t = test_model.new(correct_field: 'value1', wrong_field: 'value2')
+        expect(t.correct_field).to eq 'value1'
+        expect(t.wrong_field).to eq 'value2'
+      end
+    end
+
+    xcontext 'with permitting only defined attributes' do
+      it 'rejects params which do not appear in mapping on creating new instance' do
+        expect { test_model.new(wrong_field: 'value') }
+          .to raise_error described_class::UnpermittedAttributeException
+      end
+
+      it 'allows access to fields via methods' do
+        t = test_model.new('correct_field' => 'value')
+        expect(t.correct_field).to eq 'value'
+      end
     end
   end
 end
