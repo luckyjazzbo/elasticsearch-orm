@@ -3,6 +3,7 @@ RSpec.shared_context 'with eva indices' do
 
   before(:each) do
     eva_resource.config(index_settings: index_settings_for_one_shard)
+    eva_resource.create_index unless eva_resource.index_exists?
     eva_resource.delete_all
     flush_eva_indices
   end
