@@ -19,7 +19,7 @@ module Mes
           Query.new(self)
         end
 
-        delegate :all, :each, to: :query
+        delegate :all, to: :query
       end
     end
   end

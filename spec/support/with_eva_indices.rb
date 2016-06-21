@@ -3,7 +3,11 @@ RSpec.shared_context 'with eva indices' do
 
   before(:each) do
     eva_resource.config(index_settings: index_settings_for_one_shard)
-    eva_resource.purge_index!
-    flush_and_wait_for_green_status(eva_resource.client)
+    eva_resource.delete_all
+    flush_eva_indices
+  end
+
+  def flush_eva_indices
+    flush_elastic_indices(eva_resource.client)
   end
 end

@@ -3,7 +3,7 @@ module ElasticIndexHelpers
     { number_of_shards: 1, number_of_replicas: 0 }
   end
 
-  def flush_and_wait_for_green_status(client)
+  def flush_elastic_indices(client)
     client.indices.flush
     client.cluster.health(wait_for_status: 'green')
   end
