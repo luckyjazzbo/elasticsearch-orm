@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.shared_context 'index actions' do
+RSpec.shared_context 'elastic api methods' do
   describe '.config' do
     let(:different_test_model) do
       class Mes::DifferentTestModel < described_class; end
@@ -11,6 +11,7 @@ RSpec.shared_context 'index actions' do
       )
       Mes::DifferentTestModel
     end
+
     after do
       undef_model :DifferentTestModel
     end
@@ -24,7 +25,7 @@ RSpec.shared_context 'index actions' do
       expect(subject.client).to eq stubbed_client
     end
 
-    it 'doesn\'t use same client for different subclasses' do
+    it 'does not use same client for different subclasses' do
       expect(subject.client).not_to eq different_test_model.client
     end
 
@@ -106,9 +107,22 @@ RSpec.shared_context 'index actions' do
         .from(1).to(0)
     end
 
-    it "doesn't fail if index doesn't exist" do
+    it 'does not fail if index does not exist' do
       subject.drop_index!
       expect { subject.purge_index! }.not_to raise_error
+    end
+  end
+
+  describe '.delete_all' do
+    before do
+      purge_test_index
+      index_test_document
+      test_elastic_flush
+    end
+
+    it 'deletes all documents' do
+      subject.delete_all
+      expect(count_test_documents).to eq(0)
     end
   end
 end

@@ -1,21 +1,21 @@
-require_relative 'model/index_actions'
+require_relative 'model/elastic_api_methods'
 require_relative 'model/mappings'
 require_relative 'model/attributes'
 require_relative 'model/lookup_methods'
-require_relative 'model/save_actions'
+require_relative 'model/crud_actions'
 require_relative 'model/multitype'
 require_relative 'model/errors'
 
 module Mes
   module Elastic
     class Model
-      extend IndexActions
+      extend ElasticAPIMethods
       extend Mappings
       extend LookupMethods
       extend Multitype
-      extend SaveActionsClassMethods
+      extend CRUDActionsClassMethods
       include Attributes
-      include SaveActions
+      include CRUDActions
 
       def initialize(attrs = {})
         raise IntatiatingModelWithoutType if self.class.multitype?

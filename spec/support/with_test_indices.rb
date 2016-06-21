@@ -2,6 +2,7 @@ RSpec.shared_context 'with test indices' do
   let(:test_elastic_url) { ENV['EVA_ELASTICSEARCH_URL'] }
   let(:test_index) { 'elastic_index' }
   let(:test_type) { 'test_model' }
+  let(:test_document_id) { '1' }
   let(:test_client) { ::Elasticsearch::Client.new(url: test_elastic_url) }
 
   let(:test_model) do
@@ -41,7 +42,7 @@ RSpec.shared_context 'with test indices' do
   end
 
   def index_test_document
-    test_client.index(index: test_index, type: test_type, id: '1', body: { name: 'test' })
+    test_client.index(index: test_index, type: test_type, id: test_document_id, body: { name: 'test' })
   end
 
   def count_test_documents

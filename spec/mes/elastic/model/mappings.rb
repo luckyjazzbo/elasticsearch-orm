@@ -66,7 +66,7 @@ RSpec.shared_context 'mappings' do
           .to(id: :string, correct_field: :string, wrong_field: :string)
       end
 
-      it 'doesn\'t throw expections when wrong_field passed' do
+      it 'does not throw expections when wrong_field passed' do
         expect { test_model.new(wrong_field: 'value') }
           .not_to raise_error described_class::UnpermittedAttributeException
       end

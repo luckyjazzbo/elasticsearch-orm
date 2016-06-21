@@ -9,7 +9,7 @@ RSpec.shared_examples 'chainable query' do
     expect(subject).not_to be query
   end
 
-  it 'doesn\'t change initial query object' do
+  it 'does not change initial query object' do
     expect { subject }.not_to change { query.body }
   end
 end

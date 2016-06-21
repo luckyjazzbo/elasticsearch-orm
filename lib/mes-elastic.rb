@@ -1,11 +1,15 @@
 require 'mes/elastic/version'
 require 'mes/elastic/model'
 
-MODELS_PATH = File.expand_path('../../app/models', __FILE__)
+module Mes
+  module Elastic
+    ROOT = File.expand_path('../..', __FILE__).freeze
+  end
+end
 
 module Mes
   module Elastic
-    Dir[File.join(MODELS_PATH, 'mes/*.rb')].each do |file|
+    Dir[File.join(Mes::Elastic::ROOT, 'app/models/mes/*.rb')].each do |file|
       model_class = File.basename(file, '.rb').classify
       autoload model_class, file
     end
@@ -14,7 +18,7 @@ end
 
 module Eva
   module Elastic
-    Dir[File.join(MODELS_PATH, 'eva/*.rb')].each do |file|
+    Dir[File.join(Mes::Elastic::ROOT, 'app/models/eva/*.rb')].each do |file|
       model_class = File.basename(file, '.rb').classify
       autoload model_class, file
     end

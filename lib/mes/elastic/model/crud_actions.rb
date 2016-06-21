@@ -3,7 +3,7 @@ require 'elasticsearch'
 module Mes
   module Elastic
     class Model
-      module SaveActions
+      module CRUDActions
         def initialize_save_actions
           @persisted = false
         end
@@ -31,7 +31,7 @@ module Mes
         end
       end
 
-      module SaveActionsClassMethods
+      module CRUDActionsClassMethods
         def upsert(attrs = {})
           new(attrs).tap(&:save)
         end
