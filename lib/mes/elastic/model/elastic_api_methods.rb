@@ -8,9 +8,9 @@ module Mes
         attr_reader :url, :index_settings
 
         def config(opts = {})
-          @url = opts[:url]
-          @index = opts[:index]
-          @index_settings = opts[:index_settings] || {}
+          @url = opts[:url]                       if opts[:url].present?
+          @index = opts[:index]                   if opts[:index].present?
+          @index_settings = opts[:index_settings] if opts[:index_settings].present?
           @configured = true
         end
 
@@ -35,7 +35,7 @@ module Mes
         end
 
         def create_index
-          client.indices.create(index: index, body: { settings: index_settings }) unless index_exists?
+          client.indices.create(index: index, body: { settings: index_settings || {} }) unless index_exists?
         end
 
         def drop_index!
