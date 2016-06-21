@@ -4,7 +4,7 @@ require 'active_support/core_ext/hash'
 module Mes
   module Elastic
     class Model
-      module IndexActions
+      module ElasticAPIMethods
         attr_reader :url, :index_settings
 
         def config(opts = {})
@@ -58,6 +58,12 @@ module Mes
           opts[:id] = attrs[:id] if attrs.key? :id
           opts[:body] = attrs.except(:id)
           client.index(opts)['_id']
+        end
+
+        def delete_all
+          opts = { index: index, body: { query: { match_all: {} } } }
+          opts[:type] = type unless multitype?
+          client.delete_by_query(opts)
         end
       end
     end
