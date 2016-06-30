@@ -1,5 +1,7 @@
 # MES-Elastic
 
+[![Build Status](https://travis-ci.com/glomex/mes-elastic.svg?token=wTxfWxNSPNpHpdJc4pif&branch=master)](https://travis-ci.com/glomex/mes-elastic)
+
 This gem aggregates ElasticSearch logics, which can be reused in MES applications
 
 ## Installation
