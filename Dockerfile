@@ -1,8 +1,8 @@
-FROM ruby:2.3.1
+FROM ruby:2.3.1-slim
 
 RUN apt-get update -qq && \
-    apt-get install -y build-essential cmake libpq-dev mcrypt libmcrypt-dev && \
-    apt-get clean
+    apt-get install -y --no-install-recommends -qq build-essential cmake libpq-dev mcrypt libmcrypt-dev && \
+    apt-get clean -qq
 
 ENV BUNDLE_PATH=/app/.bundle
 ENV PATH=$PATH:./bin
