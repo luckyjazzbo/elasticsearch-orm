@@ -8,15 +8,15 @@ services:
       - $HOME/.ssh:/root/.ssh:ro
     command: bundle exec rspec
     links:
-      - eva_elasticsearch
-      - mes_elasticsearch
+      - eva-elasticsearch
+      - mes-elasticsearch
 
-  eva_elasticsearch:
+  eva-elasticsearch:
     image: elasticsearch:1.5.2
     ports:
       - 9200
 
-  mes_elasticsearch:
+  mes-elasticsearch:
     image: elasticsearch:1.5.2
     ports:
       - 9200
