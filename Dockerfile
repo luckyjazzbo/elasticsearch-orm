@@ -4,8 +4,11 @@ RUN apt-get update -qq && \
     apt-get install -y build-essential cmake libpq-dev mcrypt libmcrypt-dev && \
     apt-get clean
 
+ENV BUNDLE_PATH=/app/.bundle
+ENV PATH=$PATH:./bin
+ENV AWS_PROFILE=dev
+
 RUN mkdir -p /app
 WORKDIR /app
 
-ADD . /app
-RUN bundle install --jobs 4
+ENTRYPOINT docker_start $0 $@

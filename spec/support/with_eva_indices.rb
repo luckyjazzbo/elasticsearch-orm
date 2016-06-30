@@ -1,5 +1,12 @@
+require 'factory_girl'
+
 RSpec.shared_context 'with eva indices' do
-  let(:eva_resource) { ::Mes::Elastic::Resource }
+  let(:eva_resource) { ::Eva::Elastic::Resource }
+
+  before(:all) do
+    FactoryGirl.definition_file_paths = [File.join(Mes::Elastic::ROOT, 'spec/factories/eva')]
+    FactoryGirl.find_definitions
+  end
 
   before(:each) do
     eva_resource.config(index_settings: index_settings_for_one_shard)

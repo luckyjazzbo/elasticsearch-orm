@@ -2,9 +2,11 @@ version: '2'
 services:
   app:
     build: .
-    command: rspec
     volumes:
       - .:/app
+      - $HOME/.aws:/root/.aws:ro
+      - $HOME/.ssh:/root/.ssh:ro
+    command: bundle exec rspec
     links:
       - eva_elasticsearch
       - mes_elasticsearch
