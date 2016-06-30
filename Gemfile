@@ -11,3 +11,7 @@ group :development do
   gem 'guard-rspec'
   gem 'terminal-notifier-guard', require: false
 end
+
+group :test do
+  gem 'webmock', '~> 2.1'
+end
