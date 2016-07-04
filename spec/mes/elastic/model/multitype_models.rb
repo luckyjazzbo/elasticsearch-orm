@@ -1,4 +1,8 @@
-RSpec.shared_context 'multitype models' do
+RSpec.describe 'Mappings' do
+  include_context 'multitype models'
+
+  let(:subject) { test_model }
+
   let(:parent_model) do
     class Mes::ParentModel < described_class; end
     Mes::ParentModel.multitype

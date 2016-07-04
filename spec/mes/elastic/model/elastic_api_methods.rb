@@ -1,6 +1,10 @@
 require 'spec_helper'
 
-RSpec.shared_context 'elastic api methods' do
+RSpec.describe 'Elastic API methods' do
+  include_context 'with test indices'
+
+  let(:subject) { test_model }
+
   describe '.config' do
     let(:different_test_model) do
       class Mes::DifferentTestModel < described_class; end
