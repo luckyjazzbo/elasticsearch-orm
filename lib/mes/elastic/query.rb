@@ -18,6 +18,12 @@ module Mes
         end
       end
 
+      def order(order)
+        copy.tap do |query|
+          query.body[:sort] = parse_order(order)
+        end
+      end
+
       def limit(count)
         copy.tap do |query|
           query.body[:size] = count
@@ -52,6 +58,13 @@ module Mes
       protected
 
       attr_writer :body
+
+      def parse_order(order)
+        order.strip.split(',').map do |order_step|
+          single_ordering = order_step.strip.split(/\s+/)
+          { single_ordering[0] => { 'order' => single_ordering[1] || 'asc' } }
+        end
+      end
     end
   end
 end

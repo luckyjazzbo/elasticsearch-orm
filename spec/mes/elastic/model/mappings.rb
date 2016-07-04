@@ -1,6 +1,10 @@
 require 'spec_helper'
 
-RSpec.shared_context 'mappings' do
+RSpec.describe 'Mappings' do
+  include_context 'with test indices'
+
+  let(:subject) { test_model }
+
   describe '.field' do
     it 'defines id field by default' do
       expect(test_model.field?(:id)).to be_truthy

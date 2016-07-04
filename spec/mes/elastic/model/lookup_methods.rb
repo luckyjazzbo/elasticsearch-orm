@@ -1,10 +1,14 @@
 require 'spec_helper'
 
-RSpec.shared_context 'lookup methods' do
+RSpec.describe 'Lookup methods' do
+  include_context 'with test indices'
+
   let(:id1) { '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5' }
   let(:id2) { '6ee40a2c-3980-450a-b075-d43d3550b7a6' }
   let(:title1) { 'Test 1' }
   let(:title2) { 'Test 2' }
+
+  let(:subject) { test_model }
 
   context 'with 2 documents in index' do
     before do

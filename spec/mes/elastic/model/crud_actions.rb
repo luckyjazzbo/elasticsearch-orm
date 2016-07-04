@@ -1,9 +1,13 @@
 require 'spec_helper'
 
-RSpec.shared_context 'CRUD actions' do
+RSpec.describe 'CRUD actions' do
+  include_context 'with test indices'
+
   let(:id1) { '9084eddf-4a48-4e39-afbd-6f3e4e4dc7c5' }
   let(:title1) { 'Test 1' }
   let(:title2) { 'Test 2' }
+
+  let(:subject) { test_model }
 
   context 'with configured model' do
     before do

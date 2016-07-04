@@ -83,6 +83,38 @@ describe Mes::Elastic::Query do
     end
   end
 
+  describe '#order' do
+    context 'when ordering by single field in asc order by default' do
+      subject { query.order('val') }
+      it_behaves_like 'chainable query'
+
+      it 'appends matchAll expression to query' do
+        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { 'order' => 'asc' } }] })
+      end
+    end
+
+    context 'when ordering by single field in desc' do
+      subject { query.order('val desc') }
+      it_behaves_like 'chainable query'
+
+      it 'appends matchAll expression to query' do
+        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { 'order' => 'desc' } }] })
+      end
+    end
+
+    context 'when ordering by multiple fields' do
+      subject { query.order('val desc, val2 asc') }
+      it_behaves_like 'chainable query'
+
+      it 'appends matchAll expression to query' do
+        expect(subject.body).to eq({ query: {}, sort: [
+          { 'val' => { 'order' => 'desc' } },
+          { 'val2' => { 'order' => 'asc' } }
+        ] })
+      end
+    end
+  end
+
   describe '#execute' do
     subject { query.match(_id: '123').execute }
 

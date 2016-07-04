@@ -1,4 +1,4 @@
-FROM ruby:2.3.1-slim
+FROM ruby:2.3.1
 
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends -qq build-essential cmake libpq-dev mcrypt libmcrypt-dev && \
