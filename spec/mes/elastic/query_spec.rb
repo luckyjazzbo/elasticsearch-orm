@@ -17,12 +17,26 @@ end
 describe Mes::Elastic::Query do
   include_context 'with test indices'
 
+  let(:default_query_body) { { query: {} } }
   subject(:query) { described_class.new(test_model) }
   let(:body_with_id_query) { { query: { match: { _id: '123' } } } }
 
   describe '.new' do
     it 'creates empty query for specific model class' do
       expect(query.model).to be test_model
+    end
+
+    it 'sets default body' do
+      expect(query.body).to eq default_query_body
+    end
+
+    context 'with custom body' do
+      let(:query_body) { { query: { custom: :query } } }
+      subject(:query) { described_class.new(test_model, body: query_body) }
+
+      it 'sets default body' do
+        expect(query.body).to eq(query_body)
+      end
     end
   end
 
