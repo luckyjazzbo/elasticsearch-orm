@@ -15,8 +15,8 @@ module Mes
           response.first
         end
 
-        def query
-          Query.new(self)
+        def query(body = nil)
+          Query.new(self, body: body)
         end
 
         delegate :all, to: :query

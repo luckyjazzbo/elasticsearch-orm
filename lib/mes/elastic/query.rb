@@ -4,12 +4,12 @@ require 'active_support/core_ext/object/deep_dup'
 module Mes
   module Elastic
     class Query
-      attr_reader :model, :body
+      attr_accessor :model, :body
       include Enumerable
 
-      def initialize(model)
+      def initialize(model, args = {})
         @model = model
-        @body = { query: {} }
+        @body = args[:body] || default_body
       end
 
       def match(params)
@@ -63,7 +63,9 @@ module Mes
 
       protected
 
-      attr_writer :body
+      def default_body
+        { query: {} }
+      end
 
       def parse_order(order)
         order.strip.split(',').map do |order_step|
