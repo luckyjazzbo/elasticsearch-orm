@@ -4,8 +4,7 @@ RSpec.shared_context 'with eva indices' do
   let(:eva_resource) { ::Eva::Elastic::Resource }
 
   before(:all) do
-    FactoryGirl.definition_file_paths = [File.join(Mes::Elastic::ROOT, 'spec/factories/eva')]
-    FactoryGirl.find_definitions
+    Dir[File.join(Mes::Elastic::ROOT, 'spec/factories/eva/*.rb')].each { |file| require(file) }
   end
 
   before(:each) do
