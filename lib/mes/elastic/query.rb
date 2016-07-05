@@ -24,6 +24,12 @@ module Mes
         end
       end
 
+      def offset(count)
+        copy.tap do |query|
+          query.body[:from] = count
+        end
+      end
+
       def limit(count)
         copy.tap do |query|
           query.body[:size] = count

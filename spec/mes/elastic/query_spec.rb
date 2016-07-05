@@ -78,8 +78,17 @@ describe Mes::Elastic::Query do
     subject { query.limit(12) }
     it_behaves_like 'chainable query'
 
-    it 'appends matchAll expression to query' do
+    it 'appends limit expression to query' do
       expect(subject.body).to eq({ query: {}, size: 12 })
+    end
+  end
+
+  describe '#offset' do
+    subject { query.offset(12) }
+    it_behaves_like 'chainable query'
+
+    it 'appends from expression to query' do
+      expect(subject.body).to eq({ query: {}, from: 12 })
     end
   end
 
