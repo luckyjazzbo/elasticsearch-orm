@@ -4,9 +4,41 @@ RSpec.describe 'FactoryGirl' do
   include_context 'with mes indices'
   include_context 'with eva indices'
 
-  [:eva_elastic_video, :mes_elastic_video].each do |factory_name|
+  EVA_FACTORIES = %i(
+    eva_elastic_video
+  ).freeze
+
+  MES_FACTORIES = %i(
+    mes_elastic_video
+  ).freeze
+
+  EVA_FACTORIES.each do |factory_name|
     it "defines factory #{factory_name}" do
       FactoryGirl.build(factory_name)
+    end
+
+    it "creates object with factory #{factory_name}" do
+      expect {
+        FactoryGirl.create(factory_name)
+        flush_eva_indices
+      }.to change {
+        ::Eva::Elastic::Resource.count
+      }.from(0).to(1)
+    end
+  end
+
+  MES_FACTORIES.each do |factory_name|
+    it "defines factory #{factory_name}" do
+      FactoryGirl.build(factory_name)
+    end
+
+    it "creates object with factory #{factory_name}" do
+      expect {
+        FactoryGirl.create(factory_name)
+        flush_mes_indices
+      }.to change {
+        ::Eva::Elastic::Resource.count
+      }.from(0).to(1)
     end
   end
 
