@@ -1,12 +1,14 @@
 module Mes
   module Elastic
     class Model
-      class UnpermittedAttributeException             < StandardError; end
-      class UnpermittedFieldNameException             < StandardError; end
-      class RecordNotFoundException                   < StandardError; end
-      class SettingFieldsForModelWithoutTypeException < StandardError; end
-      class UnknownTypeException                      < StandardError; end
-      class IntatiatingModelWithoutType               < StandardError; end
+      class ElasticError                          < StandardError; end
+      class InvalidActionError                    < ElasticError; end
+      class UnpermittedAttributeError             < ElasticError; end
+      class UnpermittedFieldNameError             < ElasticError; end
+      class RecordNotFoundError                   < ElasticError; end
+      class SettingFieldsForModelWithoutTypeError < ElasticError; end
+      class UnknownTypeError                      < ElasticError; end
+      class IntatiatingModelWithoutTypeError      < ElasticError; end
     end
   end
 end

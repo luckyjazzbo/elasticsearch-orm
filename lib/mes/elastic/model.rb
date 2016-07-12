@@ -1,10 +1,10 @@
-require_relative 'model/elastic_api_methods'
-require_relative 'model/mappings'
-require_relative 'model/attributes'
-require_relative 'model/lookup_methods'
-require_relative 'model/crud_actions'
-require_relative 'model/multitype'
-require_relative 'model/errors'
+require 'mes/elastic/model/elastic_api_methods'
+require 'mes/elastic/model/mappings'
+require 'mes/elastic/model/attributes'
+require 'mes/elastic/model/lookup_methods'
+require 'mes/elastic/model/crud_actions'
+require 'mes/elastic/model/multitype'
+require 'mes/elastic/model/errors'
 
 module Mes
   module Elastic
@@ -18,7 +18,7 @@ module Mes
       include CRUDActions
 
       def initialize(attrs = {})
-        raise IntatiatingModelWithoutType if self.class.multitype?
+        raise IntatiatingModelWithoutTypeError if self.class.multitype?
         initialize_attributes
         initialize_save_actions
         assign_attributes(attrs)

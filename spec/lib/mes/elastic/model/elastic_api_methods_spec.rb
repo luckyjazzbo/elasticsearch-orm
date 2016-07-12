@@ -7,7 +7,7 @@ RSpec.describe 'Elastic API methods' do
 
   describe '.config' do
     let(:different_test_model) do
-      class Mes::DifferentTestModel < described_class; end
+      class Mes::DifferentTestModel < Mes::Elastic::Model; end
       Mes::DifferentTestModel.config(
         url: ENV['MES_ELASTICSEARCH_URL'],
         index: 'other-test-index',
@@ -114,6 +114,14 @@ RSpec.describe 'Elastic API methods' do
     it 'does not fail if index does not exist' do
       subject.drop_index!
       expect { subject.purge_index! }.not_to raise_error
+    end
+  end
+
+  describe '.create_mapping!' do
+    it 'creates mappings' do
+      subject.field :sample_field, type: :string, index: :not_analyzed
+      subject.create_mapping!
+      expect(recursive_stringify_mapping(subject.mapping)).to eq(test_mapping['properties'])
     end
   end
 
