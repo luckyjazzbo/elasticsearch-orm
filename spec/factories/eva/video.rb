@@ -1,11 +1,11 @@
 FactoryGirl.define do
   factory :eva_elastic_video, class: 'Eva::Elastic::Video' do
-    id               { "v-#{SecureRandom.uuid}" }
-    clip_id          { id }
-    sequence(:title) { |n| { 'en' => "Sample video ##{n}", 'de' => "Beispielvideo ##{n}" } }
-    clip_duration    100
-    description      { { 'en' => 'Awesome video', 'de' => 'Großartiges video' } }
-    midroll_offsets  [12.34, 44]
+    id                { "v-#{SecureRandom.uuid}" }
+    clip_id           { id }
+    sequence(:titles) { |n| { 'en' => "Sample video ##{n}", 'de' => "Beispielvideo ##{n}" } }
+    clip_duration     100
+    descriptions      { { 'en' => 'Awesome video', 'de' => 'Großartiges video' } }
+    midroll_offsets   [12.34, 44]
 
     image(
       'url' => 'http://url.to/poster.jpg'
