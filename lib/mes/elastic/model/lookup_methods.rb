@@ -11,7 +11,7 @@ module Mes
 
         def find(id)
           response = Query.new(self).match(_id: id).execute
-          raise RecordNotFoundException if response.empty?
+          raise RecordNotFoundError if response.empty?
           response.first
         end
 

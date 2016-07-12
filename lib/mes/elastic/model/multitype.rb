@@ -34,7 +34,7 @@ module Mes
         def class_by_type(document_type)
           return self if type && type == document_type
           return descendants[document_type] if descendants.key? document_type
-          raise UnknownTypeException
+          raise UnknownTypeError
         end
 
         def setup_parent

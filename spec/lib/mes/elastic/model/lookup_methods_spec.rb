@@ -35,18 +35,18 @@ RSpec.describe 'Lookup methods' do
 
       it 'raises NotFound exception for not-existing ids' do
         expect { test_model.find 'not-existing-id' }
-          .to raise_error described_class::RecordNotFoundException
+          .to raise_error Mes::Elastic::Model::RecordNotFoundError
       end
 
       it 'raises NotFound exception for ids, which belong to different type' do
         expect { test_model.find id2 }
-          .to raise_error described_class::RecordNotFoundException
+          .to raise_error Mes::Elastic::Model::RecordNotFoundError
       end
     end
 
     describe '.count' do
       let(:multitype_model) do
-        class Mes::MultitypeModel < described_class
+        class Mes::MultitypeModel < Mes::Elastic::Model
           multitype
         end
         Mes::MultitypeModel.config(url: test_elastic_url, index: test_index)

@@ -53,4 +53,17 @@ RSpec.shared_context 'with test indices' do
     test_client.indices.flush
     test_client.cluster.health(wait_for_status: 'green')
   end
+
+  def test_mapping
+    test_client.indices.get_mapping(index: test_index, type: test_type)[test_index]['mappings'][test_type]
+  end
+
+  def config_test_model_class(model_class)
+    model_class.config(
+      url: test_elastic_url,
+      index: test_index,
+      index_settings: index_settings_for_one_shard
+    )
+    model_class
+  end
 end

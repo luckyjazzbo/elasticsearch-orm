@@ -1,10 +1,10 @@
 RSpec.describe 'Mappings' do
-  include_context 'multitype models'
-
+  include_context 'with test indices'
+  
   let(:subject) { test_model }
 
   let(:parent_model) do
-    class Mes::ParentModel < described_class; end
+    class Mes::ParentModel < Mes::Elastic::Model; end
     Mes::ParentModel.multitype
     Mes::ParentModel.config(
       url: test_elastic_url,
@@ -33,7 +33,7 @@ RSpec.describe 'Mappings' do
 
   it "doesn't allow to set fields for parent_model" do
     expect { parent_model.field :some_field, :string }
-      .to raise_error described_class::SettingFieldsForModelWithoutTypeException
+      .to raise_error Mes::Elastic::Model::SettingFieldsForModelWithoutTypeError
   end
 
   it 'delegates client and index to parent model' do
@@ -55,17 +55,17 @@ RSpec.describe 'Mappings' do
 
   it 'throws exception when try to use unknown type' do
     expect { parent_model.build('third_type', title: 'Some title') }
-      .to raise_error described_class::UnknownTypeException
+      .to raise_error Mes::Elastic::Model::UnknownTypeError
   end
 
   it 'throws exception when try to use wrong child model' do
     expect { parent_model.build('third_type', title: 'Some title') }
-      .to raise_error described_class::UnknownTypeException
+      .to raise_error Mes::Elastic::Model::UnknownTypeError
   end
 
   it 'throws exception when try to create instance of parent_model' do
     expect { parent_model.new(title: 'Some title') }
-      .to raise_error described_class::IntatiatingModelWithoutType
+      .to raise_error Mes::Elastic::Model::IntatiatingModelWithoutTypeError
   end
 
   describe '.find' do
