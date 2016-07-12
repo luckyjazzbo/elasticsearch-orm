@@ -126,15 +126,32 @@ RSpec.describe 'Elastic API methods' do
   end
 
   describe '.delete_all' do
-    before do
-      purge_test_index
-      index_test_document
-      test_elastic_flush
+    context 'when model with type' do
+      before do
+        purge_test_index
+        index_test_document
+        test_elastic_flush
+      end
+
+      it 'deletes all documents' do
+        subject.delete_all
+        expect(count_test_documents).to eq(0)
+      end
     end
 
-    it 'deletes all documents' do
-      subject.delete_all
-      expect(count_test_documents).to eq(0)
+    context 'when multitype model' do
+      let(:subject) { test_multitype_model }
+
+      before do
+        purge_test_index
+        index_test_document
+        test_elastic_flush
+      end
+
+      it 'deletes all documents' do
+        subject.delete_all
+        expect(count_test_documents).to eq(0)
+      end
     end
   end
 end

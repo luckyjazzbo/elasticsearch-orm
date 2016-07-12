@@ -4,14 +4,17 @@ module Mes
   module Elastic
     class Model
       module CRUDActions
-        def initialize_save_actions
-          @persisted = false
+        def initialize_save_actions(opts = {})
+          @persisted = opts[:persisted] || false
         end
 
         def save
           assign_attribute(:id, self.class.save(attributes))
           persist!
         end
+
+        # INFO: alias `save!` for now as it is used by FactoryGirl
+        alias_method :save!, :save
 
         def update_attributes(attrs = {})
           assign_attributes(attrs)

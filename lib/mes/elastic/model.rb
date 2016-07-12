@@ -17,11 +17,11 @@ module Mes
       include Attributes
       include CRUDActions
 
-      def initialize(attrs = {})
+      def initialize(attrs = {}, opts = {})
         raise IntatiatingModelWithoutTypeError if self.class.multitype?
         initialize_attributes
-        initialize_save_actions
-        assign_attributes(attrs)
+        initialize_save_actions(opts)
+        assign_attributes(attrs, opts)
       end
     end
   end

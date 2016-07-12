@@ -4,8 +4,8 @@ module Mes
   module Elastic
     class Model
       module Multitype
-        def build(document_type, attrs)
-          class_by_type(document_type).new(attrs)
+        def build(document_type, attrs, opts = {})
+          class_by_type(document_type).new(attrs, opts)
         end
 
         def inherited(subclass)

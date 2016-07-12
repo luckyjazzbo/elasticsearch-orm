@@ -13,7 +13,8 @@ module Mes
         hits.each do |hit|
           obj = model.build(
             hit['_type'],
-            { 'id' => hit['_id'] }.merge(hit['_source'])
+            { 'id' => hit['_id'] }.merge(hit['_source']),
+            { ignore_mapping: true, persisted: true }
           )
           obj.persist!
           yield obj

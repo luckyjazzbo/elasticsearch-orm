@@ -15,6 +15,16 @@ RSpec.shared_context 'with test indices' do
     Mes::TestModel
   end
 
+  let(:test_multitype_model) do
+    class Mes::TestModel < Mes::Elastic::Model; multitype; end
+    Mes::TestModel.config(
+      url: test_elastic_url,
+      index: test_index,
+      index_settings: index_settings_for_one_shard
+    )
+    Mes::TestModel
+  end
+
   after do
     undef_model :TestModel
   end

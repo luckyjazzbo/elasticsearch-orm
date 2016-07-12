@@ -56,6 +56,11 @@ describe Mes::Elastic::Response do
     expect(subject.count).to eq 2
   end
 
+  it 'silently ignores fields without mapping' do
+    mocked_response['hits']['hits'][0]['_source'].merge!('foo' => 'Bar')
+    expect { response.first }.not_to raise_error Mes::Elastic::Model::UnpermittedAttributeError
+  end
+
   describe '#total_count' do
     it 'returns total_count' do
       expect(subject.total_count).to eq 10
