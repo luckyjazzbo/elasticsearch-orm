@@ -1,6 +1,6 @@
 RSpec.describe 'Mappings' do
   include_context 'with test indices'
-  
+
   let(:subject) { test_model }
 
   let(:parent_model) do

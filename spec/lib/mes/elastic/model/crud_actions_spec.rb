@@ -59,6 +59,12 @@ RSpec.describe 'CRUD actions' do
       end
     end
 
+    describe '#save!' do
+      it 'responds to save!' do
+        expect(subject.new).to respond_to(:save!)
+      end
+    end
+
     describe '#persisted?' do
       it 'is false for new records' do
         expect(test_model.new(id: id1, title: title1).persisted?).to be false
