@@ -36,7 +36,7 @@ module Mes
           if respect_mapping
             raise UnpermittedAttributeError, "Attribute '#{key}' is not permitted" unless attribute?(key)
           end
-          @attributes[key.to_sym] = value
+          @attributes[key.to_sym] = value.is_a?(Hash) ? value.deep_symbolize_keys : value
         end
       end
     end
