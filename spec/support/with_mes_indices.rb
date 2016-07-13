@@ -9,7 +9,10 @@ RSpec.shared_context 'with mes indices' do
 
   before(:each) do
     mes_resource.config(index_settings: index_settings_for_one_shard)
-    mes_resource.create_index unless mes_resource.index_exists?
+    unless mes_resource.index_exists?
+      mes_resource.create_index
+      ::Mes::Elastic.models.each(&:create_mapping)
+    end
     mes_resource.delete_all
     flush_mes_indices
   end
