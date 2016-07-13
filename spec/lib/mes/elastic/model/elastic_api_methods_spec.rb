@@ -117,10 +117,10 @@ RSpec.describe 'Elastic API methods' do
     end
   end
 
-  describe '.create_mapping!' do
+  describe '.create_mapping' do
     it 'creates mappings' do
       subject.field :sample_field, type: :string, index: :not_analyzed
-      subject.create_mapping!
+      subject.create_mapping
       expect(recursive_stringify_mapping(subject.mapping)).to eq(test_mapping['properties'])
     end
   end

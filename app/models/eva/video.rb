@@ -69,19 +69,19 @@ module Eva
         field :status,      type: :string, index: :not_analyzed
 
         # TODO: implement support of array of objects
-        array :ad_groups do
-          field :geolocation, type: :string
+        array :ad_groups, type: :object do
+          field :geolocation, type: :string, index: :not_analyzed
 
           object :reach_measured do
-            array :prerolls, type: :string
-            array :midrolls, type: :string
-            array :postrolls, type: :string
+            array :prerolls,  type: :string, index: :not_analyzed
+            array :midrolls,  type: :string, index: :not_analyzed
+            array :postrolls, type: :string, index: :not_analyzed
           end
 
           object :non_reach_measured do
-            array :prerolls, type: :string
-            array :midrolls, type: :string
-            array :postrolls, type: :string
+            array :prerolls,  type: :string, index: :not_analyzed
+            array :midrolls,  type: :string, index: :not_analyzed
+            array :postrolls, type: :string, index: :not_analyzed
           end
         end
       end

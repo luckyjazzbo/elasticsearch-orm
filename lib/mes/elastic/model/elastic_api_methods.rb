@@ -47,9 +47,8 @@ module Mes
           create_index
         end
 
-        def create_mapping!
-          raise InvalidActionError, 'Cannot create mappings for multitype models' if multitype?
-
+        def create_mapping
+          return if multitype?
           client.indices.put_mapping(
             index: index, type: type, body: { type => { properties: mapping } }
           )
