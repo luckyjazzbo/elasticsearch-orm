@@ -7,7 +7,7 @@ module Mes
         attr_reader :attributes
 
         def initialize_attributes
-          @attributes ||= {}
+          @attributes ||= {}.with_indifferent_access
         end
 
         def assign_attributes(attrs, opts = {})
