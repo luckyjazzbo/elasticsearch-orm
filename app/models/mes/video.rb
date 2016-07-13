@@ -2,8 +2,8 @@ module Mes
   module Elastic
     class Video < Resource
       field :clip_id,         type: :string, index: :not_analyzed
-      field :titles
-      field :descriptions
+      field :titles,          type: :object
+      field :descriptions,    type: :object
       field :clip_duration,   type: :float
       array :midroll_offsets, type: :float
 
