@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :eva_elastic_video, class: 'Eva::Elastic::Video' do
+    modified_at       { Time.now.to_i }
     id                { "v-#{SecureRandom.uuid}" }
     clip_id           { id }
     sequence(:titles) { |n| { 'en' => "Sample video ##{n}", 'de' => "Beispielvideo ##{n}" } }

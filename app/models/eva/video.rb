@@ -1,6 +1,8 @@
 module Eva
   module Elastic
     class Video < Resource
+      field :modified_at,     type: :float
+
       field :clip_id,         type: :string, index: :not_analyzed
       field :titles,          type: :object
       field :descriptions,    type: :object
