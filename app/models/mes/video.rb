@@ -68,6 +68,7 @@ module Mes
         field :version,     type: :integer
         field :status,      type: :string, index: :not_analyzed
 
+        # TODO: implement support of array of objects
         array :ad_groups do
           field :geolocation, type: :string
 
