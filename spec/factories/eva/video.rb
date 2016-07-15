@@ -14,9 +14,11 @@ FactoryGirl.define do
 
     ad_groups(
       'en' => {
-        'prerolls'  => ['tag-1', 'tag-2'],
-        'midrolls'  => ['tag-3', 'tag-4'],
-        'postrolls' => ['tag-1']
+        'reach_measured' => {
+          'prerolls'  => ['tag-1', 'tag-2'],
+          'midrolls'  => ['tag-3', 'tag-4'],
+          'postrolls' => ['tag-1']          
+        }
       }
     )
 

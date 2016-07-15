@@ -2,15 +2,15 @@ module Mes
   module Elastic
     class Video < Resource
       LANGS = %i(default en de).freeze
-      
+
       object :titles do
         LANGS.each do |lang|
-          field lang, type: :string, index: :not_analyzed
+          field lang, type: :string
         end
       end
       object :descriptions do
         LANGS.each do |lang|
-          field lang, type: :string, index: :not_analyzed
+          field lang, type: :string
         end
       end
       field :clip_duration,   type: :float
