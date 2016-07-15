@@ -12,10 +12,12 @@ FactoryGirl.define do
       'url' => 'http://url.to/poster.jpg'
     )
 
-    ad_tags(
-      'prerolls'  => ['tag-1', 'tag-2'],
-      'midrolls'  => ['tag-3', 'tag-4'],
-      'postrolls' => ['tag-1']
+    ad_groups(
+      'en' => {
+        'prerolls'  => ['tag-1', 'tag-2'],
+        'midrolls'  => ['tag-3', 'tag-4'],
+        'postrolls' => ['tag-1']
+      }
     )
 
     content_owner(
