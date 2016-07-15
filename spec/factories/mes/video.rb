@@ -7,6 +7,7 @@ FactoryGirl.define do
     midroll_offsets   [12.34, 44]
     created_at        { Time.now.to_i }
     modified_at       { Time.now.to_i }
+    taxonomy          ['tx-123']
 
     image(
       'url' => 'http://url.to/poster.jpg'
