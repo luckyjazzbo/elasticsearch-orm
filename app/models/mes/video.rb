@@ -1,8 +1,18 @@
 module Mes
   module Elastic
     class Video < Resource
-      field :titles,          type: :object
-      field :descriptions,    type: :object
+      LANGS = %i(default en de).freeze
+      
+      object :titles do
+        LANGS.each do |lang|
+          field lang, type: :string, index: :not_analyzed
+        end
+      end
+      object :descriptions do
+        LANGS.each do |lang|
+          field lang, type: :string, index: :not_analyzed
+        end
+      end
       field :clip_duration,   type: :float
       array :midroll_offsets, type: :float
       field :created_at,      type: :float
@@ -12,10 +22,14 @@ module Mes
         field :url, type: :string, index: :not_analyzed
       end
 
-      object :ad_tags do
-        array :prerolls,  type: :string, index: :not_analyzed
-        array :midrolls,  type: :string, index: :not_analyzed
-        array :postrolls, type: :string, index: :not_analyzed
+      object :ad_groups do
+        LANGS.each do |lang|
+          object lang do
+            array :prerolls,  type: :string, index: :not_analyzed
+            array :midrolls,  type: :string, index: :not_analyzed
+            array :postrolls, type: :string, index: :not_analyzed
+          end
+        end
       end
 
       object :content_owner do
