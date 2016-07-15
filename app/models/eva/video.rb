@@ -17,6 +17,7 @@ module Eva
       array :midroll_offsets, type: :float
       field :created_at,      type: :float
       field :modified_at,     type: :float
+      array :taxonomy,        type: :string
 
       object :image do
         field :url, type: :string, index: :not_analyzed
