@@ -5,19 +5,19 @@ module Mes
 
       object :titles do
         LANGS.each do |lang|
-          field lang, type: :string, index: :not_analyzed
+          field lang, type: :string
         end
       end
       object :descriptions do
         LANGS.each do |lang|
-          field lang, type: :string, index: :not_analyzed
+          field lang, type: :string
         end
       end
       field :clip_duration,   type: :float
       array :midroll_offsets, type: :float
       field :created_at,      type: :float
       field :modified_at,     type: :float
-      array :taxonomy,        type: :string
+      array :taxonomy,        type: :string, index: :not_analyzed
 
       object :image do
         field :url, type: :string, index: :not_analyzed
