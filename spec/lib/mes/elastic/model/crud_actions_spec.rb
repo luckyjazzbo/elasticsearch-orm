@@ -18,7 +18,7 @@ RSpec.describe 'CRUD actions' do
 
     describe '#save' do
       it 'saves new document with id' do
-        test_model.new(id: id1, title: title1).save
+        test_model.upsert(id: id1, title: title1)
         test_elastic_flush
         loaded_record = test_model.find(id1)
         expect(loaded_record.title).to eq title1
@@ -65,6 +65,20 @@ RSpec.describe 'CRUD actions' do
       end
     end
 
+    describe '#delete' do
+      let!(:document) { test_model.upsert(id: id1, title: title1) }
+
+      it 'deletes a document' do
+        test_elastic_flush
+        expect {
+          document.delete
+          test_elastic_flush
+        }.to change {
+          count_test_documents
+        }.from(1).to(0)
+      end
+    end
+
     describe '#persisted?' do
       it 'is false for new records' do
         expect(test_model.new(id: id1, title: title1).persisted?).to be false
@@ -78,7 +92,7 @@ RSpec.describe 'CRUD actions' do
       end
 
       it 'is true for loaded records' do
-        test_model.new(id: id1, title: title1).save
+        test_model.upsert(id: id1, title: title1)
         test_elastic_flush
         expect(test_model.find(id1).persisted?).to be true
       end
@@ -97,7 +111,7 @@ RSpec.describe 'CRUD actions' do
       end
 
       it 'is false for loaded records' do
-        test_model.new(id: id1, title: title1).save
+        test_model.upsert(id: id1, title: title1)
         test_elastic_flush
         expect(test_model.find(id1).new_record?).to be false
       end

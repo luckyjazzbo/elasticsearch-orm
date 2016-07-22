@@ -67,6 +67,10 @@ module Mes
           client.index(opts)['_id']
         end
 
+        def delete(id)
+          client.delete(index: index, type: type, id: id)
+        end
+
         def delete_all
           opts = { index: index, body: { query: { match_all: {} } } }
           opts[:type] = type unless multitype?
