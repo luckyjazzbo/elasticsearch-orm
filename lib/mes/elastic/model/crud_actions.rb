@@ -16,6 +16,10 @@ module Mes
         # INFO: alias `save!` for now as it is used by FactoryGirl
         alias_method :save!, :save
 
+        def delete
+          self.class.delete(id)
+        end
+
         def update_attributes(attrs = {})
           assign_attributes(attrs)
           save
