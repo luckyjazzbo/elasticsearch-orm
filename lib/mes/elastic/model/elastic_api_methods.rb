@@ -1,5 +1,6 @@
 require 'elasticsearch'
 require 'active_support/core_ext/hash'
+require 'faraday_middleware/aws_signers_v4'
 
 module Mes
   module Elastic
@@ -18,12 +19,35 @@ module Mes
           @configured
         end
 
+        # TODO: Maybe need some refactor?
         def client
           if configured?
-            @client ||= ::Elasticsearch::Client.new(url: url || ENV.fetch('ELASTICSEARCH_URL'))
+            es_url = url || ENV.fetch('ELASTICSEARCH_URL')
+            @client ||= aws_elastic_url?(es_url) ? aws_signed_client(es_url) : ::Elasticsearch::Client.new(url: es_url)
           else
             superclass.client
           end
+        end
+
+        def aws_signed_client(url)
+          Elasticsearch::Client.new(url: url) do |f|
+            f.request :aws_signers_v4,
+                      credentials: Aws::InstanceProfileCredentials.new.credentials,
+                      service_name: 'es',
+                      region: fetch_region_from_aws_url(url)
+
+            f.response :logger
+            f.adapter  Faraday.default_adapter
+          end
+        end
+
+        def aws_elastic_url?(url)
+          url.end_with? '.es.amazonaws.com'
+        end
+
+        def fetch_region_from_aws_url(url)
+          # http://blah-blah-blah.eu-west-1.es.amazonaws.com
+          url.split('.')[-4]
         end
 
         def index
