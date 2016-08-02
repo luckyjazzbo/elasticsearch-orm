@@ -58,7 +58,7 @@ module Mes
         field :url, type: :string, index: :not_analyzed
       end
 
-      object :licence_profiles do
+      object :licence_profile do
         field :created_at,          type: :float
         field :modified_at,         type: :float
         field :version,             type: :float
