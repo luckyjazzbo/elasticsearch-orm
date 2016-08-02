@@ -14,51 +14,18 @@ module Mes
           field lang, type: :string
         end
       end
-      field :created_at,          type: :float
-      field :modified_at,         type: :float
-      field :version,             type: :float
-      field :tenant_id,           type: :string, index: :not_analyzed
-      field :duration,            type: :float
-      array :keywords,            type: :string
-
-      field :copyright,           type: :string
-      field :language,            type: :string, index: :not_analyzed
-      field :release_date,        type: :string
-      field :source_company,      type: :string
-      field :product_placement,   type: :boolean
-      field :status,              type: :string, index: :not_analyzed
-      field :start_date_absolute, type: :integer
-      field :end_date_absolute,   type: :integer
-
-      object :age_ratings do
-        field :FSK,  type: :string, index: :not_analyzed
-        field :CARA, type: :string, index: :not_analyzed
-      end
-
-      array :geo_locations,      type: :string, index: :not_analyzed
-      field :transcoding_status, type: :integer
-      field :is_deleted,         type: :boolean
-      field :is_locked,          type: :boolean
-      field :drm,                type: :boolean
-      field :entitlement,        type: :boolean
-      array :device_classes,     type: :string, index: :not_analyzed # DEVICE_CLASSES
-      object :bandwidth_max do
-        DEVICE_CLASSES.each do |device_class|
-          field device_class, type: :integer
-        end
-      end
-      field :max_resolution, type: :integer
+      field :clip_duration,   type: :float
+      field :tenant_id,       type: :string, index: :not_analyzed
       array :midroll_offsets, type: :float
       field :created_at,      type: :float
       field :modified_at,     type: :float
-      field :duration,   type: :float
       array :taxonomies,      type: :string, index: :not_analyzed
 
       object :image do
         field :url, type: :string, index: :not_analyzed
       end
 
-      object :licence_profiles do
+      object :license_profile do
         field :created_at,          type: :float
         field :modified_at,         type: :float
         field :version,             type: :float
