@@ -135,6 +135,7 @@ RSpec.describe 'Elastic API methods' do
 
       it 'deletes all documents' do
         subject.delete_all
+        test_elastic_flush
         expect(count_test_documents).to eq(0)
       end
     end
@@ -150,6 +151,7 @@ RSpec.describe 'Elastic API methods' do
 
       it 'deletes all documents' do
         subject.delete_all
+        test_elastic_flush
         expect(count_test_documents).to eq(0)
       end
     end
