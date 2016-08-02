@@ -96,9 +96,12 @@ module Mes
         end
 
         def delete_all
-          drop_index!
-          create_index
-          create_mapping
+          # Warning! Use with caution, very slow! Can be used only in tests!
+          bulk_queue = search(query: { matchAll: {} }, size: 1000)['hits']['hits'].map do |record|
+            { "delete" => { "_index" => index, "_type" => record['_type'], "_id" => record['_id'] } }
+          end
+          return if bulk_queue.empty?
+          client.bulk(body: bulk_queue)
         end
       end
     end

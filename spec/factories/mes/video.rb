@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :mes_elastic_video, class: 'Mes::Elastic::Video' do
     id                { "v-#{SecureRandom.uuid}" }
     sequence(:titles) { |n| { 'en' => "Sample video ##{n}", 'de' => "Beispielvideo ##{n}" } }
-    clip_duration     100
+    duration     100
     descriptions      { { 'en' => 'Awesome video', 'de' => 'Großartiges video' } }
     midroll_offsets   [12.34, 44]
     created_at        { Time.now.to_i }
