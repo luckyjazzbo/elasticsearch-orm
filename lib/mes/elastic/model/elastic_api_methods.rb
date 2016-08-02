@@ -96,9 +96,9 @@ module Mes
         end
 
         def delete_all
-          opts = { index: index, body: { query: { match_all: {} } } }
-          opts[:type] = type unless multitype?
-          client.delete_by_query(opts)
+          drop_index!
+          create_index
+          create_mapping
         end
       end
     end
