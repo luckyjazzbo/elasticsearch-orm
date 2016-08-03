@@ -13,13 +13,7 @@ module Mes
         !methods.include?(name)
       end
 
-      def define_field_accessors(field_name)
-        # INFO: accesssor for the nested objects are defined in ObjectField
-      end
-
-      def define_object_accessors(field_name)
-        # INFO: accesssor for the nested objects are defined in ObjectField
-      end
+      # INFO: accesssor for the nested objects are defined in ObjectField
     end
   end
 end

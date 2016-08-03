@@ -13,7 +13,7 @@ RSpec.describe Eva::Elastic::Video do
     it 'creates mapping' do
       expect {
         described_class.create_mapping
-      }.not_to raise_error Elasticsearch::Transport::Transport::Errors::BadRequest
+      }.not_to raise_error
     end
   end
 end
