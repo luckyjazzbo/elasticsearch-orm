@@ -53,13 +53,17 @@ module Eva
         field :entitlement,         type: :boolean
       end
 
-      object :ad_groups do
-        LANGS.each do |lang|
-          object lang do
-            array :prerolls,  type: :string, index: :not_analyzed
-            array :midrolls,  type: :string, index: :not_analyzed
-            array :postrolls, type: :string, index: :not_analyzed
-          end
+      array :ad_groups, type: :object do
+        field :geolocation,  type: :string, index: :not_analyzed
+        object :reach_measured do
+          array :prerolls,    type: :string, index: :not_analyzed
+          array :midrolls,    type: :string, index: :not_analyzed
+          array :postrolls,   type: :string, index: :not_analyzed
+        end
+        object :non_reach_measured do
+          array :prerolls,    type: :string, index: :not_analyzed
+          array :midrolls,    type: :string, index: :not_analyzed
+          array :postrolls,   type: :string, index: :not_analyzed
         end
       end
 

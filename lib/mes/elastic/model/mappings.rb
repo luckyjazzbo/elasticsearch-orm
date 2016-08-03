@@ -3,6 +3,7 @@ require_relative 'mappings/mapping_accessor_helper'
 require_relative 'mappings/mapping_dsl'
 require_relative 'mappings/object_field_definer'
 require_relative 'mappings/object_field'
+require_relative 'mappings/object_array_field'
 
 module Mes
   module Elastic

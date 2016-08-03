@@ -13,15 +13,25 @@ FactoryGirl.define do
       'url' => 'http://url.to/poster.jpg'
     )
 
-    ad_groups(
-      'en' => {
+    ad_groups([
+      {
+        'geolocation' => 'en',
         'reach_measured' => {
           'prerolls'  => ['tag-1', 'tag-2'],
           'midrolls'  => ['tag-3', 'tag-4'],
           'postrolls' => ['tag-1']
         }
+      },
+      {
+        'geolocation' => 'de',
+        'reach_measured' => {
+          'prerolls'  => ['tag-5', 'tag-78'],
+          'midrolls'  => ['tag-6', 'tag-41'],
+          'postrolls' => ['tag-9']
+        }
       }
-    )
+    ])
+
 
     content_owner(
       'display_name' => 'Awesome TV',

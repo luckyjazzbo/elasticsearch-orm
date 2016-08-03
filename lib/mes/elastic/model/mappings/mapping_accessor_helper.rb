@@ -13,6 +13,14 @@ module Mes
         end
 
         def define_object_accessors(field_name, mapping)
+          if mapping[field_name][:array]
+            define_objects_array_accessors(field_name, mapping)
+          else
+            define_inplace_object_accessors(field_name, mapping)
+          end
+        end
+
+        def define_inplace_object_accessors(field_name, mapping)
           define_method(field_name) do
             attributes[field_name] ||= {}
             ObjectField.new(attributes[field_name], mapping[field_name])
@@ -21,6 +29,17 @@ module Mes
           define_method("#{field_name}=") do |hash|
             # TODO: validate hash before updating the underlying structure
             assign_attribute(field_name, hash.deep_symbolize_keys!)
+          end
+        end
+
+        def define_objects_array_accessors(field_name, mapping)
+          define_method(field_name) do
+            attributes[field_name] ||= []
+            ObjectArrayField.new(attributes[field_name], mapping[field_name])
+          end
+
+          define_method("#{field_name}=") do |array|
+            assign_attribute(field_name, array.map(&:deep_symbolize_keys!))
           end
         end
       end

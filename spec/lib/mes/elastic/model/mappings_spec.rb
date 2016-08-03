@@ -40,19 +40,19 @@ RSpec.describe 'Mappings' do
     let(:subject) { test_model }
 
     it 'defines a field in mapping' do
-      expect { test_model.array :test_field, :string }
+      expect { test_model.array :test_field, type: :string }
         .to change { test_model.field? :test_field }
         .from(false).to(true)
     end
 
     it 'defines readers for fields' do
-      test_model.array :test_field, :string
+      test_model.array :test_field, type: :string
       obj = test_model.new test_field: ['value']
       expect(obj.test_field).to eq ['value']
     end
 
     it 'defines writers for fields' do
-      test_model.array :test_field, :string
+      test_model.array :test_field, type: :string
       obj = test_model.new test_field: ['value']
       expect { obj.test_field = ['new value'] }
         .to change { obj.test_field }
@@ -69,6 +69,10 @@ RSpec.describe 'Mappings' do
           object :object_field do
             field :object_subfield, type: :integer
           end
+
+          array :object_field_as_array, type: :object do
+            field :object_subfield, type: :integer
+          end
         end
         config_test_model_class Mes::ShallowObjectTestModel
       end
@@ -77,16 +81,23 @@ RSpec.describe 'Mappings' do
         expect(subject.mapping[:object_field]).to eq(
           properties: {
             object_subfield: { type: :integer }
-          }
+          },
+          array: false
+        )
+      end
+
+      it 'builds correct mapping for array of objects' do
+        expect(subject.mapping[:object_field_as_array]).to eq(
+          properties: {
+            object_subfield: { type: :integer }
+          },
+          array: true
         )
       end
 
       it 'defines an accessor' do
         expect(instance).to respond_to(:object_field)
-      end
-
-      it 'allows to access subfields' do
-        expect(instance.object_field).to respond_to(:object_subfield)
+        expect(instance).to respond_to(:object_field_as_array)
       end
 
       it 'allows to set subfields' do
@@ -96,6 +107,43 @@ RSpec.describe 'Mappings' do
       it 'reads the same value after setting of subfields' do
         instance.object_field.object_subfield = 1
         expect(instance.object_field.object_subfield).to eq(1)
+      end
+
+      it 'allows assigning attributes for array' do
+        instance.object_field_as_array = [ {object_subfield: 1}, {object_subfield: 2} ]
+        expect(instance.object_field_as_array[0].object_subfield).to eq(1)
+        expect(instance.object_field_as_array[1].object_subfield).to eq(2)
+      end
+
+      it 'allows initializing with array' do
+        instance = subject.new(object_field_as_array: [ {object_subfield: 1}, {object_subfield: 2} ])
+        expect(instance.object_field_as_array[0].object_subfield).to eq(1)
+        expect(instance.object_field_as_array[1].object_subfield).to eq(2)
+      end
+
+      it 'allows to change items in array after assigning' do
+        instance = subject.new(object_field_as_array: [ {object_subfield: 1}, {object_subfield: 2} ])
+        instance.object_field_as_array[1].object_subfield = 3
+        expect(instance.object_field_as_array[1].object_subfield).to eq(3)
+      end
+
+      it 'allows to reassign items to array after assigning' do
+        instance = subject.new(object_field_as_array: [ {object_subfield: 1}, {object_subfield: 2} ])
+        instance.object_field_as_array[1] = { object_subfield: 3}
+        expect(instance.object_field_as_array[1].object_subfield).to eq(3)
+      end
+
+      it 'allows to use each/map/etc. when array field' do
+        instance = subject.new(object_field_as_array: [ {object_subfield: 1}, {object_subfield: 2} ])
+        instance.object_field_as_array.each { |x| x.object_subfield += 10 }
+        expect(instance.object_field_as_array[0].object_subfield).to eq(11)
+        expect(instance.object_field_as_array[1].object_subfield).to eq(12)
+      end
+
+      it 'allows to append items to array after assigning' do
+        instance = subject.new(object_field_as_array: [ {object_subfield: 1}, {object_subfield: 2} ])
+        instance.object_field_as_array << { object_subfield: 3}
+        expect(instance.object_field_as_array[2].object_subfield).to eq(3)
       end
     end
 
@@ -117,9 +165,11 @@ RSpec.describe 'Mappings' do
             subobject_field: {
               properties: {
                 subobject_subfield: { type: :integer }
-              }
+              },
+              array: false
             }
-          }
+          },
+          array: false
         )
       end
 
