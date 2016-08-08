@@ -56,19 +56,19 @@ module Mes
       end
 
       array :ad_groups, type: :object do
-        field :geolocation,  type: :string, index: :not_analyzed
+        field :geolocation,    type: :string, index: :not_analyzed
+        field :sales_house_id, type: :string, index: :not_analyzed
         object :reach_measured do
-          array :prerolls,    type: :string, index: :not_analyzed
-          array :midrolls,    type: :string, index: :not_analyzed
-          array :postrolls,   type: :string, index: :not_analyzed
+          array :prerolls,     type: :string, index: :not_analyzed
+          array :midrolls,     type: :string, index: :not_analyzed
+          array :postrolls,    type: :string, index: :not_analyzed
         end
         object :non_reach_measured do
-          array :prerolls,    type: :string, index: :not_analyzed
-          array :midrolls,    type: :string, index: :not_analyzed
-          array :postrolls,   type: :string, index: :not_analyzed
+          array :prerolls,     type: :string, index: :not_analyzed
+          array :midrolls,     type: :string, index: :not_analyzed
+          array :postrolls,    type: :string, index: :not_analyzed
         end
       end
-
 
       object :content_owner do
         field :display_name, type: :string, index: :not_analyzed
