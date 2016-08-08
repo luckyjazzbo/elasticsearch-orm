@@ -20,7 +20,7 @@ module Eva
       field :created_at,      type: :float
       field :modified_at,     type: :float
       array :taxonomies,      type: :string, index: :not_analyzed
-      field :is_deleted,      type: :boolean
+      field :is_locked,      type: :boolean
 
       object :image do
         field :url, type: :string, index: :not_analyzed
