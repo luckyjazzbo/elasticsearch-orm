@@ -8,6 +8,7 @@ FactoryGirl.define do
     created_at        { Time.now.to_i }
     modified_at       { Time.now.to_i }
     taxonomies        ['tx-123']
+    is_locked         { false }
 
     image(
       'url' => 'http://url.to/poster.jpg'
