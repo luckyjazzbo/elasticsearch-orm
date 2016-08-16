@@ -6,12 +6,12 @@ module Eva
 
       object :titles do
         LANGS.each do |lang|
-          field lang, type: :string
+          field lang, type: :string, analyzer: :autocomplete
         end
       end
       object :descriptions do
         LANGS.each do |lang|
-          field lang, type: :string
+          field lang, type: :string, analyzer: :autocomplete
         end
       end
       field :clip_duration,   type: :float
