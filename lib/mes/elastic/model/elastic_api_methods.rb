@@ -6,12 +6,14 @@ module Mes
   module Elastic
     class Model
       module ElasticAPIMethods
-        attr_reader :url, :index_settings
+        attr_reader :url
 
         def config(opts = {})
           @url = opts[:url]                       if opts[:url].present?
           @index = opts[:index]                   if opts[:index].present?
-          @index_settings = opts[:index_settings] if opts[:index_settings].present?
+          if opts[:index_settings].present?
+            @index_settings = opts[:index_settings].merge(@index_settings || {})
+          end
           @configured = true
         end
 
@@ -31,6 +33,10 @@ module Mes
 
         def index
           @index || superclass.index
+        end
+
+        def index_settings
+          @index_settings || superclass.try(:index_settings) || {}
         end
 
         def index_exists?
