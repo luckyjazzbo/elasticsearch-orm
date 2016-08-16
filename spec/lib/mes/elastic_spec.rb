@@ -7,8 +7,8 @@ describe Mes::Elastic do
 
   # Simple test for docker settings
   it 'has connection to EVA and MES ES' do
-    expect(`curl -qs #{ENV['EVA_ELASTICSEARCH_URL']}`).to include '"status" : 200'
-    expect(`curl -qs #{ENV['MES_ELASTICSEARCH_URL']}`).to include '"status" : 200'
+    expect(`curl -I #{ENV['EVA_ELASTICSEARCH_URL']}`).to include '200 OK'
+    expect(`curl -I #{ENV['MES_ELASTICSEARCH_URL']}`).to include '200 OK'
   end
 
   it 'defines EVA and MES models' do

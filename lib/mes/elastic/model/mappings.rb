@@ -31,7 +31,7 @@ module Mes
           define_field_accessors(field_name)
         end
 
-        def after_object_defined(field_name)
+        def after_object_defined(field_name, _mapping)
           define_object_accessors(field_name, mapping)
         end
       end

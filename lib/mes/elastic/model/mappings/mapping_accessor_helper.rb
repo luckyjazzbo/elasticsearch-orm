@@ -13,7 +13,7 @@ module Mes
         end
 
         def define_object_accessors(field_name, mapping)
-          if mapping[field_name][:array]
+          if mapping[field_name].delete :array
             define_objects_array_accessors(field_name, mapping)
           else
             define_inplace_object_accessors(field_name, mapping)

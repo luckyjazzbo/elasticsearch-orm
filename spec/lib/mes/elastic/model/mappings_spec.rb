@@ -81,8 +81,7 @@ RSpec.describe 'Mappings' do
         expect(subject.mapping[:object_field]).to eq(
           properties: {
             object_subfield: { type: :integer }
-          },
-          array: false
+          }
         )
       end
 
@@ -90,8 +89,7 @@ RSpec.describe 'Mappings' do
         expect(subject.mapping[:object_field_as_array]).to eq(
           properties: {
             object_subfield: { type: :integer }
-          },
-          array: true
+          }
         )
       end
 
@@ -165,11 +163,9 @@ RSpec.describe 'Mappings' do
             subobject_field: {
               properties: {
                 subobject_subfield: { type: :integer }
-              },
-              array: false
+              }
             }
-          },
-          array: false
+          }
         )
       end
 

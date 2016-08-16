@@ -37,7 +37,7 @@ RSpec.describe 'FactoryGirl' do
         FactoryGirl.create(factory_name)
         flush_mes_indices
       }.to change {
-        ::Eva::Elastic::Resource.count
+        ::Mes::Elastic::Resource.count
       }.from(0).to(1)
     end
   end

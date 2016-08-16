@@ -2,6 +2,10 @@ language: ruby
 rvm: 2.2
 sudo: required
 
+branches:
+  only:
+    - master
+
 services:
   - docker
 
