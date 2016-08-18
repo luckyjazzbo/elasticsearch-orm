@@ -5,6 +5,10 @@ sudo: required
 services:
   - docker
 
+branches:
+  only:
+    - master
+
 env:
   COMPOSE_VERSION: 1.7.1
 

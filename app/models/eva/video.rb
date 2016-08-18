@@ -14,11 +14,11 @@ module Eva
           field lang, type: :string, analyzer: :autocomplete
         end
       end
-      field :clip_duration,   type: :float
+      field :clip_duration,   type: :double
       field :tenant_id,       type: :string, index: :not_analyzed
-      array :midroll_offsets, type: :float
-      field :created_at,      type: :float
-      field :modified_at,     type: :float
+      array :midroll_offsets, type: :double
+      field :created_at,      type: :double
+      field :modified_at,     type: :double
       array :taxonomies,      type: :string, index: :not_analyzed
       field :is_locked,      type: :boolean
 
@@ -27,8 +27,8 @@ module Eva
       end
 
       object :license_profile do
-        field :created_at,          type: :float
-        field :modified_at,         type: :float
+        field :created_at,          type: :double
+        field :modified_at,         type: :double
         field :version,             type: :float
         field :status,              type: :string, index: :not_analyzed # %i(NOT_READY READY)
         field :type,                type: :string, index: :not_analyzed # %i(SYNDICATION MDS_PROFILE)
@@ -36,8 +36,8 @@ module Eva
         field :tenant_id,           type: :string, index: :not_analyzed
         field :name,                type: :string
         field :name_short,          type: :string
-        field :start_date,          type: :float
-        field :end_date,            type: :float
+        field :start_date,          type: :double
+        field :end_date,            type: :double
         array :products,            type: :string, index: :not_analyzed # %i(FIXED_PRICE ADS)
         array :sales_houses,        type: :string, index: :not_analyzed
         array :geo_locations,       type: :string, index: :not_analyzed
