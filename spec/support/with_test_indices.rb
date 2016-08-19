@@ -61,7 +61,7 @@ RSpec.shared_context 'with test indices' do
 
   def test_elastic_flush
     test_client.indices.flush
-    test_client.cluster.health(wait_for_status: 'green')
+    test_client.cluster.health(wait_for_status: 'yellow')
   end
 
   def test_mapping

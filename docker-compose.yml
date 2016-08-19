@@ -12,11 +12,13 @@ services:
       - mes-elasticsearch
 
   eva-elasticsearch:
-    image: elasticsearch:1.5.2
+    command: -Des.cluster.name="eva"
+    image: elasticsearch:2.3
     ports:
       - 9200
 
   mes-elasticsearch:
-    image: elasticsearch:1.5.2
+    command: -Des.cluster.name="mes"
+    image: elasticsearch:2.3
     ports:
       - 9200

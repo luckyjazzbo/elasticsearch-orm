@@ -35,7 +35,7 @@ module Mes
 
           validate_name!(field_name)
           mapping[field_name] = { properties: catch_object_mapping(&block), array: opts.fetch(:array, false) }
-          run_callback(:after_object_defined, field_name)
+          run_callback(:after_object_defined, field_name, mapping[field_name])
         end
 
         private

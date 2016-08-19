@@ -1,7 +1,7 @@
 module Mes
   module Elastic
     class ObjectFieldDefiner
-      include ::Mes::Elastic::Model::MappingDsl
+      include Model::MappingDsl
 
       private
 
@@ -11,6 +11,10 @@ module Mes
 
       def allowed_field?(name)
         !methods.include?(name)
+      end
+
+      def after_object_defined(_name, mapping)
+        mapping.delete :array
       end
 
       # INFO: accesssor for the nested objects are defined in ObjectField
