@@ -19,8 +19,10 @@ module Eva
       array :midroll_offsets, type: :double
       field :created_at,      type: :double
       field :modified_at,     type: :double
+      field :start_date,      type: :double
+      field :end_date,        type: :double
       array :taxonomies,      type: :string, index: :not_analyzed
-      field :is_locked,      type: :boolean
+      field :is_locked,       type: :boolean
 
       object :image do
         field :url, type: :string, index: :not_analyzed
