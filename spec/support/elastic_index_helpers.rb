@@ -6,6 +6,15 @@ module ElasticIndexHelpers
   def flush_elastic_indices(client)
     client.indices.flush
     client.cluster.health(wait_for_status: 'yellow')
+    20.times do
+      begin
+        client.ping
+        break
+      rescue ::Elasticsearch::Transport::Transport::Errors::ServiceUnavailable
+        # do nothing, lets try one more time
+      end
+      sleep 0.1
+    end
   end
 
   def recursive_stringify_mapping(mapping)
