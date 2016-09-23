@@ -14,16 +14,21 @@ module Mes
           field lang, type: :string
         end
       end
+
+      array :geo_locations,   type: :string, index: :not_analyzed
+      array :taxonomies,      type: :string, index: :not_analyzed
+      array :keywords,        type: :string, index: :not_analyzed
+      array :midroll_offsets, type: :double
+
       field :clip_duration,   type: :double
       field :tenant_id,       type: :string, index: :not_analyzed
-      array :midroll_offsets, type: :double
       field :created_at,      type: :double
       field :modified_at,     type: :double
       field :start_date,      type: :double
       field :end_date,        type: :double
-      array :taxonomies,      type: :string, index: :not_analyzed
       field :is_deleted,      type: :boolean
       field :is_locked,       type: :boolean
+      field :source_id,       type: :string, index: :not_analyzed
 
       object :image do
         field :url, type: :string, index: :not_analyzed
@@ -33,7 +38,7 @@ module Mes
         field :created_at,          type: :double
         field :modified_at,         type: :double
         field :version,             type: :float
-        field :status,              type: :string, index: :not_analyzed # %i(NOT_READY READY)
+        field :status,              type: :string, index: :not_analyzed # %i(NOT_READY READY) # TODO remove, not used
         field :type,                type: :string, index: :not_analyzed # %i(SYNDICATION MDS_PROFILE)
         field :id,                  type: :string, index: :not_analyzed
         field :tenant_id,           type: :string, index: :not_analyzed
