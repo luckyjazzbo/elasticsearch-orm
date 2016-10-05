@@ -7,14 +7,40 @@ describe Mes::Elastic::BoolGroup do
     end
   end
 
-  describe '#query' do
+  describe '#raw' do
     let(:query) { double }
     let(:query2) { double }
 
     it 'appends the whole query to the list' do
-      subject.query(query)
-      subject.query(query2)
+      subject.raw(query)
+      subject.raw(query2)
       expect(subject.queries).to eq([query, query2])
+    end
+  end
+
+  describe '#match' do
+    it 'appends the whole query to the list' do
+      subject.match(:foo, '1')
+      subject.match(:bar, '2')
+      expect(subject.queries).to eq(
+        [
+          { match: { foo: '1' } },
+          { match: { bar: '2' } }
+        ]
+      )
+    end
+  end
+
+  describe '#terms' do
+    it 'appends the whole query to the list' do
+      subject.terms(:foo, 1)
+      subject.terms(:bar, [2])
+      expect(subject.queries).to eq(
+        [
+          { terms: { foo: [1] } },
+          { terms: { bar: [2] } }
+        ]
+      )
     end
   end
 

@@ -1,19 +1,5 @@
 require 'spec_helper'
 
-RSpec.shared_examples 'chainable query' do
-  it 'returns same object' do
-    expect(subject.class).to be described_class
-  end
-
-  it 'returns different query object' do
-    expect(subject).not_to be query
-  end
-
-  it 'does not change initial query object' do
-    expect { subject }.not_to change { query.body }
-  end
-end
-
 describe Mes::Elastic::Query do
   include_context 'with test indices'
 
@@ -37,24 +23,6 @@ describe Mes::Elastic::Query do
       it 'sets default body' do
         expect(query.body).to eq(query_body)
       end
-    end
-  end
-
-  describe '#match' do
-    subject { query.match _id: '123' }
-    it_behaves_like 'chainable query'
-
-    it 'appends match expression to query' do
-      expect(subject.body).to eq(body_with_id_query)
-    end
-  end
-
-  describe '#all' do
-    subject { query.all }
-    it_behaves_like 'chainable query'
-
-    it 'appends matchAll expression to query' do
-      expect(subject.body).to eq({ query: { matchAll: {} } })
     end
   end
 
@@ -112,7 +80,7 @@ describe Mes::Elastic::Query do
       it_behaves_like 'chainable query'
 
       it 'appends matchAll expression to query' do
-        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { 'order' => 'asc' } }] })
+        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { order: 'asc' } }] })
       end
     end
 
@@ -121,7 +89,7 @@ describe Mes::Elastic::Query do
       it_behaves_like 'chainable query'
 
       it 'appends matchAll expression to query' do
-        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { 'order' => 'desc' } }] })
+        expect(subject.body).to eq({ query: {}, sort: [{ 'val' => { order: 'desc' } }] })
       end
     end
 
@@ -131,15 +99,15 @@ describe Mes::Elastic::Query do
 
       it 'appends matchAll expression to query' do
         expect(subject.body).to eq({ query: {}, sort: [
-          { 'val' => { 'order' => 'desc' } },
-          { 'val2' => { 'order' => 'asc' } }
+          { 'val' => { order: 'desc' } },
+          { 'val2' => { order: 'asc' } }
         ] })
       end
     end
   end
 
   describe '#execute' do
-    subject { query.match(_id: '123').execute }
+    subject { query.tap { |q| q.body = body_with_id_query }.execute }
 
     let(:mocked_response) { double }
     let(:elastic_response) { double }

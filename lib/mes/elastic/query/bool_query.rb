@@ -1,5 +1,3 @@
-require_relative 'bool_group'
-
 module Mes
   module Elastic
     class BoolQuery < Query
@@ -17,13 +15,13 @@ module Mes
 
       protected
 
-      def add_group(type)
+      def add_group(filter_type)
         group = BoolGroup.new
         yield group
 
         body[:query][:bool] ||= {}
-        body[:query][:bool][type] ||= []
-        body[:query][:bool][type] += group.queries
+        body[:query][:bool][filter_type] ||= []
+        body[:query][:bool][filter_type] += group.queries
 
         self
       end

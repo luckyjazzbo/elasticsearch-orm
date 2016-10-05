@@ -12,8 +12,8 @@ describe Mes::Elastic::BoolQuery do
 
       it 'appends expressions to must' do
         query = subject.send(filter_type) do |filter|
-          filter.query(query_1)
-          filter.query(query_2)
+          filter.raw(query_1)
+          filter.raw(query_2)
         end
 
         expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
@@ -21,8 +21,8 @@ describe Mes::Elastic::BoolQuery do
 
       it 'does not rewrite existing filters' do
         query = subject
-                .send(filter_type) { |filter| filter.query(query_1) }
-                .send(filter_type) { |filter| filter.query(query_2) }
+                .send(filter_type) { |filter| filter.raw(query_1) }
+                .send(filter_type) { |filter| filter.raw(query_2) }
 
         expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
       end
@@ -45,7 +45,7 @@ describe Mes::Elastic::BoolQuery do
       described_class
         .new(test_model)
         .must do |filter|
-          filter.query(query: { term: { title: 'foo' } })
+          filter.raw(query: { term: { title: 'foo' } })
           filter.range(:start_date, gt: 15)
         end
     end
