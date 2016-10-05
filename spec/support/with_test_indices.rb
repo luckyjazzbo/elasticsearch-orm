@@ -51,8 +51,9 @@ RSpec.shared_context 'with test indices' do
     create_test_index
   end
 
-  def index_test_document
-    test_client.index(index: test_index, type: test_type, id: test_document_id, body: { name: 'test' })
+  def index_test_document(overrides = {})
+    default_args = { index: test_index, type: test_type, id: test_document_id, body: { name: 'test' } }
+    test_client.index(default_args.merge(overrides))
   end
 
   def count_test_documents

@@ -144,7 +144,7 @@ describe Mes::Elastic::Query do
     let(:mocked_response) { double }
     let(:elastic_response) { double }
 
-    it 'runs the correct query via model\'s client and covers it with Response class' do
+    it "runs the correct query via model's client and covers it with Response class" do
       expect(test_model.client)
         .to receive(:search)
         .with(index: test_model.index, type: test_model.type, body: body_with_id_query)

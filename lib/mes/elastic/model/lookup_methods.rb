@@ -1,5 +1,6 @@
 require 'elasticsearch'
 require_relative '../query'
+require_relative '../bool_query'
 
 module Mes
   module Elastic
@@ -19,7 +20,12 @@ module Mes
           Query.new(self, body: body)
         end
 
-        delegate :all, to: :query
+        def bool_query
+          BoolQuery.new(self)
+        end
+
+        delegate :all, :match, to: :query
+        delegate :must, :must_not, :should, to: :bool_query
       end
     end
   end
