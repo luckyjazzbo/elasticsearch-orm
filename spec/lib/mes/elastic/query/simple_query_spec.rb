@@ -38,6 +38,14 @@ describe Mes::Elastic::SimpleQuery do
         expect(subject.body).to eq(query: { terms: { _id: ['123'] } })
       end
     end
+
+    context 'when nil' do
+      subject { query.terms :_id, nil }
+
+      it 'appends match expression to query' do
+        expect(subject.body).to eq(query: { missing: { field: :_id } })
+      end
+    end
   end
 
   describe '#must' do

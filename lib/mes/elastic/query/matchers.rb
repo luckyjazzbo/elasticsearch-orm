@@ -12,6 +12,8 @@ module Mes
       def terms(field, values)
         if values.respond_to?(:each)
           add_matcher(terms: { field => Array(values) })
+        elsif values.nil?
+          add_matcher(missing: { field: field })
         else
           add_matcher(term: { field => values })
         end

@@ -30,8 +30,8 @@ describe Mes::Elastic::Model do
           bool: {
             must: [
               { query: { 'terms' => { '_id' => ['1', '2', '3'] } } },
-              { bool: { should: [{ range: { date: { gt: 123 } } }, { term: { date: nil } }], minimum_should_match: 1 } },
-              { bool: { should: [{ range: { :'license.date' => { gt: 123 } } }, { term: { :'license.date' => nil } }], minimum_should_match: 1 } }
+              { bool: { should: [{ range: { date: { gt: 123 } } }, { missing: { field: :date } }], minimum_should_match: 1 } },
+              { bool: { should: [{ range: { :'license.date' => { gt: 123 } } }, { missing: { field: :'license.date' } }], minimum_should_match: 1 } }
             ]
           }
         },
