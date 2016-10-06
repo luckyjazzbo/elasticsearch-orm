@@ -30,8 +30,9 @@ module Mes
       end
 
       def to_bool_query(filter_type, &block)
+        matching = body_matching_part
         BoolQuery.new(model).tap do |query|
-          query.must { |filter| filter.raw(body_matching_part) }
+          query.must { raw(matching) }
           query.body.merge!(body_arranging_part)
           query.send(filter_type, &block)
         end

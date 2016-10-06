@@ -27,7 +27,7 @@ describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { terms: { _id: ['123'] } })
+        expect(subject.body).to eq(query: { term: { _id: '123' } })
       end
     end
 
@@ -46,7 +46,7 @@ describe Mes::Elastic::SimpleQuery do
         .match(:_id, '123')
         .order('_id desc')
         .limit(1)
-        .must { |filter| filter.range(:start_date, 321) }
+        .must { range(:start_date, 321) }
     end
 
     it 'transforms to BoolQuery' do
@@ -75,7 +75,7 @@ describe Mes::Elastic::SimpleQuery do
         .match(:_id, '123')
         .order('_id desc')
         .limit(1)
-        .must_not { |filter| filter.range(:start_date, 321) }
+        .must_not { range(:start_date, 321) }
     end
 
     it 'transforms to BoolQuery' do

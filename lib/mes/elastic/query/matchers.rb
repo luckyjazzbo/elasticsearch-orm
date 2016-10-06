@@ -10,7 +10,11 @@ module Mes
       end
 
       def terms(field, values)
-        add_matcher(terms: { field => Array(values) })
+        if values.respond_to?(:each)
+          add_matcher(terms: { field => Array(values) })
+        else
+          add_matcher(term: { field => values })
+        end
       end
 
       def range(field, filter)

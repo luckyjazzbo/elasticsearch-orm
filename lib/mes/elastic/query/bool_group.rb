@@ -13,6 +13,18 @@ module Mes
         queries << query
       end
 
+      def any(&block)
+        group = BoolGroup.new
+        group.instance_eval(&block)
+
+        queries << {
+          bool: {
+            should: group.queries,
+            minimum_should_match: 1
+          }
+        }
+      end
+
       private
 
       def add_matcher(query)

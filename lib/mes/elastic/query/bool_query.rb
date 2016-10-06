@@ -15,9 +15,9 @@ module Mes
 
       protected
 
-      def add_group(filter_type)
+      def add_group(filter_type, &block)
         group = BoolGroup.new
-        yield group
+        group.instance_eval(&block)
 
         body[:query][:bool] ||= {}
         body[:query][:bool][filter_type] ||= []
