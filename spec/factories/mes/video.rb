@@ -5,6 +5,8 @@ FactoryGirl.define do
     clip_duration     100
     descriptions      { { 'en' => 'Awesome video', 'de' => 'Großartiges video' } }
     midroll_offsets   [12.34, 44]
+    start_date        nil
+    end_date          nil
     created_at        { Time.now.to_i }
     modified_at       { Time.now.to_i }
     taxonomies        ['tx-123']
@@ -39,6 +41,28 @@ FactoryGirl.define do
       'display_name' => 'Awesome TV',
       'link_url'     => 'http://url.to/homepage.de',
       'image'        => { 'url' => 'http://url.to/poster.jpg' }
+    )
+
+    license_profile(
+      'id'                  => 'lp-bunte',
+      'created_at'          => Time.now.to_i,
+      'modified_at'         => Time.now.to_i,
+      'version'             => 1,
+      'type'                => 'SYNDICATION',
+      'name'                => 'bunte',
+      'name_short'          => 'bunte',
+      'start_date'          => nil,
+      'end_date'            => nil,
+      'products'            => [],
+      'sales_houses'        => [],
+      'geo_locations'       => ['de'],
+      'device_classes'      => ['BROWSER'],
+      'bandwidth_max'       => { 'BROWSER' => 1024 },
+      'max_resolution'      => '1024x768',
+      'publisher_whitelist' => [],
+      'publisher_blacklist' => [],
+      'drm'                 => true,
+      'entitlement'         => true
     )
   end
 end
