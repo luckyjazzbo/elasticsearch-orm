@@ -12,6 +12,7 @@ FactoryGirl.define do
     taxonomies        ['tx-123']
     is_locked         { false }
     is_deleted        { false }
+    product_placement { true }
 
     image(
       'url' => 'http://url.to/poster.jpg'
