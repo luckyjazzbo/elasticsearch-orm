@@ -20,14 +20,15 @@ module Eva
       array :keywords,        type: :string, index: :not_analyzed
       array :midroll_offsets, type: :double
 
-      field :clip_duration,   type: :double
-      field :tenant_id,       type: :string, index: :not_analyzed
-      field :created_at,      type: :double
-      field :modified_at,     type: :double
-      field :start_date,      type: :double
-      field :end_date,        type: :double
-      field :is_locked,       type: :boolean
-      field :source_id,       type: :string, index: :not_analyzed
+      field :clip_duration,     type: :double
+      field :tenant_id,         type: :string, index: :not_analyzed
+      field :created_at,        type: :double
+      field :modified_at,       type: :double
+      field :start_date,        type: :double
+      field :end_date,          type: :double
+      field :is_locked,         type: :boolean
+      field :product_placement, type: :boolean
+      field :source_id,         type: :string, index: :not_analyzed
 
       object :image do
         field :url, type: :string, index: :not_analyzed
