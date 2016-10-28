@@ -21,6 +21,10 @@ module Mes
         to_bool_query(:should, &block)
       end
 
+      def filter(&block)
+        to_bool_query(:filter, &block)
+      end
+
       private
 
       def add_query(query_body)
