@@ -62,6 +62,16 @@ module Mes
 
       protected
 
+      def query_scope
+        body[:query][:filtered] ||= { query: {} }
+        body[:query][:filtered][:query]
+      end
+
+      def filter_scope
+        body[:query][:filtered] ||= { filter: {} }
+        body[:query][:filtered][:filter]
+      end
+
       def default_body
         { query: {} }
       end

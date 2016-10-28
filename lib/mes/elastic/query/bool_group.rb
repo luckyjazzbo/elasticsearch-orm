@@ -27,9 +27,11 @@ module Mes
 
       private
 
-      def add_matcher(query)
+      def add_query(query)
         raw(query)
       end
+
+      alias_method :add_filter, :add_query
     end
   end
 end

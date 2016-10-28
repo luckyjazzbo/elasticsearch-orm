@@ -3,28 +3,32 @@ module Mes
     module Matchers
       def match(field, value = nil)
         if field.is_a?(Hash)
-          add_matcher(match: field)
+          add_query(match: field)
         else
-          add_matcher(match: { field => value })
+          add_query(match: { field => value })
         end
       end
 
       def terms(field, values)
         if values.respond_to?(:each)
-          add_matcher(terms: { field => Array(values) })
+          add_filter(terms: { field => Array(values) })
         elsif values.nil?
-          add_matcher(missing: { field: field })
+          add_filter(missing: { field: field })
         else
-          add_matcher(term: { field => values })
+          add_filter(term: { field => values })
         end
       end
 
       def range(field, filter)
-        add_matcher(range: { field => filter })
+        add_filter(range: { field => filter })
       end
 
-      def add_matcher(query)
-        raise NotImplementedError, 'add_matcher must be implemented in children'
+      def add_query(query)
+        raise NotImplementedError, 'add_query must be implemented in children'
+      end
+
+      def add_filter(query)
+        raise NotImplementedError, 'add_filter must be implemented in children'
       end
     end
   end

@@ -32,8 +32,10 @@ module Mes
           BoolQuery.new(self)
         end
 
-        delegate :all, :match, to: :simple_query
-        delegate :must, :must_not, :should, to: :bool_query
+        delegate :all, :match, :terms, :range,
+                 to: :simple_query
+        delegate :must, :must_not, :should, :filter,
+                 to: :bool_query
       end
     end
   end

@@ -5,7 +5,7 @@ module Mes
 
       def all
         copy.tap do |query|
-          query.body[:query][:matchAll] = {}
+          query.query_scope[:match_all] = {}
         end
       end
 
@@ -23,9 +23,15 @@ module Mes
 
       private
 
-      def add_matcher(query_body)
+      def add_query(query_body)
         copy.tap do |query|
-          query.body[:query].deep_merge!(query_body)
+          query.query_scope.deep_merge!(query_body)
+        end
+      end
+
+      def add_filter(query_body)
+        copy.tap do |query|
+          query.filter_scope.deep_merge!(query_body)
         end
       end
 

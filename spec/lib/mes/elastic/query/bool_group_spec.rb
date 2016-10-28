@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Mes::Elastic::BoolGroup do
+RSpec.describe Mes::Elastic::BoolGroup do
   describe '#queries' do
     it 'empty by default' do
       expect(subject.queries).to eq([])

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Mes::Elastic::Query do
+RSpec.describe Mes::Elastic::Query do
   include_context 'with test indices'
 
   let(:default_query_body) { { query: {} } }

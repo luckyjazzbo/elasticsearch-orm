@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Mes::Elastic::Response do
+RSpec.describe Mes::Elastic::Response do
   include_context 'with test indices'
 
   before do

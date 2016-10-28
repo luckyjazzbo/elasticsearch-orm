@@ -13,6 +13,10 @@ module Mes
         add_group(:should, &block)
       end
 
+      def filter(&block)
+        add_group(:filter, &block)
+      end
+
       protected
 
       def add_group(filter_type, &block)

@@ -1,4 +1,6 @@
-describe Mes::Elastic::SimpleQuery do
+require 'spec_helper'
+
+RSpec.describe Mes::Elastic::SimpleQuery do
   include_context 'with test indices'
 
   subject(:query) { described_class.new(test_model) }
@@ -8,7 +10,7 @@ describe Mes::Elastic::SimpleQuery do
     it_behaves_like 'chainable query'
 
     it 'appends matchAll expression to query' do
-      expect(subject.body).to eq(query: { matchAll: {} })
+      expect(subject.body).to eq(query: { filtered: { query: { match_all: {} } } })
     end
   end
 
@@ -17,7 +19,7 @@ describe Mes::Elastic::SimpleQuery do
     it_behaves_like 'chainable query'
 
     it 'appends match expression to query' do
-      expect(subject.body).to eq(query: { match: { _id: '123' } })
+      expect(subject.body).to eq(query: { filtered: { query: { match: { _id: '123' } } } })
     end
   end
 
@@ -27,7 +29,7 @@ describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { term: { _id: '123' } })
+        expect(subject.body).to eq(query: { filtered: { filter: { term: { _id: '123' } } } })
       end
     end
 
@@ -35,7 +37,7 @@ describe Mes::Elastic::SimpleQuery do
       subject { query.terms :_id, ['123'] }
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { terms: { _id: ['123'] } })
+        expect(subject.body).to eq(query: { filtered: { filter: { terms: { _id: ['123'] } } } })
       end
     end
 
@@ -43,7 +45,7 @@ describe Mes::Elastic::SimpleQuery do
       subject { query.terms :_id, nil }
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { missing: { field: :_id } })
+        expect(subject.body).to eq(query: { filtered: { filter: { missing: { field: :_id } } } })
       end
     end
   end
@@ -66,7 +68,7 @@ describe Mes::Elastic::SimpleQuery do
         query: {
           bool: {
             must: [
-              { query: { match: { _id: '123' } } },
+              { query: { filtered: { query: { match: { _id: '123' } } } } },
               { range: { start_date: 321 } }
             ]
           }
@@ -95,7 +97,7 @@ describe Mes::Elastic::SimpleQuery do
         query: {
           bool: {
             must: [
-              { query: { match: { _id: '123' } } }
+              { query: { filtered: { query: { match: { _id: '123' } } } } }
             ],
             must_not: [
               { range: { start_date: 321 } }
