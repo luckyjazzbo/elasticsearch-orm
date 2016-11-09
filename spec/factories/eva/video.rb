@@ -10,7 +10,7 @@ FactoryGirl.define do
     created_at        { Time.now.to_i }
     modified_at       { Time.now.to_i }
     taxonomies        ['tx-123']
-    is_locked         { false }
+    deactivated_status { nil }
     product_placement { false }
 
     image(
