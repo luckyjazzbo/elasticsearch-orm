@@ -13,7 +13,7 @@ module ElasticIndexHelpers
       rescue ::Elasticsearch::Transport::Transport::Errors::ServiceUnavailable
         # do nothing, lets try one more time
       end
-      sleep 0.1
+      sleep 0.5
     end
   end
 
