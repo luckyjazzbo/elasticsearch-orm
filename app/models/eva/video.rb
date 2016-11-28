@@ -90,7 +90,7 @@ module Eva
         field :id,                  type: :string, index: :not_analyzed
         field :parent_id,           type: :string, index: :not_analyzed
         field :type_id,             type: :string, index: :not_analyzed
-        field :image,               type: :string, index: :not_analyzed
+        field :image_id,            type: :string, index: :not_analyzed
 
         object :title do
           LANGS.each do |lang|
