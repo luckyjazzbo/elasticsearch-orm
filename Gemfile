@@ -4,14 +4,14 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem 'dotenv', '2.1.1'
-  gem 'pronto', '0.7.1'
-  gem 'pronto-rubocop', '0.7.0'
-  gem 'pronto-reek', '0.7.1'
-  gem 'guard-rspec', '4.7.3'
-  gem 'terminal-notifier-guard', '1.7.0', require: false
+  gem 'dotenv'
+  gem 'pronto'
+  gem 'pronto-rubocop'
+  gem 'pronto-reek'
+  gem 'guard-rspec'
+  gem 'terminal-notifier-guard'
 end
 
 group :test do
-  gem 'webmock', '2.1.0'
+  gem 'webmock', '2.1'
 end
