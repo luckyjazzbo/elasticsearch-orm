@@ -27,7 +27,8 @@ module Mes
       field :start_date,        type: :double
       field :end_date,          type: :double
       field :is_deleted,        type: :boolean
-      field :deactivated_status, type: :string, index: :not_analyzed
+      field :is_locked,         type: :boolean
+      field :internal_status,   type: :string, index: :not_analyzed
       field :product_placement, type: :boolean
       field :source_id,         type: :string, index: :not_analyzed
 
