@@ -16,7 +16,6 @@ module Eva
       end
 
       array :geo_locations,   type: :string, index: :not_analyzed
-      array :taxonomies,      type: :string, index: :not_analyzed
       array :keywords,        type: :string, index: :not_analyzed
       array :midroll_offsets, type: :double
 
@@ -84,6 +83,19 @@ module Eva
 
         object :image do
           field :url, type: :string, index: :not_analyzed
+        end
+      end
+
+      array :taxonomies, type: :object do
+        field :id,                  type: :string, index: :not_analyzed
+        field :parent_id,           type: :string, index: :not_analyzed
+        field :type_id,             type: :string, index: :not_analyzed
+        field :image_id,            type: :string, index: :not_analyzed
+
+        object :title do
+          LANGS.each do |lang|
+            field lang, type: :string, analyzer: :autocomplete
+          end
         end
       end
 

@@ -9,7 +9,6 @@ FactoryGirl.define do
     end_date          nil
     created_at        { Time.now.to_i }
     modified_at       { Time.now.to_i }
-    taxonomies        ['tx-123']
     internal_status { nil }
     product_placement { false }
 
@@ -63,5 +62,43 @@ FactoryGirl.define do
       'drm'                 => true,
       'entitlement'         => true
     )
+
+    taxonomies([
+      {
+        'id' => 'tx-123',
+        'type_id' => 'tx-abcd',
+        'title' => {
+          'en' => 'Lifestyle & Docutainment',
+          'default' => 'Lifestyle & Docutainment'
+        }
+      },
+      {
+        'id' => 'tx-456',
+        'type_id' => 'tx-efgh',
+        'title' => {
+          'en' => 'Clip',
+          'default' => 'Clip'
+        }
+      }
+    ])
+
+    taxonomy_objects([
+      {
+        'id' => 'tx-123',
+        'type_id' => 'tx-abcd',
+        'title' => {
+          'en' => 'Lifestyle & Docutainment',
+          'default' => 'Lifestyle & Docutainment'
+        }
+      },
+      {
+        'id' => 'tx-456',
+        'type_id' => 'tx-efgh',
+        'title' => {
+          'en' => 'Clip',
+          'default' => 'Clip'
+        }
+      }
+    ])
   end
 end
