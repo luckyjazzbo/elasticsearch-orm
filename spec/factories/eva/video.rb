@@ -81,24 +81,5 @@ FactoryGirl.define do
         }
       }
     ])
-
-    taxonomy_objects([
-      {
-        'id' => 'tx-123',
-        'type_id' => 'tx-abcd',
-        'title' => {
-          'en' => 'Lifestyle & Docutainment',
-          'default' => 'Lifestyle & Docutainment'
-        }
-      },
-      {
-        'id' => 'tx-456',
-        'type_id' => 'tx-efgh',
-        'title' => {
-          'en' => 'Clip',
-          'default' => 'Clip'
-        }
-      }
-    ])
   end
 end

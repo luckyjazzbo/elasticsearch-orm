@@ -98,19 +98,6 @@ module Eva
           end
         end
       end
-
-      array :taxonomy_objects, type: :object do
-        field :id,                  type: :string, index: :not_analyzed
-        field :parent_id,           type: :string, index: :not_analyzed
-        field :type_id,             type: :string, index: :not_analyzed
-        field :image_id,            type: :string, index: :not_analyzed
-
-        object :title do
-          LANGS.each do |lang|
-            field lang, type: :string, analyzer: :autocomplete
-          end
-        end
-      end
     end
   end
 end
