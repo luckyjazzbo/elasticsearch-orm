@@ -58,7 +58,7 @@ RSpec.describe Mes::Elastic::Response do
 
   it 'silently ignores fields without mapping' do
     mocked_response['hits']['hits'][0]['_source'].merge!('foo' => 'Bar')
-    expect { response.first }.not_to raise_error Mes::Elastic::Model::UnpermittedAttributeError
+    expect { response.first }.not_to raise_error
   end
 
   describe '#total_count' do

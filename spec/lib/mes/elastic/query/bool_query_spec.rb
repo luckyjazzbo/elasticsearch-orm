@@ -32,6 +32,14 @@ RSpec.describe Mes::Elastic::BoolQuery do
 
         expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
       end
+
+      it 'have access to global variables' do
+        query = subject
+                .send(filter_type) { |query| query.raw(query_1) }
+                .send(filter_type) { |query| query.raw(query_2) }
+
+        expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
+      end
     end
   end
 

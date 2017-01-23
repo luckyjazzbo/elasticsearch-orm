@@ -21,7 +21,12 @@ module Mes
 
       def add_group(filter_type, &block)
         group = BoolGroup.new
-        group.instance_eval(&block)
+
+        if block.arity == 1
+          block.call(group)
+        else
+          group.instance_eval(&block)
+        end
 
         body[:query][:bool] ||= {}
         body[:query][:bool][filter_type] ||= []

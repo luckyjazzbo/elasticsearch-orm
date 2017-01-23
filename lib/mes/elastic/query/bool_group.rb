@@ -15,7 +15,12 @@ module Mes
 
       def any(&block)
         group = BoolGroup.new
-        group.instance_eval(&block)
+
+        if block.arity == 1
+          block.call(group)
+        else
+          group.instance_eval(&block)
+        end
 
         queries << {
           bool: {

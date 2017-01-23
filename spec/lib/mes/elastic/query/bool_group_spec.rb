@@ -58,24 +58,75 @@ RSpec.describe Mes::Elastic::BoolGroup do
   end
 
   describe '#any' do
-    it 'appends the query to the list' do
-      subject.any do
-        range(:foo, gt: 1)
-        range(:bar, lte: 2)
-      end
-      expect(subject.queries).to eq(
-        [
-          {
-            bool: {
-              should: [
-                { range: { foo: { gt: 1 } } },
-                { range: { bar: { lte: 2 } } }
-              ],
-              minimum_should_match: 1
+    context 'when only constants used in block' do
+      it 'appends the query to the list' do
+        subject.any do
+          range(:foo, gt: 1)
+          range(:bar, lte: 2)
+        end
+        expect(subject.queries).to eq(
+          [
+            {
+              bool: {
+                should: [
+                  { range: { foo: { gt: 1 } } },
+                  { range: { bar: { lte: 2 } } }
+                ],
+                minimum_should_match: 1
+              }
             }
-          }
-        ]
-      )
+          ]
+        )
+      end
+    end
+
+    context 'when variables used in block' do
+      subject do
+        Class.new do
+          attr_reader :group_klass
+
+          def initialize(group_klass)
+            @group_klass = group_klass
+          end
+
+          def kabala
+            group.any do |query|
+              query.range(:foo, gt: one)
+              query.range(:bar, lte: two)
+            end
+
+            group
+          end
+
+          def one
+            1
+          end
+
+          def two
+            2
+          end
+
+          def group
+            @group ||= group_klass.new
+          end
+        end.new(described_class).kabala
+      end
+
+      it 'appends the query to the list' do
+        expect(subject.queries).to eq(
+          [
+            {
+              bool: {
+                should: [
+                  { range: { foo: { gt: 1 } } },
+                  { range: { bar: { lte: 2 } } }
+                ],
+                minimum_should_match: 1
+              }
+            }
+          ]
+        )
+      end
     end
   end
 end
