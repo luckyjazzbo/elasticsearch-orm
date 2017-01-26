@@ -6,5 +6,3 @@ module Mes
     end
   end
 end
-
-Dir[File.expand_path('../*.rb', __FILE__)].each { |file| require_relative file }
