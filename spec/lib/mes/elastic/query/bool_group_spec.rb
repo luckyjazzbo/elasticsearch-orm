@@ -128,5 +128,45 @@ RSpec.describe Mes::Elastic::BoolGroup do
         )
       end
     end
+
+    context 'proxing must/must_not to BoolQuery' do
+      subject { described_class.new }
+
+      before do
+        subject.any do
+          terms :a, :b
+
+          must do
+            terms :a, :c
+            terms :b, :d
+          end
+        end
+      end
+
+      it 'adds bool groups to queries' do
+        expect(subject.queries).to eq(
+          [
+            {
+              bool: {
+                should: [
+                  {
+                    term: { a: :b }
+                  },
+                  {
+                    bool: {
+                      must: [
+                        { term: { a: :c } },
+                        { term: { b: :d } },
+                      ]
+                    }
+                  }
+                ],
+                minimum_should_match: 1
+              }
+            }
+          ]
+        )
+      end
+    end
   end
 end

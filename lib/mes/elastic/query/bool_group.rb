@@ -30,6 +30,13 @@ module Mes
         }
       end
 
+      %i(must must_not should filter).each do |method|
+        define_method(method) do |&block|
+          query = BoolQuery.new(self).public_send(method, &block)
+          queries << query.body[:query]
+        end
+      end
+
       private
 
       def add_query(query)
