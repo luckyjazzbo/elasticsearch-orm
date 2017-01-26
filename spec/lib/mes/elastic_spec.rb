@@ -13,8 +13,6 @@ describe Mes::Elastic do
 
   it 'defines EVA and MES models' do
     expect { Eva::Elastic::Resource }.not_to raise_exception
-    expect { Eva::Elastic::Video }.not_to raise_exception
     expect { Mes::Elastic::Resource }.not_to raise_exception
-    expect { Mes::Elastic::Video }.not_to raise_exception
   end
 end
