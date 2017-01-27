@@ -129,14 +129,14 @@ RSpec.describe Mes::Elastic::BoolGroup do
       end
     end
 
-    context 'proxing must/must_not to BoolQuery' do
+    describe '#all' do
       subject { described_class.new }
 
       before do
         subject.any do
           terms :a, :b
 
-          must do
+          all do
             terms :a, :c
             terms :b, :d
           end
