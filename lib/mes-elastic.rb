@@ -1,4 +1,5 @@
 require 'mes/elastic/version'
+require 'mes/elastic/utils'
 require 'mes/elastic/model'
 
 module Mes
@@ -21,8 +22,8 @@ module Mes
     end
 
     def self.app_model_names
-      return [] unless defined?(App) && App.respond_to?(:root)
-      Dir[File.join(App.root, 'app/models/mes/*.rb')]
+      return [] if Mes::Elastic::Utils.app_root.blank?
+      Dir[File.join(Mes::Elastic::Utils.app_root, 'app/models/mes/*.rb')]
     end
 
     def self.base_model_names
@@ -45,8 +46,8 @@ module Eva
     end
 
     def self.app_model_names
-      return [] unless defined?(App) && App.respond_to?(:root)
-      Dir[File.join(App.root, 'app/models/eva/*.rb')]
+      return [] if Mes::Elastic::Utils.app_root.blank?
+      Dir[File.join(Mes::Elastic::Utils.app_root, 'app/models/eva/*.rb')]
     end
 
     def self.base_model_names
