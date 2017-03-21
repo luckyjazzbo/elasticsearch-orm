@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mes-elastic (2.0.0)
+    mes-elastic (3.1.0)
       activesupport (~> 5.0, >= 5.0.0.1)
       elasticsearch (= 5.0.0)
       factory_girl (~> 4.7.0)

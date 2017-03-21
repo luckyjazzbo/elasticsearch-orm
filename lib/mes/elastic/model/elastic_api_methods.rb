@@ -33,7 +33,7 @@ module Mes
         def aws_signed_client(url)
           Elasticsearch::Client.new(url: url) do |f|
             f.request :aws_signers_v4,
-                      credentials: Aws::InstanceProfileCredentials.new.credentials,
+                      credentials: Aws::InstanceProfileCredentials.new,
                       service_name: 'es',
                       region: fetch_region_from_aws_url(url)
             f.adapter Faraday.default_adapter
