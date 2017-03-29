@@ -77,6 +77,13 @@ RSpec.describe 'CRUD actions' do
           count_test_documents
         }.from(1).to(0)
       end
+
+      it 'raises lib error when document is absent' do
+        document.delete
+        expect {
+          document.delete
+        }.to raise_error(Mes::Elastic::Model::ElasticError)
+      end
     end
 
     describe '#persisted?' do

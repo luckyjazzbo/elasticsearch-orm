@@ -62,15 +62,21 @@ module Mes
         end
 
         def index_exists?
-          client.indices.exists?(index: index)
+          with_error_convertion do
+            client.indices.exists?(index: index)
+          end
         end
 
         def create_index
-          client.indices.create(index: index, body: { settings: index_settings || {} }) unless index_exists?
+          with_error_convertion do
+            client.indices.create(index: index, body: { settings: index_settings || {} }) unless index_exists?
+          end
         end
 
         def drop_index!
-          client.indices.delete(index: index) if index_exists?
+          with_error_convertion do
+            client.indices.delete(index: index) if index_exists?
+          end
         end
 
         def purge_index!
@@ -80,26 +86,34 @@ module Mes
 
         def create_mapping
           return if multitype?
-          client.indices.put_mapping(
-            index: index, type: type, body: { type => { properties: mapping } }
-          )
+          with_error_convertion do
+            client.indices.put_mapping(
+              index: index, type: type, body: { type => { properties: mapping } }
+            )
+          end
         end
 
         def search(body)
           opts = { index: index, body: body }
           opts[:type] = type unless multitype?
-          client.search(opts)
+          with_error_convertion do
+            client.search(opts)
+          end
         end
 
         def save(attrs)
           opts = { index: index, type: type }
           opts[:id] = attrs[:id] if attrs.key? :id
           opts[:body] = attrs.except(:id)
-          client.index(opts)['_id']
+          with_error_convertion do
+            client.index(opts)['_id']
+          end
         end
 
         def delete(id)
-          client.delete(index: index, type: type, id: id)
+          with_error_convertion do
+            client.delete(index: index, type: type, id: id)
+          end
         end
 
         def delete_all
@@ -108,7 +122,9 @@ module Mes
             { "delete" => { "_index" => index, "_type" => record['_type'], "_id" => record['_id'] } }
           end
           return if bulk_queue.empty?
-          client.bulk(body: bulk_queue)
+          with_error_convertion do
+            client.bulk(body: bulk_queue)
+          end
         end
       end
     end

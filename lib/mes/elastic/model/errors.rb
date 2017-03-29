@@ -9,6 +9,21 @@ module Mes
       class SettingFieldsForModelWithoutTypeError < ElasticError; end
       class UnknownTypeError                      < ElasticError; end
       class IntatiatingModelWithoutTypeError      < ElasticError; end
+
+      def self.with_error_convertion
+        yield
+      rescue Elasticsearch::Transport::Transport::Error => e
+        raise original2lib_error(e)
+      end
+
+      def self.original2lib_error(e)
+        case e
+        when Elasticsearch::Transport::Transport::Errors::NotFound
+          RecordNotFoundError.new("#{e.class.name} - #{e.message}")
+        else
+          UnknownTypeError.new("#{e.class.name} - #{e.message}")
+        end
+      end
     end
   end
 end
