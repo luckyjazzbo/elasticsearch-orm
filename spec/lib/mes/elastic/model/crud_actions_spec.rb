@@ -82,7 +82,7 @@ RSpec.describe 'CRUD actions' do
         document.delete
         expect {
           document.delete
-        }.to raise_error(Mes::Elastic::Model::ElasticError)
+        }.to raise_error(Mes::Elastic::Model::RecordNotFoundError)
       end
     end
 
