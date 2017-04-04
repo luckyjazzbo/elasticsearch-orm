@@ -31,7 +31,12 @@ module Mes
       end
 
       def all(&block)
-        query = BoolQuery.new(self).must(&block)
+        bool { must(&block) }
+      end
+
+      def bool(&block)
+        query = BoolQuery.new(self)
+        query.instance_eval(&block)
         queries << query.body[:query]
       end
 

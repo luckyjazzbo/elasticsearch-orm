@@ -168,5 +168,45 @@ RSpec.describe Mes::Elastic::BoolGroup do
         )
       end
     end
+
+    describe '#bool' do
+      subject { described_class.new }
+
+      before do
+        subject.any do
+          terms :a, :b
+
+          bool do
+            must_not do
+              terms :c, :d
+            end
+          end
+        end
+      end
+
+      it 'adds must_not query to queries' do
+        expect(subject.queries).to eq(
+          [
+            {
+              bool: {
+                should: [
+                  {
+                    term: { a: :b }
+                  },
+                  {
+                    bool: {
+                      must_not: [
+                        { term: { c: :d } }
+                      ]
+                    }
+                  }
+                ],
+                minimum_should_match: 1
+              }
+            }
+          ]
+        )
+      end
+    end
   end
 end

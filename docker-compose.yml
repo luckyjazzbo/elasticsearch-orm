@@ -9,7 +9,7 @@ services:
       - bundle:/bundle
       - $HOME/.aws:/root/.aws:ro
     command: bundle exec rspec
-    links:
+    depends_on:
       - eva-elasticsearch
       - mes-elasticsearch
 
