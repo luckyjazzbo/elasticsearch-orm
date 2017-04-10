@@ -41,6 +41,12 @@ module Mes
         end
       end
 
+      def fields(fields)
+        copy.tap do |query|
+          query.body[:fields] = fields
+        end
+      end
+
       def execute
         Response.new(model, model.search(body))
       end
