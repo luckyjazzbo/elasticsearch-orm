@@ -41,9 +41,9 @@ module Mes
         end
       end
 
-      def fields(fields)
+      def select(fields)
         copy.tap do |query|
-          query.body[:fields] = fields
+          query.body[:_source] = fields
         end
       end
 

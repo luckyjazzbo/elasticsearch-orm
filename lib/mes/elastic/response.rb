@@ -11,13 +11,9 @@ module Mes
 
       def each
         hits.each do |hit|
-          attributes = { 'id' => hit['_id'] }
-          attributes.merge!(hit['_source']) if hit['_source']
-          attributes.merge!(fields_attributes(hit['fields'])) if hit['fields']
-
           obj = model.build(
             hit['_type'],
-            attributes,
+            { 'id' => hit['_id'] }.merge(hit['_source']),
             { ignore_mapping: true, persisted: true }
           )
           obj.persist!
@@ -35,16 +31,6 @@ module Mes
 
       def hits
         raw_data['hits']['hits']
-      end
-
-      private
-
-      def fields_attributes(fields)
-        fields.each_with_object({}) do |(k, v), attrs|
-          *path, key = k.split('.')
-          last_hash = path.inject(attrs) { |a, p| a[p] ||= {} }
-          last_hash[key] = v
-        end
       end
     end
   end

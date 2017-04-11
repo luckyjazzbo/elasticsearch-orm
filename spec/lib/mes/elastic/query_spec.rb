@@ -107,24 +107,24 @@ RSpec.describe Mes::Elastic::Query do
   end
 
   describe '#fields' do
-    subject { query.fields(['_id', 'title']) }
+    subject { query.select(['_id', 'title']) }
 
     it 'appends fields expression to body' do
       expect(subject.body).to eq(
         query: {},
-        fields: ['_id', 'title']
+        _source: ['_id', 'title']
       )
     end
 
     context 'with existing body' do
-      let(:query_body) { { query: { hello: :world }, fields: ['_id', 'other_field'] } }
+      let(:query_body) { { query: { hello: :world }, _source: ['_id', 'other_field'] } }
       let(:query) { described_class.new(test_model, body: query_body) }
-      subject { query.fields(['_id', 'title']) }
+      subject { query.select(['_id', 'title']) }
 
       it 'appends fields expression to existing ones' do
         expect(subject.body).to eq(
           query: { hello: :world },
-          fields: ['_id', 'title']
+          _source: ['_id', 'title']
         )
       end
     end
