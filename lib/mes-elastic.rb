@@ -55,3 +55,27 @@ module Eva
     end
   end
 end
+
+module ContentApi
+  module Elastic
+    Dir[File.join(Mes::Elastic::ROOT, 'app/models/content_api/*.rb')].each do |file|
+      model_class = File.basename(file, '.rb').classify
+      autoload model_class, file
+    end
+
+    def self.models
+      (base_model_names + app_model_names).map do |file|
+        "::ContentApi::Elastic::#{File.basename(file, '.rb').classify}".constantize
+      end
+    end
+
+    def self.app_model_names
+      return [] if Mes::Elastic::Utils.app_root.blank?
+      Dir[File.join(Mes::Elastic::Utils.app_root, 'app/models/content_api/*.rb')]
+    end
+
+    def self.base_model_names
+      Dir[File.join(Mes::Elastic::ROOT, 'app/models/content_api/*.rb')]
+    end
+  end
+end
