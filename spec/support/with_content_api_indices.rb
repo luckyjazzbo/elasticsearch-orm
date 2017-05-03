@@ -5,7 +5,7 @@ RSpec.shared_context 'with content api indices' do
 
   before(:all) do
     Dir[File.join(Mes::Elastic::ROOT, 'spec/factories/content_api/*.rb')].each { |file| require(file) }
-    wait_for_being_available(content_api_resource.client)
+    wait_for_being_available(::ContentApi::Elastic::Resource.client)
   end
 
   before(:each) do
