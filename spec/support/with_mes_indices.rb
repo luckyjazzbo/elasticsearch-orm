@@ -5,6 +5,7 @@ RSpec.shared_context 'with mes indices' do
 
   before(:all) do
     Dir[File.join(Mes::Elastic::ROOT, 'spec/factories/mes/*.rb')].each { |file| require(file) }
+    wait_for_being_available(mes_resource.client)
   end
 
   before(:each) do

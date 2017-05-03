@@ -3,9 +3,7 @@ module ElasticIndexHelpers
     { number_of_shards: 1, number_of_replicas: 0 }
   end
 
-  def flush_elastic_indices(client)
-    client.indices.flush
-    client.cluster.health(wait_for_status: 'yellow')
+  def wait_for_being_available(client)
     20.times do
       begin
         client.ping
@@ -15,6 +13,12 @@ module ElasticIndexHelpers
       end
       sleep 0.5
     end
+  end
+
+  def flush_elastic_indices(client)
+    client.indices.flush
+    client.cluster.health(wait_for_status: 'yellow')
+    wait_for_being_available(client)
   end
 
   def recursive_stringify_mapping(mapping)

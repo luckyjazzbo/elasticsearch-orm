@@ -5,6 +5,7 @@ RSpec.shared_context 'with eva indices' do
 
   before(:all) do
     Dir[File.join(Mes::Elastic::ROOT, 'spec/factories/eva/*.rb')].each { |file| require(file) }
+    wait_for_being_available(eva_resource.client)
   end
 
   before(:each) do

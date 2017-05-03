@@ -5,6 +5,7 @@ RSpec.shared_context 'with content api indices' do
 
   before(:all) do
     Dir[File.join(Mes::Elastic::ROOT, 'spec/factories/content_api/*.rb')].each { |file| require(file) }
+    wait_for_being_available(content_api_resource.client)
   end
 
   before(:each) do
@@ -14,10 +15,10 @@ RSpec.shared_context 'with content api indices' do
       ::Mes::Elastic.models.each(&:create_mapping)
     end
     content_api_resource.delete_all
-    flush_mes_indices
+    flush_content_api_indices
   end
 
-  def flush_mes_indices
+  def flush_content_api_indices
     flush_elastic_indices(content_api_resource.client)
   end
 end
