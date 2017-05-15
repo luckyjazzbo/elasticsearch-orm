@@ -10,6 +10,7 @@ services:
     links:
       - eva-elasticsearch
       - mes-elasticsearch
+      - content-api-elasticsearch
 
   eva-elasticsearch:
     command: -Des.cluster.name="eva"
@@ -19,6 +20,12 @@ services:
 
   mes-elasticsearch:
     command: -Des.cluster.name="mes"
+    image: elasticsearch:2.3
+    ports:
+      - 9200
+
+  content-api-elasticsearch:
+    command: -Des.cluster.name="content-api"
     image: elasticsearch:2.3
     ports:
       - 9200

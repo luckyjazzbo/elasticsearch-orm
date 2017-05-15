@@ -9,7 +9,8 @@ require 'webmock/rspec'
 WebMock.disable_net_connect!(
   allow: [
     ENV['EVA_ELASTICSEARCH_URL'],
-    ENV['MES_ELASTICSEARCH_URL']
+    ENV['MES_ELASTICSEARCH_URL'],
+    ENV['CONTENT_API_ELASTICSEARCH_URL'],
   ]
 )
 
