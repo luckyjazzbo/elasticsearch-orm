@@ -12,7 +12,7 @@ RSpec.shared_context 'with content api indices' do
     content_api_resource.config(index_settings: index_settings_for_one_shard)
     unless content_api_resource.index_exists?
       content_api_resource.create_index
-      ::Mes::Elastic.models.each(&:create_mapping)
+      ::ContentApi::Elastic.models.each(&:create_mapping)
     end
     content_api_resource.delete_all
     flush_content_api_indices

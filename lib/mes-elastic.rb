@@ -17,7 +17,8 @@ module Mes
 
     def self.models
       (base_model_names + app_model_names).map do |file|
-        "::Mes::Elastic::#{File.basename(file, '.rb').classify}".constantize
+        "::Mes::#{File.basename(file, '.rb').classify}".safe_constantize ||
+          "::Mes::Elastic::#{File.basename(file, '.rb').classify}".constantize
       end
     end
 
@@ -41,7 +42,8 @@ module Eva
 
     def self.models
       (base_model_names + app_model_names).map do |file|
-        "::Eva::Elastic::#{File.basename(file, '.rb').classify}".constantize
+        "::Eva::#{File.basename(file, '.rb').classify}".safe_constantize ||
+          "::Eva::Elastic::#{File.basename(file, '.rb').classify}".constantize
       end
     end
 
@@ -65,7 +67,8 @@ module ContentApi
 
     def self.models
       (base_model_names + app_model_names).map do |file|
-        "::ContentApi::Elastic::#{File.basename(file, '.rb').classify}".constantize
+        "::ContentApi::#{File.basename(file, '.rb').classify}".safe_constantize ||
+          "::ContentApi::Elastic::#{File.basename(file, '.rb').classify}".constantize
       end
     end
 
