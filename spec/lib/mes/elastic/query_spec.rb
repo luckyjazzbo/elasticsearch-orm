@@ -51,8 +51,20 @@ RSpec.describe Mes::Elastic::Query do
     end
 
     it 'runs query and returns total_count' do
+      expect(elastic_response).to receive(:count).and_return 2
+      expect(query.count).to eq 2
+    end
+  end
+
+  describe '#total_count' do
+    let(:elastic_response) { double }
+    before do
+      expect(query).to receive(:execute).and_return elastic_response
+    end
+
+    it 'runs query and returns total_count' do
       expect(elastic_response).to receive(:total_count).and_return 78
-      expect(query.count).to eq 78
+      expect(query.total_count).to eq 78
     end
   end
 

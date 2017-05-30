@@ -48,7 +48,7 @@ module Mes
       end
 
       def execute
-        Response.new(model, model.search(body))
+        @response ||= Response.new(model, model.search(body))
       end
 
       def copy
@@ -58,8 +58,12 @@ module Mes
         end
       end
 
-      def count
+      def total_count
         execute.total_count
+      end
+
+      def count
+        execute.count
       end
 
       def each(&block)

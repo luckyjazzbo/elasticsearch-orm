@@ -21,6 +21,10 @@ module Mes
         end
       end
 
+      def count
+        hits.count
+      end
+
       def total_count
         raw_data['hits']['total']
       end
