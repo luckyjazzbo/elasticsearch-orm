@@ -3,7 +3,7 @@ module Mes
     class BoolQuery < Query
       def find(id)
         response = must { ids(id) }.execute
-        raise RecordNotFoundError if response.empty?
+        raise Model::RecordNotFoundError if response.empty?
         response.first
       end
 

@@ -106,14 +106,28 @@ RSpec.describe Mes::Elastic::BoolQuery do
       test_elastic_flush
     end
 
-    subject do
-      test_model
-        .terms('taxonomy', 't1')
-        .find('d2')
+    context 'in query scope' do
+      subject do
+        test_model
+          .terms('taxonomy', 't1')
+          .find('d2')
+      end
+
+      it 'returns correct object' do
+        expect(subject.id).to eq('d2')
+      end
     end
 
-    it 'returns correct object' do
-      expect(subject.id).to eq('d2')
+    context 'not in query scope' do
+      subject do
+        test_model
+          .terms('taxonomy', 't2')
+          .find('d2')
+      end
+
+      it 'raises error' do
+        expect { subject }.to raise_error(Mes::Elastic::Model::RecordNotFoundError)
+      end
     end
   end
 end
