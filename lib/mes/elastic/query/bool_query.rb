@@ -2,7 +2,7 @@ module Mes
   module Elastic
     class BoolQuery < Query
       def find(id)
-        response = filter { ids(id) }.execute
+        response = must { ids(id) }.execute
         raise RecordNotFoundError if response.empty?
         response.first
       end
