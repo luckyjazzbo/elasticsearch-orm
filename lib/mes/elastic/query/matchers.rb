@@ -1,6 +1,10 @@
 module Mes
   module Elastic
     module Matchers
+      def ids(ids)
+        add_query(ids: { values: Array(ids) })
+      end
+
       def match(field, value = nil)
         if field.is_a?(Hash)
           add_query(match: field)

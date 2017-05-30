@@ -23,6 +23,26 @@ RSpec.describe Mes::Elastic::SimpleQuery do
     end
   end
 
+  describe '#ids' do
+    context 'when a value' do
+      subject { query.ids '123' }
+      it_behaves_like 'chainable query'
+
+      it 'appends match expression to query' do
+        expect(subject.body).to eq(query: { filtered: { query: { ids: { values: ['123'] } } } })
+      end
+    end
+
+    context 'when an array' do
+      subject { query.ids ['123', '456'] }
+      it_behaves_like 'chainable query'
+
+      it 'appends match expression to query' do
+        expect(subject.body).to eq(query: { filtered: { query: { ids: { values: ['123', '456'] } } } })
+      end
+    end
+  end
+
   describe '#terms' do
     context 'when a value' do
       subject { query.terms :_id, '123' }

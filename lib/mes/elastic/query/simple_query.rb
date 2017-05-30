@@ -9,6 +9,10 @@ module Mes
         end
       end
 
+      def find(id)
+        to_bool_query.find(id)
+      end
+
       def must(&block)
         to_bool_query(:must, &block)
       end
@@ -39,12 +43,12 @@ module Mes
         end
       end
 
-      def to_bool_query(filter_type, &block)
+      def to_bool_query(filter_type = nil, &block)
         matching = body_matching_part
         BoolQuery.new(model).tap do |query|
           query.must { raw(matching) }
           query.body.merge!(body_arranging_part)
-          query.send(filter_type, &block)
+          query.send(filter_type, &block) if filter_type
         end
       end
     end

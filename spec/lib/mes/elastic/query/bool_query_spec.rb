@@ -94,4 +94,26 @@ RSpec.describe Mes::Elastic::BoolQuery do
       expect(subject.map(&:id)).to match_array ['d3']
     end
   end
+
+  describe '#find' do
+    before do
+      test_model.field :taxonomy, :string
+      test_model.purge_index!
+
+      index_test_document(id: 'd1', body: { taxonomy: 't1' })
+      index_test_document(id: 'd2', body: { taxonomy: 't1' })
+      index_test_document(id: 'd3', body: { taxonomy: 't2' })
+      test_elastic_flush
+    end
+
+    subject do
+      test_model
+        .terms('taxonomy', 't1')
+        .find('d2')
+    end
+
+    it 'returns correct object' do
+      expect(subject.id).to eq('d2')
+    end
+  end
 end
