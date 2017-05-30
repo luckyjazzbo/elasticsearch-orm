@@ -17,7 +17,11 @@ module Mes
         if values.respond_to?(:each)
           add_filter(terms: { field => Array(values) })
         elsif values.nil?
-          add_filter(missing: { field: field })
+          bool do
+            must_not do
+              add_filter(exists: { field: field })
+            end
+          end
         else
           add_filter(term: { field => values })
         end

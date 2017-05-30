@@ -25,7 +25,11 @@ module Mes
 
       def order(order)
         copy.tap do |query|
-          query.body[:sort] = parse_order(order)
+          if order.nil?
+            query.body.delete(:sort)
+          else
+            query.body[:sort] = parse_order(order)
+          end
         end
       end
 
@@ -78,13 +82,13 @@ module Mes
       protected
 
       def query_scope
-        body[:query][:filtered] ||= { query: {} }
-        body[:query][:filtered][:query]
+        body[:query][:bool] ||= { must: {} }
+        body[:query][:bool][:must]
       end
 
       def filter_scope
-        body[:query][:filtered] ||= { filter: {} }
-        body[:query][:filtered][:filter]
+        body[:query][:bool] ||= { filter: {} }
+        body[:query][:bool][:filter]
       end
 
       def default_body
@@ -92,11 +96,11 @@ module Mes
       end
 
       def body_matching_part
-        body.slice(:query, :filtered)
+        body.slice(:query, :bool)
       end
 
       def body_arranging_part
-        body.except(:query, :filtered)
+        body.except(:query, :bool)
       end
 
       def parse_order(order)

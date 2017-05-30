@@ -28,10 +28,10 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'faraday_middleware-aws-signers-v4'
   spec.add_dependency 'activesupport', '~> 5.0', '>= 5.0.0.1'
-  spec.add_dependency 'factory_girl', '~> 4.7.0'
+  spec.add_dependency 'factory_girl', '~> 4.8.0'
   spec.add_development_dependency 'bundler', '~> 1.12'
   spec.add_development_dependency 'rake', '~> 10'
   spec.add_development_dependency 'rspec', '~> 3.0'
 
-  spec.add_dependency 'elasticsearch', '5.0.0'
+  spec.add_dependency 'elasticsearch', '~> 5.0.0'
 end

@@ -15,19 +15,25 @@ services:
       - content-api-elasticsearch
 
   eva-elasticsearch:
-    command: -Des.cluster.name="eva"
-    image: elasticsearch:2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    environment:
+      - cluster.name=eva
+      - xpack.security.enabled=false
     ports:
       - 9200
 
   mes-elasticsearch:
-    command: -Des.cluster.name="mes"
-    image: elasticsearch:2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    environment:
+      - cluster.name=mes
+      - xpack.security.enabled=false
     ports:
       - 9200
 
   content-api-elasticsearch:
-    command: -Des.cluster.name="content-api"
-    image: elasticsearch:2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
+    environment:
+      - cluster.name=content-api
+      - xpack.security.enabled=false
     ports:
       - 9200

@@ -101,8 +101,8 @@ module Mes
           end
         end
 
-        def save(attrs)
-          opts = { index: index, type: type }
+        def save(attrs, opts = {})
+          opts = { index: index, type: type, **opts }
           opts[:id] = attrs[:id] if attrs.key? :id
           opts[:body] = attrs.except(:id)
           with_error_convertion do
@@ -118,7 +118,7 @@ module Mes
 
         def delete_all
           # Warning! Use with caution, very slow! Can be used only in tests!
-          bulk_queue = search(query: { matchAll: {} }, size: 1000)['hits']['hits'].map do |record|
+          bulk_queue = search(size: 1000)['hits']['hits'].map do |record|
             { "delete" => { "_index" => index, "_type" => record['_type'], "_id" => record['_id'] } }
           end
           return if bulk_queue.empty?

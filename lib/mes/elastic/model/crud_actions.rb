@@ -8,8 +8,8 @@ module Mes
           @persisted = opts[:persisted] || false
         end
 
-        def save
-          assign_attribute(:id, self.class.save(attributes))
+        def save(opts = {})
+          assign_attribute(:id, self.class.save(attributes, opts))
           persist!
         end
 

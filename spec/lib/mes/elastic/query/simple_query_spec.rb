@@ -10,7 +10,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
     it_behaves_like 'chainable query'
 
     it 'appends matchAll expression to query' do
-      expect(subject.body).to eq(query: { filtered: { query: { match_all: {} } } })
+      expect(subject.body).to eq(query: { bool: { must: { match_all: {} } } })
     end
   end
 
@@ -19,7 +19,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
     it_behaves_like 'chainable query'
 
     it 'appends match expression to query' do
-      expect(subject.body).to eq(query: { filtered: { query: { match: { _id: '123' } } } })
+      expect(subject.body).to eq(query: { bool: { must: { match: { _id: '123' } } } })
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { filter: { ids: { values: ['123'] } } } })
+        expect(subject.body).to eq(query: { bool: { filter: { ids: { values: ['123'] } } } })
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { filter: { ids: { values: ['123', '456'] } } } })
+        expect(subject.body).to eq(query: { bool: { filter: { ids: { values: ['123', '456'] } } } })
       end
     end
   end
@@ -49,7 +49,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { filter: { term: { _id: '123' } } } })
+        expect(subject.body).to eq(query: { bool: { filter: { term: { _id: '123' } } } })
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       subject { query.terms :_id, ['123'] }
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { filter: { terms: { _id: ['123'] } } } })
+        expect(subject.body).to eq(query: { bool: { filter: { terms: { _id: ['123'] } } } })
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       subject { query.terms :_id, nil }
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { filter: { missing: { field: :_id } } } })
+        expect(subject.body).to eq(query: { bool: { filter: { bool: { must_not: [{ exists: { field: :_id } }] } } } })
       end
     end
   end
@@ -88,7 +88,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
         query: {
           bool: {
             must: [
-              { query: { filtered: { query: { match: { _id: '123' } } } } },
+              { bool: { must: { match: { _id: '123' } } } },
               { range: { start_date: 321 } }
             ]
           }
@@ -117,7 +117,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
         query: {
           bool: {
             must: [
-              { query: { filtered: { query: { match: { _id: '123' } } } } }
+              { bool: { must: { match: { _id: '123' } } } }
             ],
             must_not: [
               { range: { start_date: 321 } }

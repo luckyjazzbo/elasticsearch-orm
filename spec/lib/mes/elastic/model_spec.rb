@@ -29,9 +29,9 @@ RSpec.describe Mes::Elastic::Model do
         query: {
           bool: {
             must: [
-              { query: { 'terms' => { '_id' => ['1', '2', '3'] } } },
-              { bool: { should: [{ range: { date: { gt: 123 } } }, { missing: { field: :date } }], minimum_should_match: 1 } },
-              { bool: { should: [{ range: { :'license.date' => { gt: 123 } } }, { missing: { field: :'license.date' } }], minimum_should_match: 1 } }
+              { 'terms' => { '_id' => ['1', '2', '3'] } },
+              { bool: { should: [{ range: { date: { gt: 123 } } }, { bool: { must_not: [{ exists: { field: :date } }] } }], minimum_should_match: 1 } },
+              { bool: { should: [{ range: { :'license.date' => { gt: 123 } } }, { bool: { must_not: [{ exists: { field: :'license.date' } }] } }], minimum_should_match: 1 } }
             ]
           }
         },

@@ -44,12 +44,18 @@ module Mes
       end
 
       def to_bool_query(filter_type = nil, &block)
-        matching = body_matching_part
+        matching = body_matching_part[:query]
         BoolQuery.new(model).tap do |query|
           query.must { raw(matching) }
           query.body.merge!(body_arranging_part)
           query.send(filter_type, &block) if filter_type
         end
+      end
+
+      def bool(&block)
+        query = BoolQuery.new(self)
+        query.instance_eval(&block)
+        add_filter query.body[:query]
       end
     end
   end
