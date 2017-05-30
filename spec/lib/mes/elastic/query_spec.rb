@@ -44,15 +44,15 @@ RSpec.describe Mes::Elastic::Query do
     end
   end
 
-  describe '#count' do
+  describe '#size' do
     let(:elastic_response) { double }
     before do
       expect(query).to receive(:execute).and_return elastic_response
     end
 
-    it 'runs query and returns total_count' do
+    it 'runs query and returns count' do
       expect(elastic_response).to receive(:count).and_return 2
-      expect(query.count).to eq 2
+      expect(query.size).to eq 2
     end
   end
 

@@ -63,6 +63,11 @@ module Mes
       end
 
       def count
+        Kernel.warn "DEPRECATED: Use total_count instead of count"
+        total_count
+      end
+
+      def size
         execute.count
       end
 
