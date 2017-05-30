@@ -29,7 +29,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { query: { ids: { values: ['123'] } } } })
+        expect(subject.body).to eq(query: { filtered: { filter: { ids: { values: ['123'] } } } })
       end
     end
 
@@ -38,7 +38,7 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       it_behaves_like 'chainable query'
 
       it 'appends match expression to query' do
-        expect(subject.body).to eq(query: { filtered: { query: { ids: { values: ['123', '456'] } } } })
+        expect(subject.body).to eq(query: { filtered: { filter: { ids: { values: ['123', '456'] } } } })
       end
     end
   end

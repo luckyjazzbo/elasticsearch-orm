@@ -2,7 +2,7 @@ module Mes
   module Elastic
     module Matchers
       def ids(ids)
-        add_query(ids: { values: Array(ids) })
+        add_filter(ids: { values: Array(ids) })
       end
 
       def match(field, value = nil)
