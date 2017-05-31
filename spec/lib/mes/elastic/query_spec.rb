@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative 'chainable_query_spec'
 
 RSpec.describe Mes::Elastic::Query do
   include_context 'with test indices'
@@ -53,6 +54,18 @@ RSpec.describe Mes::Elastic::Query do
     it 'runs query and returns count' do
       expect(elastic_response).to receive(:count).and_return 2
       expect(query.size).to eq 2
+    end
+  end
+
+  describe '#count' do
+    let(:elastic_response) { double }
+    before do
+      expect(query).to receive(:execute).and_return elastic_response
+    end
+
+    it 'runs query and returns total_count' do
+      expect(elastic_response).to receive(:total_count).and_return 78
+      expect(query.count).to eq 78
     end
   end
 
