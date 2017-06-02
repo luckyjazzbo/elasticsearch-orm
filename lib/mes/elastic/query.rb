@@ -53,8 +53,8 @@ module Mes
 
       def copy
         dup.tap do |query|
+          query.remove_instance_variable(:@response) if query.instance_variable_defined?(:@response)
           query.body = body.deep_dup
-          query
         end
       end
 
