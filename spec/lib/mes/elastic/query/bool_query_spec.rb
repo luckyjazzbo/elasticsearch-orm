@@ -45,7 +45,7 @@ RSpec.describe Mes::Elastic::BoolQuery do
 
   context '#must' do
     before do
-      test_model.field :title, :string
+      test_model.field :title, :text
       test_model.field :start_date, :double
       test_model.purge_index!
 
@@ -59,7 +59,7 @@ RSpec.describe Mes::Elastic::BoolQuery do
       described_class
         .new(test_model)
         .must do
-          raw(query: { term: { title: 'foo' } })
+          raw(term: { title: 'foo' })
           range(:start_date, gt: 15)
         end
     end
@@ -71,7 +71,7 @@ RSpec.describe Mes::Elastic::BoolQuery do
 
   context '#filter' do
     before do
-      test_model.field :title, :string
+      test_model.field :title, :text
       test_model.field :start_date, :double
       test_model.purge_index!
 
@@ -97,7 +97,7 @@ RSpec.describe Mes::Elastic::BoolQuery do
 
   describe '#find' do
     before do
-      test_model.field :taxonomy, :string
+      test_model.field :taxonomy, :text
       test_model.purge_index!
 
       index_test_document(id: 'd1', body: { taxonomy: 't1' })

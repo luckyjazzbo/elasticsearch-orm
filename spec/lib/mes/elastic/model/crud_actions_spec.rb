@@ -11,7 +11,7 @@ RSpec.describe 'CRUD actions' do
 
   context 'with configured model' do
     before do
-      test_model.field :title, :string
+      test_model.field :title, :text
       test_model.purge_index!
       test_elastic_flush
     end

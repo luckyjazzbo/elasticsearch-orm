@@ -11,19 +11,19 @@ RSpec.describe 'Mappings' do
     end
 
     it 'defines a field in mapping' do
-      expect { test_model.field :test_field, :string }
+      expect { test_model.field :test_field, :text }
         .to change { test_model.field? :test_field }
         .from(false).to(true)
     end
 
     it 'defines readers for fields' do
-      test_model.field :test_field, :string
+      test_model.field :test_field, :text
       obj = test_model.new test_field: 'value'
       expect(obj.test_field).to eq 'value'
     end
 
     it 'defines writers for fields' do
-      test_model.field :test_field, :string
+      test_model.field :test_field, :text
       obj = test_model.new test_field: 'value'
       expect { obj.test_field = 'new value' }
         .to change { obj.test_field }
@@ -31,7 +31,7 @@ RSpec.describe 'Mappings' do
     end
 
     it 'fails to create field with reserved names' do
-      expect { test_model.field :send, :string }
+      expect { test_model.field :send, :text }
         .to raise_error Mes::Elastic::Model::UnpermittedFieldNameError
     end
   end
@@ -40,19 +40,19 @@ RSpec.describe 'Mappings' do
     let(:subject) { test_model }
 
     it 'defines a field in mapping' do
-      expect { test_model.array :test_field, type: :string }
+      expect { test_model.array :test_field, type: :text }
         .to change { test_model.field? :test_field }
         .from(false).to(true)
     end
 
     it 'defines readers for fields' do
-      test_model.array :test_field, type: :string
+      test_model.array :test_field, type: :text
       obj = test_model.new test_field: ['value']
       expect(obj.test_field).to eq ['value']
     end
 
     it 'defines writers for fields' do
-      test_model.array :test_field, type: :string
+      test_model.array :test_field, type: :text
       obj = test_model.new test_field: ['value']
       expect { obj.test_field = ['new value'] }
         .to change { obj.test_field }
@@ -188,7 +188,7 @@ RSpec.describe 'Mappings' do
     let(:subject) { test_model }
 
     before do
-      test_model.field :correct_field, :string
+      test_model.field :correct_field, :text
     end
 
     it 'allows to set id' do

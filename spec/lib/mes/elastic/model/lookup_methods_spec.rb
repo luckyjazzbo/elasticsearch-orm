@@ -12,7 +12,7 @@ RSpec.describe 'Lookup methods' do
 
   context 'with 2 documents in index' do
     before do
-      test_model.field :title, :string
+      test_model.field :title, :text
       test_model.purge_index!
       test_model.client.index(
         index: test_model.index, type: test_model.type, id: id1, body: { title: title1 }
@@ -69,7 +69,7 @@ RSpec.describe 'Lookup methods' do
 
   describe '.all' do
     before do
-      test_model.field :title, :string
+      test_model.field :title, :text
       test_model.purge_index!
       test_model.client.index(
         index: test_model.index, type: test_model.type, id: id1, body: { title: title1 }

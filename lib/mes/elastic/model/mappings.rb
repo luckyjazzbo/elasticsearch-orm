@@ -13,7 +13,7 @@ module Mes
         include ::Mes::Elastic::Model::MappingDsl
 
         def mapping
-          @mapping ||= { id: { type: :string, index: :not_analyzed } }
+          @mapping ||= { id: { type: :keyword } }
         end
 
         private

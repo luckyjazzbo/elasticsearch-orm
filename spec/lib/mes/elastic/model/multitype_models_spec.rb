@@ -15,13 +15,13 @@ RSpec.describe 'Mappings' do
 
   let!(:first_sub_model) do
     class Mes::FirstSubModel < parent_model; end
-    Mes::FirstSubModel.field(:title, :string)
+    Mes::FirstSubModel.field(:title, :text)
     Mes::FirstSubModel
   end
 
   let!(:second_sub_model) do
     class Mes::SecondSubModel < parent_model; end
-    Mes::SecondSubModel.field(:name, :string)
+    Mes::SecondSubModel.field(:name, :text)
     Mes::SecondSubModel
   end
 
@@ -32,7 +32,7 @@ RSpec.describe 'Mappings' do
   end
 
   it "doesn't allow to set fields for parent_model" do
-    expect { parent_model.field :some_field, :string }
+    expect { parent_model.field :some_field, :text }
       .to raise_error Mes::Elastic::Model::SettingFieldsForModelWithoutTypeError
   end
 

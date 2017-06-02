@@ -15,23 +15,29 @@ services:
   eva-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
     environment:
-      - cluster.name=eva
-      - xpack.security.enabled=false
+      - "cluster.name=eva"
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
     ports:
       - 9200
 
   mes-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
     environment:
-      - cluster.name=mes
-      - xpack.security.enabled=false
+      - "cluster.name=mes"
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
     ports:
       - 9200
 
   content-api-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
     environment:
-      - cluster.name=content-api
-      - xpack.security.enabled=false
+      - "cluster.name=content-api"
+      - "xpack.security.enabled=false"
+      - "http.host=0.0.0.0"
+      - "transport.host=127.0.0.1"
     ports:
       - 9200
