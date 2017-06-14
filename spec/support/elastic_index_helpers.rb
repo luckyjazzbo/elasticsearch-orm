@@ -41,8 +41,7 @@ module ElasticIndexHelpers
   def wait_for_being_available(client)
     20.times do
       begin
-        client.ping
-        break
+        break if client.ping
       rescue ::Elasticsearch::Transport::Transport::Errors::ServiceUnavailable, HTTPClient::KeepAliveDisconnected
         # do nothing, lets try one more time
       end

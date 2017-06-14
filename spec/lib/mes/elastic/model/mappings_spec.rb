@@ -217,4 +217,31 @@ RSpec.describe 'Mappings' do
       end
     end
   end
+
+  describe '.multilang_field' do
+    let(:subject) { test_model }
+
+    context 'with LANGS' do
+      before { subject::LANGS = %i[default en de].freeze }
+
+      it 'defines fields' do
+        expect { subject.multilang_field :titles, :text }
+          .to(change { subject.field? :titles }.from(false).to(true))
+
+        expect(subject.mapping).to eq(id: { type: :keyword },
+                                      titles: {
+                                        properties: {
+                                          default: :text, en: :text, de: :text
+                                        }
+                                      })
+      end
+    end
+
+    context 'without LANGS' do
+      it 'raises exception' do
+        expect { subject.multilang_field :titles, :text }
+          .to raise_error(Mes::Elastic::Model::LangsNotSetForMultilangFieldError)
+      end
+    end
+  end
 end

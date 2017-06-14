@@ -9,6 +9,11 @@ module Mes
       class SettingFieldsForModelWithoutTypeError < ElasticError; end
       class UnknownTypeError                      < ElasticError; end
       class IntatiatingModelWithoutTypeError      < ElasticError; end
+      class LangsNotSetForMultilangFieldError     < ElasticError
+        def initialize(*)
+          super('Please set LANGS const with available languages')
+        end
+      end
       class UnknownError                          < ElasticError; end
 
       def self.with_error_convertion

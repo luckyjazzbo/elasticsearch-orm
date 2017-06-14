@@ -38,6 +38,17 @@ module Mes
           run_callback(:after_object_defined, field_name, mapping[field_name])
         end
 
+        def multilang_field(name, opts)
+          raise LangsNotSetForMultilangFieldError unless const_defined?(:LANGS)
+
+          langs = self::LANGS
+          object name do
+            langs.each do |lang|
+              field lang, opts
+            end
+          end
+        end
+
         private
 
         def catch_object_mapping(&block)
