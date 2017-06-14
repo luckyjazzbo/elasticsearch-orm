@@ -10,30 +10,12 @@ services:
       - $HOME/.aws:/root/.aws:ro
     command: bundle exec rspec
     depends_on:
-      - eva-elasticsearch
-      - mes-elasticsearch
-      - content-api-elasticsearch
+      - elasticsearch
 
-  eva-elasticsearch:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
     environment:
       - cluster.name=eva
-      - xpack.security.enabled=false
-    ports:
-      - 9200
-
-  mes-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
-    environment:
-      - cluster.name=mes
-      - xpack.security.enabled=false
-    ports:
-      - 9200
-
-  content-api-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.0
-    environment:
-      - cluster.name=content-api
       - xpack.security.enabled=false
     ports:
       - 9200

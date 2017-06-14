@@ -6,13 +6,13 @@ describe Mes::Elastic do
   end
 
   # Simple test for docker settings
-  it 'has connection to EVA and MES ES' do
-    expect(`curl -I #{ENV['EVA_ELASTICSEARCH_URL']}`).to include '200 OK'
-    expect(`curl -I #{ENV['MES_ELASTICSEARCH_URL']}`).to include '200 OK'
+  it 'has connection to ES' do
+    expect(`curl -I #{ENV['ELASTICSEARCH_URL']}`).to include '200 OK'
   end
 
-  it 'defines EVA and MES models' do
+  it 'defines EVA, MES and ContentApi models' do
     expect { Eva::Elastic::Resource }.not_to raise_exception
     expect { Mes::Elastic::Resource }.not_to raise_exception
+    expect { ContentApi::Elastic::Resource }.not_to raise_exception
   end
 end

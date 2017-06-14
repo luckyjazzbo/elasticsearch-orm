@@ -9,7 +9,7 @@ RSpec.describe 'Elastic API methods' do
     let(:different_test_model) do
       class Mes::DifferentTestModel < Mes::Elastic::Model; end
       Mes::DifferentTestModel.config(
-        url: ENV['MES_ELASTICSEARCH_URL'],
+        url: ENV['ELASTICSEARCH_URL'],
         index: 'other-test-index',
         index_settings: index_settings_for_one_shard
       )

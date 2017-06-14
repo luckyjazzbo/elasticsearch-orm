@@ -1,5 +1,5 @@
 RSpec.shared_context 'with test indices' do
-  let(:test_elastic_url) { ENV['EVA_ELASTICSEARCH_URL'] }
+  let(:test_elastic_url) { ENV['ELASTICSEARCH_URL'] }
   let(:test_index) { 'elastic_index' }
   let(:test_type) { 'test_model' }
   let(:test_document_id) { '1' }
