@@ -41,17 +41,15 @@ module Mes
         end
 
         def multilang_field(name, opts)
-          langs = const_defined?(:LANGS) ? self::LANGS : [:default]
-          mapping[:dynamic_templates] << {
-            "#{(current_mapping_path + [name]).join('_')}_multilang" => {
-              match:   "#{name}.*",
+          full_path = current_mapping_path + [name]
+          root_mapping[:dynamic_templates] << {
+            "#{full_path.join('_')}_multilang" => {
+              match:   "#{full_path.join('.')}.*",
               mapping: opts
             }
           }
           object name do
-            langs.each do |lang|
-              field lang, opts
-            end
+            field :default, opts
           end
         end
 

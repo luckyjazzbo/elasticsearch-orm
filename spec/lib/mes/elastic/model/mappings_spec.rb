@@ -221,20 +221,49 @@ RSpec.describe 'Mappings' do
   describe '.multilang_field' do
     let(:subject) { test_model }
 
-    context 'with LANGS' do
-      before { subject::LANGS = %i[default en de].freeze }
+    it 'defines fields' do
+      expect { subject.multilang_field :titles, type: :text }
+        .to(change { subject.field? :titles }.from(false).to(true))
 
+      expect(subject.mapping).to eq(
+        dynamic_templates: [{ 'titles_multilang' => { match: "titles.*", mapping: { type: :text }}}],
+        properties: {
+          id: { type: :keyword },
+          titles: {
+            properties: {
+              default: { type: :text }
+            }
+          }
+        }
+      )
+    end
+
+    context 'with inner fields' do
       it 'defines fields' do
-        expect { subject.multilang_field :titles, type: :text }
-          .to(change { subject.field? :titles }.from(false).to(true))
+        subject.multilang_field :titles, type: :text
+        subject.object :root_object do
+          multilang_field :titles, type: :text
+        end
 
         expect(subject.mapping).to eq(
-          dynamic_templates: [{ 'titles_multilang' => { match: 'titles.*', mapping: { type: :text } } }],
+          dynamic_templates: [
+            { 'titles_multilang' => { match: 'titles.*', mapping: { type: :text }}},
+            { 'root_object_titles_multilang' => { match: 'root_object.titles.*', mapping: { type: :text }}},
+          ],
           properties: {
             id: { type: :keyword },
             titles: {
               properties: {
-                default: { type: :text }, en: { type: :text }, de: { type: :text }
+                default: { type: :text },
+              }
+            },
+            root_object: {
+              properties: {
+                titles: {
+                  properties: {
+                    default: { type: :text }
+                  }
+                }
               }
             }
           }
