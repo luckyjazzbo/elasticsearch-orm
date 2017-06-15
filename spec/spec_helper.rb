@@ -13,10 +13,3 @@ WebMock.disable_net_connect!(
 )
 
 require 'mes-elastic'
-
-RSpec.configure do |config|
-  config.before(:all) do
-    Eva::Elastic::Resource.config(index_settings: index_settings_for_one_shard)
-    Mes::Elastic::Resource.config(index_settings: index_settings_for_one_shard)
-  end
-end
