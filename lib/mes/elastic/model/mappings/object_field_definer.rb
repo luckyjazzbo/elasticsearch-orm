@@ -3,7 +3,14 @@ module Mes
     class ObjectFieldDefiner
       include Model::MappingDsl
 
+      def initialize(root_mapping, current_mapping_path)
+        @root_mapping = root_mapping
+        @current_mapping_path = current_mapping_path
+      end
+
       private
+
+      attr_reader :root_mapping, :current_mapping_path
 
       def validate_name!(name)
         raise UnpermittedFieldNameError unless allowed_field?(name)

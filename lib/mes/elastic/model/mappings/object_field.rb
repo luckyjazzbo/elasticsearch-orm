@@ -5,11 +5,11 @@ module Mes
     class ObjectField
       include ::Mes::Elastic::Model::MappingAccessorHelper
 
-      attr_reader :attributes, :mapping
+      attr_reader :attributes, :current_mapping
 
-      def initialize(attributes, mapping)
+      def initialize(attributes, current_mapping)
         @attributes = attributes
-        @mapping = mapping
+        @current_mapping = current_mapping
         define_accessors
       end
 
@@ -20,7 +20,7 @@ module Mes
       def define_accessors
         defined_fields.each do |field_name, field_opts|
           if object_field?(field_opts)
-            define_object_accessors(field_name, mapping[:properties])
+            define_object_accessors(field_name, current_mapping[:properties])
           else
             define_field_accessors(field_name)
           end
@@ -32,7 +32,7 @@ module Mes
       end
 
       def defined_fields
-        mapping[:properties]
+        current_mapping[:properties]
       end
 
       def assign_attribute(field_name, value)

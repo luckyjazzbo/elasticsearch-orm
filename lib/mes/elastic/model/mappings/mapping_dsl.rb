@@ -4,12 +4,12 @@ module Mes
       module MappingDsl
         DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss ZZ'.freeze
 
-        def mapping
-          @mapping ||= {}
+        def current_mapping
+          @current_mapping ||= {}
         end
 
         def field?(key)
-          mapping.key? key.to_sym
+          current_mapping.key? key.to_sym
         end
 
         def field(field_name, opts = {})
@@ -17,7 +17,7 @@ module Mes
           return if field?(field_name)
 
           validate_name!(field_name)
-          mapping[field_name] = transform_mapping(opts)
+          current_mapping[field_name] = transform_mapping(opts)
           run_callback(:after_field_defined, field_name)
         end
 
@@ -36,14 +36,18 @@ module Mes
           return if field?(field_name)
 
           validate_name!(field_name)
-          mapping[field_name] = { properties: catch_object_mapping(&block), array: opts.fetch(:array, false) }
-          run_callback(:after_object_defined, field_name, mapping[field_name])
+          current_mapping[field_name] = { properties: catch_object_mapping(field_name, &block), array: opts.fetch(:array, false) }
+          run_callback(:after_object_defined, field_name, current_mapping[field_name])
         end
 
         def multilang_field(name, opts)
-          raise LangsNotSetForMultilangFieldError unless const_defined?(:LANGS)
-
-          langs = self::LANGS
+          langs = const_defined?(:LANGS) ? self::LANGS : [:default]
+          mapping[:dynamic_templates] << {
+            "#{(current_mapping_path + [name]).join('_')}_multilang" => {
+              match:   "#{name}.*",
+              mapping: opts
+            }
+          }
           object name do
             langs.each do |lang|
               field lang, opts
@@ -53,10 +57,10 @@ module Mes
 
         private
 
-        def catch_object_mapping(&block)
-          ObjectFieldDefiner.new.tap do |definer|
+        def catch_object_mapping(path_name, &block)
+          ObjectFieldDefiner.new(root_mapping, current_mapping_path + [path_name]).tap do |definer|
             definer.instance_eval(&block)
-          end.mapping
+          end.current_mapping
         end
 
         def validate_name!(name)

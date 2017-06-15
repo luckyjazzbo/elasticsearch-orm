@@ -12,18 +12,18 @@ module Mes
           end
         end
 
-        def define_object_accessors(field_name, mapping)
-          if mapping[field_name].delete :array
-            define_objects_array_accessors(field_name, mapping)
+        def define_object_accessors(field_name, current_mapping)
+          if current_mapping[field_name].delete :array
+            define_objects_array_accessors(field_name, current_mapping)
           else
-            define_inplace_object_accessors(field_name, mapping)
+            define_inplace_object_accessors(field_name, current_mapping)
           end
         end
 
-        def define_inplace_object_accessors(field_name, mapping)
+        def define_inplace_object_accessors(field_name, current_mapping)
           define_method(field_name) do
             attributes[field_name] ||= {}
-            ObjectField.new(attributes[field_name], mapping[field_name])
+            ObjectField.new(attributes[field_name], current_mapping[field_name])
           end
 
           define_method("#{field_name}=") do |hash|
@@ -32,10 +32,10 @@ module Mes
           end
         end
 
-        def define_objects_array_accessors(field_name, mapping)
+        def define_objects_array_accessors(field_name, current_mapping)
           define_method(field_name) do
             attributes[field_name] ||= []
-            ObjectArrayField.new(attributes[field_name], mapping[field_name])
+            ObjectArrayField.new(attributes[field_name], current_mapping[field_name])
           end
 
           define_method("#{field_name}=") do |array|

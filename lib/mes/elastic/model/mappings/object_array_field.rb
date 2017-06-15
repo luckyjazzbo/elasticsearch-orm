@@ -4,10 +4,10 @@ module Mes
   module Elastic
     class ObjectArrayField
       include Enumerable
-      attr_reader :mapping, :attributes
+      attr_reader :current_mapping, :attributes
 
-      def initialize(array, mapping)
-        @mapping = mapping
+      def initialize(array, current_mapping)
+        @current_mapping = current_mapping
         @attributes = array
       end
 
@@ -16,7 +16,7 @@ module Mes
       end
 
       def [](key)
-        ObjectField.new(attributes[key], mapping)
+        ObjectField.new(attributes[key], current_mapping)
       end
 
       def each(&block)

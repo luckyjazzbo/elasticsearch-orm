@@ -13,10 +13,22 @@ module Mes
         include ::Mes::Elastic::Model::MappingDsl
 
         def mapping
-          @mapping ||= { id: { type: :keyword } }
+          @mapping ||= { dynamic_templates: [], properties: { id: { type: :keyword } } }
         end
 
         private
+
+        def current_mapping
+          mapping[:properties]
+        end
+
+        def current_mapping_path
+          []
+        end
+
+        def root_mapping
+          mapping
+        end
 
         def validate_name!(name)
           raise SettingFieldsForModelWithoutTypeError if multitype?
@@ -32,7 +44,7 @@ module Mes
         end
 
         def after_object_defined(field_name, _mapping)
-          define_object_accessors(field_name, mapping)
+          define_object_accessors(field_name, current_mapping)
         end
       end
     end

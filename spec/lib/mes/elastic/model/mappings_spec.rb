@@ -78,7 +78,7 @@ RSpec.describe 'Mappings' do
       end
 
       it 'builds correct mapping' do
-        expect(subject.mapping[:object_field]).to eq(
+        expect(subject.mapping[:properties][:object_field]).to eq(
           properties: {
             object_subfield: { type: :integer }
           }
@@ -86,7 +86,7 @@ RSpec.describe 'Mappings' do
       end
 
       it 'builds correct mapping for array of objects' do
-        expect(subject.mapping[:object_field_as_array]).to eq(
+        expect(subject.mapping[:properties][:object_field_as_array]).to eq(
           properties: {
             object_subfield: { type: :integer }
           }
@@ -158,7 +158,7 @@ RSpec.describe 'Mappings' do
       end
 
       it 'builds correct mapping' do
-        expect(subject.mapping[:object_field]).to eq(
+        expect(subject.mapping[:properties][:object_field]).to eq(
           properties: {
             subobject_field: {
               properties: {
@@ -225,24 +225,20 @@ RSpec.describe 'Mappings' do
       before { subject::LANGS = %i[default en de].freeze }
 
       it 'defines fields' do
-        expect { subject.multilang_field :titles, :text }
+        expect { subject.multilang_field :titles, type: :text }
           .to(change { subject.field? :titles }.from(false).to(true))
 
-        expect(subject.mapping).to eq(id: { type: :keyword },
-                                      titles: {
-                                        properties: {
-                                          default: { type: :text },
-                                          en: { type: :text },
-                                          de: { type: :text },
-                                        }
-                                      })
-      end
-    end
-
-    context 'without LANGS' do
-      it 'raises exception' do
-        expect { subject.multilang_field :titles, :text }
-          .to raise_error(Mes::Elastic::Model::LangsNotSetForMultilangFieldError)
+        expect(subject.mapping).to eq(
+          dynamic_templates: [{ 'titles_multilang' => { match: 'titles.*', mapping: { type: :text } } }],
+          properties: {
+            id: { type: :keyword },
+            titles: {
+              properties: {
+                default: { type: :text }, en: { type: :text }, de: { type: :text }
+              }
+            }
+          }
+        )
       end
     end
   end

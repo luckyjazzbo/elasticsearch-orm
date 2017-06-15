@@ -88,7 +88,7 @@ module Mes
           return if multitype?
           with_error_convertion do
             client.indices.put_mapping(
-              index: index, type: type, body: { type => { properties: mapping } }
+              index: index, type: type, body: { type => mapping }
             )
           end
         end
