@@ -231,7 +231,9 @@ RSpec.describe 'Mappings' do
         expect(subject.mapping).to eq(id: { type: :keyword },
                                       titles: {
                                         properties: {
-                                          default: :text, en: :text, de: :text
+                                          default: { type: :text },
+                                          en: { type: :text },
+                                          de: { type: :text },
                                         }
                                       })
       end
@@ -243,5 +245,33 @@ RSpec.describe 'Mappings' do
           .to raise_error(Mes::Elastic::Model::LangsNotSetForMultilangFieldError)
       end
     end
+  end
+
+  context 'date fields' do
+    shared_examples 'with field' do |type, value|
+      let(:model) do
+        test_model.tap { |m| m.field :start_date, type }
+      end
+
+      let(:object) { model.new(start_date: value) }
+
+      before do
+        model.purge_index!
+        model.create_mapping
+      end
+
+      it 'stores value' do
+        expect { object.save! }.not_to raise_error
+      end
+
+      it 'returns exactly same value' do
+        object.save!(refresh: true)
+
+        expect(model.all.first.start_date).to eq(value)
+      end
+    end
+
+    it_behaves_like 'with field', :date, Date.current
+    it_behaves_like 'with field', :datetime, Time.current.change(usec: 0)
   end
 end

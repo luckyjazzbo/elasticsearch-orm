@@ -21,7 +21,7 @@ module Mes
         raise IntatiatingModelWithoutTypeError if self.class.multitype?
         initialize_attributes
         initialize_save_actions(opts)
-        assign_attributes(attrs, opts)
+        assign_attributes(convert_attributes(attrs), opts)
       end
     end
   end

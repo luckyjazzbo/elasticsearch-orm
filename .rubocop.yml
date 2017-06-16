@@ -1,23 +1,36 @@
-Style/FileName:
+AllCops:
+  TargetRubyVersion: 2.4
   Exclude:
-    - 'lib/mes-elastic.rb'
-
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'spec/**/*'
-
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'spec/**/*'
+    - 'infrastructure/mes-ruby-base-infrastructure/**/*'
+    - 'db/schema.rb'
+    - 'spec/support/**/*'
+    - 'config/application.rb'
+    - 'vendor/**/*'
 
 Style/HashSyntax:
   EnforcedStyle: ruby19
 
-Style/Documentation:
-  Enabled: false
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
 
-Metrics/LineLength:
-  Enabled: false
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
 
 Metrics/LineLength:
   Max: 100
+
+CaseIndentation:
+  EnforcedStyle: end
+  IndentOneStep: false
+
+Lint/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - "describe"
+    - "context"
+    - "shared_context"
+
+Documentation:
+  Enabled: false

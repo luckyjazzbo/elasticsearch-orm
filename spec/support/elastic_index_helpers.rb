@@ -74,3 +74,7 @@ RSpec.configure do |config|
 
   config.before(:all) { ElasticIndexHelpers.prepare_elastics }
 end
+
+if defined?(FactoryGirl)
+  FactoryGirl.definition_file_paths << File.join(Mes::Elastic::ROOT, 'spec/factories/*.rb').to_s
+end

@@ -38,6 +38,28 @@ module Mes
           end
           @attributes[key.to_sym] = value.is_a?(Hash) ? value.deep_symbolize_keys : value
         end
+
+        def convert_attributes(attributes, mapping = self.class.mapping)
+          l = lambda do |k, v|
+            k_sym = k.to_sym
+
+            return [k, v] unless mapping && (field_mapping = mapping[k_sym])
+
+            value = if v.is_a?(Hash)
+              convert_attributes(v, field_mapping[:properties])
+            elsif field_mapping[:type] == :date
+              parser = field_mapping[:format] == MappingDsl::DATETIME_FORMAT ? Time : Date
+              return unless v
+              v.is_a?(parser) ? v : parser.parse(v)
+            else
+              v
+            end
+
+            [k, value]
+          end
+
+          attributes.map(&l).to_h
+        end
       end
     end
   end

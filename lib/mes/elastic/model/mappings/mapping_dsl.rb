@@ -2,6 +2,8 @@ module Mes
   module Elastic
     class Model
       module MappingDsl
+        DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss ZZ'.freeze
+
         def mapping
           @mapping ||= {}
         end
@@ -15,7 +17,7 @@ module Mes
           return if field?(field_name)
 
           validate_name!(field_name)
-          mapping[field_name] = opts
+          mapping[field_name] = transform_mapping(opts)
           run_callback(:after_field_defined, field_name)
         end
 
@@ -63,6 +65,17 @@ module Mes
 
         def run_callback(callback_name, *args)
           send(callback_name, *args) if respond_to?(callback_name, true)
+        end
+
+        def transform_mapping(type_or_opts)
+          type_or_opts = { type: type_or_opts } unless type_or_opts.is_a?(Hash)
+
+          if type_or_opts[:type] == :datetime
+            type_or_opts[:type] = :date
+            type_or_opts[:format] = DATETIME_FORMAT
+          end
+
+          type_or_opts
         end
       end
     end
