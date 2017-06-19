@@ -2,7 +2,7 @@ module Mes
   module Elastic
     class Model
       module MappingDsl
-        DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss ZZ'.freeze
+        DATETIME_FORMAT = 'strict_date_time'.freeze
 
         def current_mapping
           @current_mapping ||= {}
