@@ -36,11 +36,19 @@ module Mes
           if respect_mapping
             raise UnpermittedAttributeError, "Attribute '#{key}' is not permitted" unless attribute?(key)
           end
-          @attributes[key.to_sym] = value.is_a?(Hash) ? value.deep_symbolize_keys : value
+
+          @attributes[key.to_sym] = case value
+          when Hash
+            value.deep_symbolize_keys
+          when ActiveSupport::TimeWithZone
+            value.to_time
+          else
+            value
+          end
         end
 
         def convert_attributes(attributes, mapping = self.class.mapping[:properties])
-          l = lambda do |k, v|
+          l = lambda do |(k, v)|
             k_sym = k.to_sym
 
             return [k, v] unless mapping && (field_mapping = mapping[k_sym])

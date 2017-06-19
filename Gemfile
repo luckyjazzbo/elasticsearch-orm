@@ -14,5 +14,5 @@ end
 
 group :test do
   gem 'byebug', '~> 9.0', '>= 9.0.5'
-  gem 'webmock', '2.1'
+  gem 'webmock', '~> 3.0.1'
 end
