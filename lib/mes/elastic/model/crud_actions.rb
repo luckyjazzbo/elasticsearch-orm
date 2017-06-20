@@ -9,6 +9,7 @@ module Mes
         end
 
         def save(opts = {})
+          opts[:refresh] = true if defined?(RSpec) && !opts.key?(:refresh)
           assign_attribute(:id, self.class.save(attributes, opts))
           persist!
         end
