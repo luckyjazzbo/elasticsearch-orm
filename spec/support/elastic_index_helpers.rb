@@ -76,5 +76,5 @@ RSpec.configure do |config|
 end
 
 if defined?(FactoryGirl)
-  FactoryGirl.definition_file_paths << File.join(Mes::Elastic::ROOT, 'spec/factories/*.rb').to_s
+  FactoryGirl.definition_file_paths << File.join(Mes::Elastic::ROOT, 'spec/factories/').to_s
 end
