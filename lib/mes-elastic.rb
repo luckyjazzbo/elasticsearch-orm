@@ -10,4 +10,6 @@ module Mes
       Dir[File.join(Mes::Elastic::ROOT, 'app/models/**/*.rb')].sort.map(&method(:require))
     end
   end
+
+  autoload :Video, File.join(Elastic::ROOT, 'app/models/mes/video')
 end
