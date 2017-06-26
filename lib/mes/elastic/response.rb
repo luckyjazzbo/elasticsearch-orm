@@ -36,6 +36,18 @@ module Mes
       def hits
         raw_data['hits']['hits']
       end
+
+      def aggregations
+        raw_data['aggregations'] || {}
+      end
+
+      def aggregation_buckets(aggregation_name = nil)
+        if aggregation_name.present?
+          aggregations.dig(aggregation_name, 'buckets')
+        else
+          aggregations.values.first.try(:[], 'buckets')
+        end
+      end
     end
   end
 end

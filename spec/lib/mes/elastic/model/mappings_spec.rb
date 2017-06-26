@@ -272,6 +272,21 @@ RSpec.describe 'Mappings' do
     end
   end
 
+  context 'dynamic templates' do
+    let(:subject) { test_model }
+
+    it 'defines fields' do
+      subject.object :titles do
+        field :*, type: :text
+      end
+
+      expect(subject.mapping).to eq(
+        dynamic_templates: [{ 'titles_all' => { match: "titles.*", mapping: { type: :text }}}],
+        properties: { id: { type: :keyword }, titles: { properties: {} } }
+      )
+    end
+  end
+
   context 'date fields' do
     shared_examples 'with field' do |type, value|
       let(:model) do

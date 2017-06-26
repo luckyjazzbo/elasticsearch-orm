@@ -16,9 +16,13 @@ module Mes
           field_name = field_name.to_sym
           return if field?(field_name)
 
-          validate_name!(field_name)
-          current_mapping[field_name] = transform_mapping(opts)
-          run_callback(:after_field_defined, field_name)
+          if field_name == :*
+            add_dynamic_template(opts, name_suffix: 'all')
+          else
+            validate_name!(field_name)
+            current_mapping[field_name] = transform_mapping(opts)
+            run_callback(:after_field_defined, field_name)
+          end
         end
 
         # INFO: as a desired feature it would be nice
@@ -41,13 +45,7 @@ module Mes
         end
 
         def multilang_field(name, opts)
-          full_path = current_mapping_path + [name]
-          root_mapping[:dynamic_templates] << {
-            "#{full_path.join('_')}_multilang" => {
-              match:   "#{full_path.join('.')}.*",
-              mapping: opts
-            }
-          }
+          add_dynamic_template(opts, path_suffix: name, name_suffix: 'multilang')
           object name do
             field :default, opts
           end
@@ -78,6 +76,16 @@ module Mes
           end
 
           type_or_opts
+        end
+
+        def add_dynamic_template(opts, path_suffix: nil, name_suffix: nil)
+          mapping_path = current_mapping_path + Array(path_suffix)
+          root_mapping[:dynamic_templates] << {
+            "#{mapping_path.join('_')}_#{name_suffix}" => {
+              match:   "#{mapping_path.join('.')}.*",
+              mapping: transform_mapping(opts)
+            }
+          }
         end
       end
     end

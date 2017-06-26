@@ -17,6 +17,9 @@ module Mes
     array :keywords, type: :text
 
     array :taxonomy_ids, type: :keyword
+    object :taxonomy_ids_by_type do
+      array :*, type: :keyword
+    end
 
     field :modified_at, type: :datetime
     field :deleted_at, type: :datetime

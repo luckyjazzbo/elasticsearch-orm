@@ -23,6 +23,12 @@ module Mes
         @body = args[:body]&.symbolize_keys || default_body
       end
 
+      def explain
+        copy.tap do |query|
+          query.body[:explain] = true
+        end
+      end
+
       def order(order)
         copy.tap do |query|
           if order.nil?
@@ -59,6 +65,13 @@ module Mes
         dup.tap do |query|
           query.remove_instance_variable(:@response) if query.instance_variable_defined?(:@response)
           query.body = body.deep_dup
+        end
+      end
+
+      def aggregate(name, aggregation_body)
+        copy.tap do |query|
+          query.body[:aggs] ||= {}
+          query.body[:aggs][name] = aggregation_body
         end
       end
 
