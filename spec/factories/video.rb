@@ -10,6 +10,7 @@ FactoryGirl.define do
   factory :video, class: klass do
     id { "v-#{SecureRandom.uuid}" }
     tenant_id { "t-#{SecureRandom.uuid}" }
+    business_rules { %w[stored_to_vas available_on_portal] }
     language 'de'
     geo_locations ['de']
 

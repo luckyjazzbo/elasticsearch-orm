@@ -6,6 +6,8 @@ module Mes
 
     field :tenant_id, type: :keyword
 
+    array :business_rules, type: :keyword
+
     field :language, type: :keyword
     array :geo_locations, type: :keyword
 
