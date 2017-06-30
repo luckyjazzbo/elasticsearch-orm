@@ -104,7 +104,7 @@ module Mes
         def save(attrs, opts = {})
           opts = { index: index, type: type, **opts }
           opts[:id] = attrs[:id] if attrs.key? :id
-          opts[:body] = attrs.except(:id)
+          opts[:body] = attrs
           with_error_convertion do
             client.index(opts)['_id']
           end
