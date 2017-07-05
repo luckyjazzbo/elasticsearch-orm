@@ -21,6 +21,7 @@ module Mes
       array :*, type: :keyword
     end
 
+    field :created_at, type: :datetime
     field :modified_at, type: :datetime
     field :deleted_at, type: :datetime
 
