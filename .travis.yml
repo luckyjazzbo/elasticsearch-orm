@@ -18,7 +18,7 @@ env:
 
 install:
   - sudo apt-get update -qq
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -qq docker-engine
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -qq docker-ce
   - sudo pip install awscli --ignore-installed six
 
 before_script:
@@ -29,7 +29,8 @@ before_script:
     chmod +x downloads/docker-compose;
     fi
   - sudo cp downloads/docker-compose /usr/local/bin
+  - eval $(aws ecr get-login --region eu-west-1 | sed -e 's/-e none//g')
+  - mkdir ~/.aws && printf "[default]\nregion=eu-west-1" > ~/.aws/config && printf "[superuser-portal-dev]\nregion=eu-west-1\n\n[superuser-portal-staging]\nregion=eu-west-1" > ~/.aws/credentials
 
 script:
-  - eval $(aws ecr get-login --region eu-west-1)
   - docker-compose -f docker-compose.travis.yml run app bundle exec rspec
