@@ -82,7 +82,7 @@ module Mes
           mapping_path = current_mapping_path + Array(path_suffix)
           root_mapping[:dynamic_templates] << {
             "#{mapping_path.join('_')}_#{name_suffix}" => {
-              match:   "#{mapping_path.join('.')}.*",
+              path_match:   "#{mapping_path.join('.')}.*",
               mapping: transform_mapping(opts)
             }
           }

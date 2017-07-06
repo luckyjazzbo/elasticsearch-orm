@@ -226,7 +226,7 @@ RSpec.describe 'Mappings' do
         .to(change { subject.field? :titles }.from(false).to(true))
 
       expect(subject.mapping).to eq(
-        dynamic_templates: [{ 'titles_multilang' => { match: "titles.*", mapping: { type: :text }}}],
+        dynamic_templates: [{ 'titles_multilang' => { path_match: "titles.*", mapping: { type: :text }}}],
         properties: {
           id: { type: :keyword },
           titles: {
@@ -247,8 +247,8 @@ RSpec.describe 'Mappings' do
 
         expect(subject.mapping).to eq(
           dynamic_templates: [
-            { 'titles_multilang' => { match: 'titles.*', mapping: { type: :text }}},
-            { 'root_object_titles_multilang' => { match: 'root_object.titles.*', mapping: { type: :text }}},
+            { 'titles_multilang' => { path_match: 'titles.*', mapping: { type: :text }}},
+            { 'root_object_titles_multilang' => { path_match: 'root_object.titles.*', mapping: { type: :text }}},
           ],
           properties: {
             id: { type: :keyword },
@@ -281,7 +281,7 @@ RSpec.describe 'Mappings' do
       end
 
       expect(subject.mapping).to eq(
-        dynamic_templates: [{ 'titles_all' => { match: "titles.*", mapping: { type: :text }}}],
+        dynamic_templates: [{ 'titles_all' => { path_match: "titles.*", mapping: { type: :text }}}],
         properties: { id: { type: :keyword }, titles: { properties: {} } }
       )
     end
