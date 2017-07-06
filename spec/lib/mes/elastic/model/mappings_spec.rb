@@ -275,6 +275,10 @@ RSpec.describe 'Mappings' do
   context 'dynamic templates' do
     let(:subject) { test_model }
 
+    before do
+      purge_test_index
+    end
+
     it 'defines fields' do
       subject.object :titles do
         field :*, type: :text
@@ -284,6 +288,23 @@ RSpec.describe 'Mappings' do
         dynamic_templates: [{ 'titles_all' => { path_match: "titles.*", mapping: { type: :text }}}],
         properties: { id: { type: :keyword }, titles: { properties: {} } }
       )
+    end
+
+    it 'works' do
+      subject.object :titles do
+        field :*, type: :keyword
+      end
+
+      subject.create_mapping
+      subject.new(titles: { test_field: 'bla' }).save
+      mapping = subject.client.indices.get_mapping(index: test_index, type: test_type)
+
+      actual_type = mapping.dig(
+        test_index, 'mappings', test_type,
+        'properties', 'titles',
+        'properties', 'test_field', 'type'
+      )
+      expect(actual_type).to eq('keyword')
     end
   end
 
