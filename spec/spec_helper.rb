@@ -14,3 +14,5 @@ WebMock.disable_net_connect!(
 )
 
 require 'mes-elastic'
+
+FactoryGirl.find_definitions

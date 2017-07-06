@@ -2,7 +2,10 @@ module Mes
   class Video < Mes::Elastic::Model
     config url: ENV['ELASTICSEARCH_URL'], index: 'lte'
 
-    LANGS = %i[default en de].freeze
+    def_filter   :autocomplete_filter, { type: 'edge_ngram', min_gram: 1, max_gram: 20 }
+    def_analyzer :autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'autocomplete_filter'] }
+
+    LANGS = %i[default en de fr it es].freeze
 
     field :tenant_id, type: :keyword
 
@@ -11,7 +14,7 @@ module Mes
     field :language, type: :keyword
     array :geo_locations, type: :keyword
 
-    multilang_field :titles, type: :text
+    multilang_field :titles, type: :text, analyzer: :autocomplete
     multilang_field :descriptions, type: :text
     multilang_field :taxonomy_titles, type: :text
     array :keywords, type: :text

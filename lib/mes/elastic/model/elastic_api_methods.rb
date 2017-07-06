@@ -17,6 +17,18 @@ module Mes
           @configured = true
         end
 
+        def def_filter(name, settings)
+          index_settings[:analysis] ||= {}
+          index_settings[:analysis][:filter] ||= {}
+          index_settings[:analysis][:filter][name] = settings
+        end
+
+        def def_analyzer(name, settings)
+          index_settings[:analysis] ||= {}
+          index_settings[:analysis][:analyzer] ||= {}
+          index_settings[:analysis][:analyzer][name] = settings
+        end
+
         def configured?
           @configured
         end
@@ -58,7 +70,7 @@ module Mes
         end
 
         def index_settings
-          @index_settings || superclass.try(:index_settings) || {}
+          @index_settings ||= superclass.try(:index_settings) || {}
         end
 
         def index_exists?

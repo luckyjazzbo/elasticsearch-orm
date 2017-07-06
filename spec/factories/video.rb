@@ -1,27 +1,26 @@
 FactoryGirl.define do
-  klass = Mes::Video
-
   multilang = proc do |&block|
-    klass::LANGS.map { |l| [l, block.call(l)] }.to_h
+    Mes::Video::LANGS.map { |l| [l, block.call(l)] }.to_h
   end
 
   to_create { |instance| instance.save(refresh: true) }
 
-  factory :video, class: klass do
+  factory :video, class: Mes::Video do
     id { "v-#{SecureRandom.uuid}" }
-    tenant_id { "t-#{SecureRandom.uuid}" }
+    tenant_id { 't-co' }
     business_rules { %w[stored_to_vas available_on_portal] }
     language 'de'
-    geo_locations ['de']
+    geo_locations ['de', 'en']
 
     sequence(:titles) { |n| multilang.call { |l| "Title #{l} #{n}" } }
     sequence(:descriptions) { |n| multilang.call { |l| "Descriptions #{l} #{n}" } }
     sequence(:taxonomy_titles) { |n| multilang.call { |l| "Taxonomy #{l} #{n}" } }
     keywords { ['jennifer lopez', 'lindsey stirling', 'brad pitt'] }
 
-    taxonomy_ids { Array.new(5) { "tx-#{SecureRandom.uuid}" } }
+    taxonomy_ids { (1..5).map { |n| "tx-#{n}" } }
 
     modified_at Time.current
+    created_at Time.current
     deleted_at nil
 
     start_date { 10.minutes.ago }
