@@ -22,6 +22,18 @@ RSpec.describe Mes::Elastic::BoolQuery do
         expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
       end
 
+      it 'excepts options' do
+        query_1_ = query_1
+        query_2_ = query_2
+
+        query = subject.send(filter_type, min_match: 1) do
+          raw(query_1_)
+          raw(query_2_)
+        end
+
+        expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2], minimum_should_match: 1 } })
+      end
+
       it 'does not rewrite existing filters' do
         query_1_ = query_1
         query_2_ = query_2
@@ -35,8 +47,8 @@ RSpec.describe Mes::Elastic::BoolQuery do
 
       it 'have access to global variables' do
         query = subject
-                .send(filter_type) { |query| query.raw(query_1) }
-                .send(filter_type) { |query| query.raw(query_2) }
+                .send(filter_type) { |q| q.raw(query_1) }
+                .send(filter_type) { |q| q.raw(query_2) }
 
         expect(query.body).to eq(query: { bool: { filter_type => [query_1, query_2] } })
       end
