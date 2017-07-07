@@ -4,6 +4,7 @@ module Mes
 
     def_filter   :autocomplete_filter, { type: 'edge_ngram', min_gram: 1, max_gram: 20 }
     def_analyzer :autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'autocomplete_filter'] }
+    def_analyzer :lowercase_keyword, { type: 'custom', tokenizer: 'keyword', filter: ['lowercase'] }
 
     LANGS = %i[default en de fr it es].freeze
 
@@ -11,8 +12,8 @@ module Mes
 
     array :business_rules, type: :keyword
 
-    field :language, type: :keyword
-    array :geo_locations, type: :keyword
+    field :language, type: :keyword, analyzer: :lowercase_keyword
+    array :geo_locations, type: :keyword, analyzer: :lowercase_keyword
 
     multilang_field :titles, type: :text, analyzer: :autocomplete
     multilang_field :descriptions, type: :text
