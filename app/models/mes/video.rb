@@ -15,8 +15,8 @@ module Mes
 
     field :tenant_id, type: :keyword
     array :business_rules, type: :keyword
-    field :language, type: :string, analyzer: :lowercased_keyword
-    array :geo_locations, type: :string, analyzer: :lowercased_keyword
+    field :language, type: :text, analyzer: :lowercased_keyword, fielddata: true
+    array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
     multilang_field :titles, type: :text,
                              analyzer: :default_autocomplete,
