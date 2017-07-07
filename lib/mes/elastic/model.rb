@@ -5,6 +5,7 @@ require 'mes/elastic/model/lookup_methods'
 require 'mes/elastic/model/crud_actions'
 require 'mes/elastic/model/multitype'
 require 'mes/elastic/model/errors'
+require 'mes/elastic/model/language_analyzers'
 
 module Mes
   module Elastic

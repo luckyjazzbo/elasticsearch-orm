@@ -2,20 +2,25 @@ module Mes
   class Video < Mes::Elastic::Model
     config url: ENV['ELASTICSEARCH_URL'], index: 'lte'
 
-    def_filter   :autocomplete_filter, { type: 'edge_ngram', min_gram: 1, max_gram: 20 }
-    def_analyzer :autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'autocomplete_filter'] }
-    def_analyzer :lowercase_keyword, { type: 'custom', tokenizer: 'keyword', filter: ['lowercase'] }
+    def_filter :edge_ngrams, { type: 'edge_ngram', min_gram: 1, max_gram: 20 }
+    def_analyzer :lowercased_keyword,   { type: 'custom', tokenizer: 'keyword', filter: ['lowercase'] }
+    def_analyzer :default_autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'edge_ngrams'] }
 
-    LANGS = %i[default en de fr it es].freeze
+    Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
+      analyzer.filter.each do |name, definition|
+        def_filter name, definition
+      end
+      def_analyzer "#{analyzer.name}_autocomplete", analyzer.extend_analyzer(filter: ['edge_ngrams'])
+    end
 
     field :tenant_id, type: :keyword
-
     array :business_rules, type: :keyword
+    field :language, type: :text, analyzer: :lowercased_keyword
+    array :geo_locations, type: :text, analyzer: :lowercased_keyword
 
-    field :language, type: :keyword, analyzer: :lowercase_keyword
-    array :geo_locations, type: :keyword, analyzer: :lowercase_keyword
-
-    multilang_field :titles, type: :text, analyzer: :autocomplete
+    multilang_field :titles, type: :text,
+                             analyzer: :default_autocomplete,
+                             lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "#{analyzer.name}_autocomplete"] }.to_h
     multilang_field :descriptions, type: :text
     multilang_field :taxonomy_titles, type: :text
     array :keywords, type: :text

@@ -219,7 +219,13 @@ RSpec.describe 'Mappings' do
   end
 
   describe '.multilang_field' do
-    let(:subject) { test_model }
+    subject { test_model }
+    let(:multilang_mapping) do
+      Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS
+        .map { |analyzer| [analyzer.short_name, { type: :text, analyzer: analyzer.name }] }
+        .to_h
+        .merge(default: { type: :text })
+    end
 
     it 'defines fields' do
       expect { subject.multilang_field :titles, type: :text }
@@ -229,11 +235,7 @@ RSpec.describe 'Mappings' do
         dynamic_templates: [{ 'titles_multilang' => { path_match: "titles.*", mapping: { type: :text }}}],
         properties: {
           id: { type: :keyword },
-          titles: {
-            properties: {
-              default: { type: :text }
-            }
-          }
+          titles: { properties: multilang_mapping }
         }
       )
     end
@@ -252,18 +254,10 @@ RSpec.describe 'Mappings' do
           ],
           properties: {
             id: { type: :keyword },
-            titles: {
-              properties: {
-                default: { type: :text },
-              }
-            },
+            titles: { properties: multilang_mapping },
             root_object: {
               properties: {
-                titles: {
-                  properties: {
-                    default: { type: :text }
-                  }
-                }
+                titles: { properties: multilang_mapping }
               }
             }
           }

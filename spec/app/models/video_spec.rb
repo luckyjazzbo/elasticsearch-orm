@@ -3,7 +3,7 @@ require 'spec_helper'
 RSpec.describe Mes::Video do
   before(:all) do
     wait_for_being_available(described_class.client)
-    described_class.create_index
+    described_class.purge_index!
     described_class.create_mapping
   end
 

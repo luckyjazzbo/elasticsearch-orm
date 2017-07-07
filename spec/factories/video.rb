@@ -1,6 +1,6 @@
 FactoryGirl.define do
   multilang = proc do |&block|
-    Mes::Video::LANGS.map { |l| [l, block.call(l)] }.to_h
+    Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, block.call(analyzer.short_name)] }.to_h
   end
 
   to_create { |instance| instance.save(refresh: true) }
