@@ -35,14 +35,14 @@ module Mes
         end
 
         body[:query][:bool] ||= {}
-        body[:query][:bool].merge!(prepare_options(opts))
+        body[:query][:bool].merge!(prepare_bool_options(opts))
         body[:query][:bool][filter_type] ||= []
         body[:query][:bool][filter_type] += group.queries
 
         self
       end
 
-      def prepare_options(opts)
+      def prepare_bool_options(opts)
         opts[:minimum_should_match] = opts.delete(:min_match) if opts.key?(:min_match)
         opts
       end
