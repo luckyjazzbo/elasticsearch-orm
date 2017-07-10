@@ -1,5 +1,5 @@
 module Mes
   module Elastic
-    VERSION = '3.4.2'.freeze
+    VERSION = '4.3.1'.freeze
   end
 end
