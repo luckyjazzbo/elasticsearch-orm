@@ -13,20 +13,20 @@ module Mes
         to_bool_query.find(id)
       end
 
-      def must(&block)
-        to_bool_query(:must, &block)
+      def must(opts = {}, &block)
+        to_bool_query(:must, opts, &block)
       end
 
-      def must_not(&block)
-        to_bool_query(:must_not, &block)
+      def must_not(opts = {}, &block)
+        to_bool_query(:must_not, opts, &block)
       end
 
-      def should(&block)
-        to_bool_query(:should, &block)
+      def should(opts = {}, &block)
+        to_bool_query(:should, opts, &block)
       end
 
-      def filter(&block)
-        to_bool_query(:filter, &block)
+      def filter(opts = {}, &block)
+        to_bool_query(:filter, opts, &block)
       end
 
       private
@@ -43,12 +43,12 @@ module Mes
         end
       end
 
-      def to_bool_query(filter_type = nil, &block)
+      def to_bool_query(filter_type = nil, opts = {}, &block)
         matching = body_matching_part[:query]
         BoolQuery.new(model).tap do |query|
           query.must { raw(matching) }
           query.body.merge!(body_arranging_part)
-          query.send(filter_type, &block) if filter_type
+          query.send(filter_type, opts, &block) if filter_type
         end
       end
 

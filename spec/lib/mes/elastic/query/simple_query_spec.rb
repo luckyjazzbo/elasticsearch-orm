@@ -129,4 +129,28 @@ RSpec.describe Mes::Elastic::SimpleQuery do
       )
     end
   end
+
+  describe '#should' do
+    subject do
+      query.should(min_match: 1) do
+        terms :_id, '1'
+        terms :_id, '2'
+      end
+    end
+
+    it 'works' do
+      expect(subject.body).to eq(
+        query: {
+          bool: {
+            must: [{}],
+            minimum_should_match: 1,
+            should: [
+              { term: { _id: '1' } },
+              { term: { _id: '2' } },
+            ],
+          },
+        }
+      )
+    end
+  end
 end
