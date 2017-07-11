@@ -33,17 +33,37 @@ RSpec.shared_context 'with test indices' do
     Mes.send(:remove_const, name) if Mes.constants.include?(name)
   end
 
-  def test_index_exists?
-    test_client.indices.exists?(index: test_index)
+  def index_exists?(index_name)
+    test_client.indices.exists?(index: index_name)
   end
 
   def create_test_index
     one_shard_only = { body: { settings: index_settings_for_one_shard } }
-    test_client.indices.create(one_shard_only.merge(index: test_index)) unless test_index_exists?
+    test_client.indices.create(one_shard_only.merge(index: test_index)) unless index_exists?(test_index)
+  end
+
+  def create_index(index_name)
+    test_client.indices.create(index: index_name)
   end
 
   def drop_test_index
-    test_client.indices.delete(index: test_index) if test_index_exists?
+    drop_index(test_index)
+  end
+
+  def drop_index(index_name)
+    test_client.indices.delete(index: index_name) if index_exists?(index_name)
+  end
+
+  def create_alias(alias_name, index_name)
+    test_client.indices.put_alias(name: alias_name, index: index_name)
+  end
+
+  def drop_alias(alias_name, index_name)
+    test_client.indices.delete_alias(name: alias_name, index: index_name) if alias_exists?(alias_name, index_name)
+  end
+
+  def alias_exists?(alias_name, index_name)
+    test_client.indices.exists_alias(name: new_test_alias, index: test_index)
   end
 
   def purge_test_index

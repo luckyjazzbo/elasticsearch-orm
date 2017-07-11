@@ -79,21 +79,72 @@ module Mes
           end
         end
 
-        def create_index
+        def create_index!
           with_error_convertion do
             client.indices.create(index: index, body: { settings: index_settings || {} }) unless index_exists?
           end
         end
 
+        def create_index(index_name = nil, alias_name = nil, body = {})
+          if index_name.nil?
+            index_name = "lte-#{Time.now.strftime('%Y%m%d%H%M%S')}"
+            puts "Generated index_name: #{index_name}"
+          end
+
+          if alias_name.nil?
+            alias_name = 'lte'
+            puts "Usin default alias_name: #{alias_name}"
+          end
+
+          with_error_convertion do
+            client.indices.create(index: index_name, body: body)
+
+            unless client.indices.exists_alias(name: alias_name)
+              create_alias(alias_name, index_name)
+            end
+          end
+        end
+
+        def delete_index(index_name)
+          with_error_convertion do
+            client.indices.delete(index: index_name)
+          end
+        end
+
+        def create_alias(alias_name, index_name)
+          with_error_convertion do
+            client.indices.put_alias(name: alias_name, index: index_name)
+          end
+        end
+
+        def delete_alias(alias_name, index_name)
+          with_error_convertion do
+            client.indices.delete_alias(name: alias_name, index: index_name)
+          end
+        end
+
+        def switch_alias(alias_name, from_index, to_index)
+          with_error_convertion do
+            client.indices.update_aliases(
+              body: {
+                actions: [
+                  { remove: { index: from_index, alias: alias_name } },
+                  { add:    { index: to_index, alias: alias_name } },
+                ],
+              }
+            )
+          end
+        end
+
         def drop_index!
           with_error_convertion do
-            client.indices.delete(index: index) if index_exists?
+            delete_index(index) if index_exists?
           end
         end
 
         def purge_index!
           drop_index!
-          create_index
+          create_index!
         end
 
         def create_mapping

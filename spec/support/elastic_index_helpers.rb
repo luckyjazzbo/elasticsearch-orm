@@ -17,7 +17,7 @@ module ElasticIndexHelpers
     # Check that cluster is available
     models.map(&:client).each(&method(:wait_for_being_available))
 
-    models.each(&:create_index)
+    models.each(&:create_index!)
 
     models.each do |m|
       loop do
