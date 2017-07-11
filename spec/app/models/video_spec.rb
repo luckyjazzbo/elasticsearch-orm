@@ -17,4 +17,11 @@ RSpec.describe Mes::Video do
       .to change { described_class.all.total_count }
       .from(0).to(1)
   end
+
+  context 'searching for können' do
+    let!(:video) { FactoryGirl.create(:video, titles: { de: 'können' }) }
+    it 'returns the video' do
+      expect(described_class.match('titles.de', 'können').total_count).to eq(1)
+    end
+  end
 end

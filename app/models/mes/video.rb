@@ -10,12 +10,17 @@ module Mes
       analyzer.filter.each do |name, definition|
         def_filter name, definition
       end
-      def_analyzer "#{analyzer.name}_autocomplete", analyzer.extend_analyzer(filter: ['ngrams_2_20'])
+      def_analyzer "glomex_#{analyzer.name}", analyzer.analyzer
+      def_analyzer "glomex_#{analyzer.name}_autocomplete", analyzer.extend_analyzer(filter: ['ngrams_2_20'])
     end
 
+    MULTILANG_ANALYZER = {
+      analyzer: :standard,
+      lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "glomex_#{analyzer.name}"] }.to_h
+    }
     MULTILANG_AUTOCOMPLETE_ANALYZER = {
       analyzer: :default_autocomplete,
-      lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "#{analyzer.name}_autocomplete"] }.to_h
+      lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "glomex_#{analyzer.name}_autocomplete"] }.to_h
     }
 
     field :tenant_id, type: :keyword
@@ -23,9 +28,9 @@ module Mes
     field :language, type: :text, analyzer: :lowercased_keyword, fielddata: true
     array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
-    multilang_field :titles, type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) }
-    multilang_field :descriptions, type: :text
-    multilang_field :taxonomy_titles, type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) }
+    multilang_field :titles, MULTILANG_ANALYZER.merge(type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) })
+    multilang_field :descriptions, MULTILANG_ANALYZER.merge(type: :text)
+    multilang_field :taxonomy_titles, MULTILANG_ANALYZER.merge(type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) })
     array :keywords, type: :text
 
     array :taxonomy_ids, type: :keyword

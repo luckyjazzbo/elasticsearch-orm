@@ -28,7 +28,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'arabic_stop', 'arabic_normalization', 'arabic_stemmer']
+              filter: ['lowercase', 'arabic_normalization', 'arabic_stemmer']
             }
           ),
           new(
@@ -40,7 +40,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'armenian_stop', 'armenian_stemmer']
+              filter: ['lowercase', 'armenian_stemmer']
             }
           ),
           new(
@@ -52,7 +52,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'basque_stop', 'basque_stemmer']
+              filter: ['lowercase', 'basque_stemmer']
             }
           ),
           new(
@@ -64,7 +64,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'brazilian_stop', 'brazilian_stemmer']
+              filter: ['lowercase', 'brazilian_stemmer']
             }
           ),
           new(
@@ -77,7 +77,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['catalan_elision', 'lowercase', 'catalan_stop', 'catalan_stemmer']
+              filter: ['catalan_elision', 'lowercase', 'catalan_stemmer']
             }
           ),
           new(
@@ -89,7 +89,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'czech_stop', 'czech_stemmer']
+              filter: ['lowercase', 'czech_stemmer']
             }
           ),
           new(
@@ -101,7 +101,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'danish_stop', 'danish_stemmer']
+              filter: ['lowercase', 'danish_stemmer']
             }
           ),
           new(
@@ -114,7 +114,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'dutch_stop', 'dutch_override', 'dutch_stemmer']
+              filter: ['lowercase', 'dutch_override', 'dutch_stemmer']
             }
           ),
           new(
@@ -127,7 +127,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['english_possessive_stemmer', 'lowercase', 'english_stop', 'english_stemmer']
+              filter: ['english_possessive_stemmer', 'lowercase', 'english_stemmer']
             }
           ),
           new(
@@ -139,7 +139,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'finnish_stop', 'finnish_stemmer']
+              filter: ['lowercase', 'finnish_stemmer']
             }
           ),
           new(
@@ -152,7 +152,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['french_elision', 'lowercase', 'french_stop', 'french_stemmer']
+              filter: ['french_elision', 'lowercase', 'french_stemmer']
             }
           ),
           new(
@@ -164,7 +164,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'galician_stop', 'galician_stemmer']
+              filter: ['lowercase', 'galician_stemmer']
             }
           ),
           new(
@@ -176,7 +176,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'german_stop', 'german_normalization', 'german_stemmer']
+              filter: ['lowercase', 'german_normalization', 'german_stemmer']
             }
           ),
           new(
@@ -189,7 +189,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['greek_lowercase', 'greek_stop', 'greek_stemmer']
+              filter: ['greek_lowercase', 'greek_stemmer']
             }
           ),
           new(
@@ -201,7 +201,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'indic_normalization', 'hindi_normalization', 'hindi_stop', 'hindi_stemmer']
+              filter: ['lowercase', 'indic_normalization', 'hindi_normalization', 'hindi_stemmer']
             }
           ),
           new(
@@ -213,7 +213,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'hungarian_stop', 'hungarian_stemmer']
+              filter: ['lowercase', 'hungarian_stemmer']
             }
           ),
           new(
@@ -225,7 +225,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'indonesian_stop', 'indonesian_stemmer']
+              filter: ['lowercase', 'indonesian_stemmer']
             }
           ),
           new(
@@ -239,7 +239,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['irish_stop', 'irish_elision', 'irish_lowercase', 'irish_stemmer']
+              filter: ['irish_elision', 'irish_lowercase', 'irish_stemmer']
             }
           ),
           new(
@@ -252,7 +252,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['italian_elision', 'lowercase', 'italian_stop', 'italian_stemmer']
+              filter: ['italian_elision', 'lowercase', 'italian_stemmer']
             }
           ),
           new(
@@ -264,7 +264,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'latvian_stop', 'latvian_stemmer']
+              filter: ['lowercase', 'latvian_stemmer']
             }
           ),
           new(
@@ -276,7 +276,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'lithuanian_stop', 'lithuanian_stemmer']
+              filter: ['lowercase', 'lithuanian_stemmer']
             }
           ),
           new(
@@ -288,7 +288,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'norwegian_stop', 'norwegian_stemmer']
+              filter: ['lowercase', 'norwegian_stemmer']
             }
           ),
           new(
@@ -300,7 +300,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'portuguese_stop', 'portuguese_stemmer']
+              filter: ['lowercase', 'portuguese_stemmer']
             }
           ),
           new(
@@ -312,7 +312,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'romanian_stop', 'romanian_stemmer']
+              filter: ['lowercase', 'romanian_stemmer']
             }
           ),
           new(
@@ -324,7 +324,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'russian_stop', 'russian_stemmer']
+              filter: ['lowercase', 'russian_stemmer']
             }
           ),
           new(
@@ -336,7 +336,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'spanish_stop', 'spanish_stemmer']
+              filter: ['lowercase', 'spanish_stemmer']
             }
           ),
           new(
@@ -348,7 +348,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'swedish_stop', 'swedish_stemmer']
+              filter: ['lowercase', 'swedish_stemmer']
             }
           ),
           new(
@@ -361,7 +361,7 @@ module Mes
             },
             analyzer: {
               tokenizer: 'standard',
-              filter: ['apostrophe', 'turkish_lowercase', 'turkish_stop', 'turkish_stemmer']
+              filter: ['apostrophe', 'turkish_lowercase', 'turkish_stemmer']
             }
           ),
           new(
