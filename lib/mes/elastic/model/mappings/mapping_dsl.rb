@@ -45,18 +45,30 @@ module Mes
         end
 
         def multilang_field(name, opts)
-          lang_analyzers = opts.delete(:lang_analyzers) || {}
-          add_dynamic_template(opts, path_suffix: name, name_suffix: 'multilang')
+          add_dynamic_template(multilang_opts(opts), path_suffix: name, name_suffix: 'multilang')
           object name do
-            field :default, opts
-
             Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
-              field analyzer.short_name, opts.merge(analyzer: lang_analyzers[analyzer.short_name] || analyzer.name)
+              field analyzer.short_name, multilang_opts(opts.merge(analyzer: analyzer.name), lang: analyzer.short_name)
             end
           end
         end
 
         private
+
+        def multilang_opts(opts, lang: nil)
+          opts = opts.deep_dup
+          if lang
+            opts[:analyzer] = opts.dig(:lang_analyzers, lang) if opts.dig(:lang_analyzers, lang)
+            (opts[:fields] || {}).each do |field_name, field_opts|
+              field_opts[:analyzer] = field_opts.dig(:lang_analyzers, lang) if field_opts.dig(:lang_analyzers, lang)
+            end
+          end
+          opts.delete(:lang_analyzers)
+          (opts[:fields] || {}).each do |field_name, field_opts|
+            field_opts.delete(:lang_analyzers)
+          end
+          opts
+        end
 
         def catch_object_mapping(path_name, &block)
           ObjectFieldDefiner.new(root_mapping, current_mapping_path + [path_name]).tap do |definer|
