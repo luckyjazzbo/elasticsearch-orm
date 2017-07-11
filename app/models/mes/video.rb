@@ -2,25 +2,27 @@ module Mes
   class Video < Mes::Elastic::Model
     config url: ENV['ELASTICSEARCH_URL'], index: 'lte'
 
-    def_filter :ngrams_2_20, { type: 'edge_ngram', min_gram: 2, max_gram: 20 }
+    def_filter :edge_ngrams_2_20, { type: 'edge_ngram', min_gram: 2, max_gram: 20 }
     def_analyzer :lowercased_keyword,   { type: 'custom', tokenizer: 'keyword', filter: ['lowercase'] }
-    def_analyzer :default_autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'ngrams_2_20'] }
+    def_analyzer :default_autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'edge_ngrams_2_20'] }
 
     Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
-      analyzer.filter.each do |name, definition|
-        def_filter name, definition
+      analyzer.filter_definitions.each do |name, filter|
+        def_filter name, filter
       end
-      def_analyzer "glomex_#{analyzer.name}", analyzer.analyzer
-      def_analyzer "glomex_#{analyzer.name}_autocomplete", analyzer.extend_analyzer(filter: ['ngrams_2_20'])
+      def_analyzer "glomex_#{analyzer.name}", analyzer.reject_filters { |f| f.end_with?('_stop') }.to_h
+      def_analyzer "glomex_#{analyzer.name}_autocomplete", analyzer.reject_filters { |f| f.end_with?('_stop') || f.end_with?('_stemmer') }.add_filters('edge_ngrams_2_20').to_h
     end
 
-    MULTILANG_ANALYZER = {
+    MULTILANG_OPTS = {
+      type: :text,
       analyzer: :standard,
-      lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "glomex_#{analyzer.name}"] }.to_h
+      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}" }] }.to_h
     }
-    MULTILANG_AUTOCOMPLETE_ANALYZER = {
+    MULTILANG_AUTOCOMPLETE_OPTS = {
+      type: :text,
       analyzer: :default_autocomplete,
-      lang_analyzers: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.short_name, "glomex_#{analyzer.name}_autocomplete"] }.to_h
+      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_autocomplete" }] }.to_h
     }
 
     field :tenant_id, type: :keyword
@@ -28,9 +30,9 @@ module Mes
     field :language, type: :text, analyzer: :lowercased_keyword, fielddata: true
     array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
-    multilang_field :titles, MULTILANG_ANALYZER.merge(type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) })
-    multilang_field :descriptions, MULTILANG_ANALYZER.merge(type: :text)
-    multilang_field :taxonomy_titles, MULTILANG_ANALYZER.merge(type: :text, fields: { autocomplete: { type: :text }.merge(MULTILANG_AUTOCOMPLETE_ANALYZER) })
+    multilang_field :titles, MULTILANG_OPTS.merge(fields: { autocomplete: MULTILANG_AUTOCOMPLETE_OPTS })
+    multilang_field :descriptions, MULTILANG_OPTS
+    multilang_field :taxonomy_titles, MULTILANG_OPTS.merge(fields: { autocomplete: MULTILANG_AUTOCOMPLETE_OPTS })
     array :keywords, type: :text
 
     array :taxonomy_ids, type: :keyword

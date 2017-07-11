@@ -222,7 +222,7 @@ RSpec.describe 'Mappings' do
     subject { test_model }
     let(:multilang_mapping) do
       Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS
-        .map { |analyzer| [analyzer.short_name, { type: :text, analyzer: analyzer.name }] }
+        .map { |analyzer| [analyzer.lang, { type: :text, analyzer: analyzer.name }] }
         .to_h
     end
 
@@ -243,7 +243,7 @@ RSpec.describe 'Mappings' do
       expect do
         subject.multilang_field :titles,
           type: :text,
-          fields: { autocomplete: { type: :text, analyzer: :english, lang_analyzers: { de: :german } } }
+          fields: { autocomplete: { type: :text, analyzer: :english, lang_opts: { de: { analyzer: :german } } } }
       end.to(change { subject.field? :titles }.from(false).to(true))
 
       expect(subject.mapping).to eq(
@@ -252,7 +252,7 @@ RSpec.describe 'Mappings' do
           id: { type: :keyword },
           titles: {
             properties: Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS
-                        .map { |analyzer| [analyzer.short_name, { type: :text, analyzer: analyzer.name, fields: { autocomplete: { type: :text, analyzer: (analyzer.short_name == :de ? :german : :english) }}}] }
+                        .map { |analyzer| [analyzer.lang, { type: :text, analyzer: analyzer.name, fields: { autocomplete: { type: :text, analyzer: (analyzer.lang == :de ? :german : :english) }}}] }
                         .to_h
             }
         }

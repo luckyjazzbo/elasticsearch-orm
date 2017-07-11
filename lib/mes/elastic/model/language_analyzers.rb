@@ -2,375 +2,388 @@ module Mes
   module Elastic
     class Model
       class Analyzer
-        attr_reader :name, :short_name, :analyzer, :filter
+        attr_reader :name, :lang, :analyzer_definition, :filter_definitions
 
-        def initialize(name:, short_name:, analyzer:, filter:)
+        def initialize(name:, lang:, analyzer_definition:, filter_definitions:)
           @name = name
-          @short_name = short_name
-          @analyzer = analyzer
-          @filter = filter
+          @lang = lang
+          @analyzer_definition = analyzer_definition
+          @filter_definitions = filter_definitions
         end
 
-        def extend_analyzer(opts)
-          analyzer.deep_dup.tap do |copy|
-            copy[:type] = 'custom'
-            copy[:filter] += Array(opts[:filter])
+        def reject_filters(&block)
+          dup.tap do |analyzer|
+            analyzer.analyzer_definition[:filter].reject!(&block)
           end
+        end
+
+        def add_filters(*filters)
+          dup.tap do |analyzer|
+            analyzer.analyzer_definition[:filter] += filters
+          end
+        end
+
+        def dup
+          Analyzer.new(name: name, lang: lang, analyzer_definition: analyzer_definition.deep_dup, filter_definitions: filter_definitions.deep_dup)
+        end
+
+        def to_h
+          analyzer_definition
         end
 
         LANGUAGE_ANALYZERS = [
           new(
             name: :arabic,
-            short_name: :ar,
-            filter: {
+            lang: :ar,
+            filter_definitions: {
               arabic_stop: { type: 'stop', stopwords: '_arabic_' },
               arabic_stemmer: { type: 'stemmer', language: 'arabic' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'arabic_normalization', 'arabic_stemmer']
+              filter: ['lowercase', 'arabic_stop', 'arabic_normalization', 'arabic_stemmer']
             }
           ),
           new(
             name: :armenian,
-            short_name: :hy,
-            filter: {
+            lang: :hy,
+            filter_definitions: {
               armenian_stop: { type: 'stop', stopwords: '_armenian_' },
               armenian_stemmer: { type: 'stemmer', language: 'armenian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'armenian_stemmer']
+              filter: ['lowercase', 'armenian_stop', 'armenian_stemmer']
             }
           ),
           new(
             name: :basque,
-            short_name: :eu,
-            filter: {
+            lang: :eu,
+            filter_definitions: {
               basque_stop: { type: 'stop', stopwords: '_basque_' },
               basque_stemmer: { type: 'stemmer', language: 'basque' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'basque_stemmer']
+              filter: ['lowercase', 'basque_stop', 'basque_stemmer']
             }
           ),
           new(
             name: :brazilian,
-            short_name: :bg,
-            filter: {
+            lang: :bg,
+            filter_definitions: {
               brazilian_stop: { type: 'stop', stopwords: '_brazilian_' },
               brazilian_stemmer: { type: 'stemmer', language: 'brazilian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'brazilian_stemmer']
+              filter: ['lowercase', 'brazilian_stop', 'brazilian_stemmer']
             }
           ),
           new(
             name: :catalan,
-            short_name: :ca,
-            filter: {
+            lang: :ca,
+            filter_definitions: {
               catalan_elision: { type: 'elision', 'articles':   [ 'd', 'l', 'm', 'n', 's', 't'] },
               catalan_stop: { type: 'stop', stopwords: '_catalan_' },
               catalan_stemmer: { type: 'stemmer', language: 'catalan' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['catalan_elision', 'lowercase', 'catalan_stemmer']
+              filter: ['catalan_elision', 'lowercase', 'catalan_stop', 'catalan_stemmer']
             }
           ),
           new(
             name: :czech,
-            short_name: :cs,
-            filter: {
+            lang: :cs,
+            filter_definitions: {
               czech_stop: { type: 'stop', stopwords: '_czech_' },
               czech_stemmer: { type: 'stemmer', language: 'czech' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'czech_stemmer']
+              filter: ['lowercase', 'czech_stop', 'czech_stemmer']
             }
           ),
           new(
             name: :danish,
-            short_name: :da,
-            filter: {
+            lang: :da,
+            filter_definitions: {
               danish_stop: { type: 'stop', stopwords: '_danish_' },
               danish_stemmer: { type: 'stemmer', language: 'danish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'danish_stemmer']
+              filter: ['lowercase', 'danish_stop', 'danish_stemmer']
             }
           ),
           new(
             name: :dutch,
-            short_name: :nl,
-            filter: {
+            lang: :nl,
+            filter_definitions: {
               dutch_stop: { type: 'stop', stopwords: '_dutch_' },
               dutch_stemmer: { type: 'stemmer', language: 'dutch' },
               dutch_override: { type: 'stemmer_override', 'rules': [ 'fiets=>fiets', 'bromfiets=>bromfiets', 'ei=>eier', 'kind=>kinder' ] }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'dutch_override', 'dutch_stemmer']
+              filter: ['lowercase', 'dutch_stop', 'dutch_override', 'dutch_stemmer']
             }
           ),
           new(
             name: :english,
-            short_name: :en,
-            filter: {
+            lang: :en,
+            filter_definitions: {
               english_stop: { type: 'stop', stopwords: '_english_' },
               english_stemmer: { type: 'stemmer', language: 'english' },
               english_possessive_stemmer: { type: 'stemmer', language: 'possessive_english' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['english_possessive_stemmer', 'lowercase', 'english_stemmer']
+              filter: ['english_possessive_stemmer', 'lowercase', 'english_stop', 'english_stemmer']
             }
           ),
           new(
             name: :finnish,
-            short_name: :fi,
-            filter: {
+            lang: :fi,
+            filter_definitions: {
               finnish_stop: { type: 'stop', stopwords: '_finnish_' },
               finnish_stemmer: { type: 'stemmer', language: 'finnish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'finnish_stemmer']
+              filter: ['lowercase', 'finnish_stop', 'finnish_stemmer']
             }
           ),
           new(
             name: :french,
-            short_name: :fr,
-            filter: {
+            lang: :fr,
+            filter_definitions: {
               french_elision: { type: 'elision', 'articles_case': true, 'articles': [ 'l', 'm', 't', 'qu', 'n', 's', 'j', 'd', 'c', 'jusqu', 'quoiqu', 'lorsqu', 'puisqu' ] },
               french_stop: { type: 'stop', stopwords: '_french_' },
               french_stemmer: { type: 'stemmer', language: 'light_french' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['french_elision', 'lowercase', 'french_stemmer']
+              filter: ['french_elision', 'lowercase', 'french_stop', 'french_stemmer']
             }
           ),
           new(
             name: :galician,
-            short_name: :gl,
-            filter: {
+            lang: :gl,
+            filter_definitions: {
               galician_stop: { type: 'stop', stopwords: '_galician_' },
               galician_stemmer: { type: 'stemmer', language: 'galician' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'galician_stemmer']
+              filter: ['lowercase', 'galician_stop', 'galician_stemmer']
             }
           ),
           new(
             name: :german,
-            short_name: :de,
-            filter: {
+            lang: :de,
+            filter_definitions: {
               german_stop: { type: 'stop', stopwords: '_german_' },
               german_stemmer: { type: 'stemmer', language: 'light_german' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'german_normalization', 'german_stemmer']
+              filter: ['lowercase', 'german_stop', 'german_normalization', 'german_stemmer']
             }
           ),
           new(
             name: :greek,
-            short_name: :el,
-            filter: {
+            lang: :el,
+            filter_definitions: {
               greek_stop: { type: 'stop', stopwords: '_greek_' },
               greek_lowercase: { type: 'lowercase', language: 'greek' },
               greek_stemmer: { type: 'stemmer', language: 'greek' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['greek_lowercase', 'greek_stemmer']
+              filter: ['greek_lowercase', 'greek_stop', 'greek_stemmer']
             }
           ),
           new(
             name: :hindi,
-            short_name: :hi,
-            filter: {
+            lang: :hi,
+            filter_definitions: {
               hindi_stop: { type: 'stop', stopwords: '_hindi_' },
               hindi_stemmer: { type: 'stemmer', language: 'hindi' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'indic_normalization', 'hindi_normalization', 'hindi_stemmer']
+              filter: ['lowercase', 'indic_normalization', 'hindi_normalization', 'hindi_stop', 'hindi_stemmer']
             }
           ),
           new(
             name: :hungarian,
-            short_name: :hu,
-            filter: {
+            lang: :hu,
+            filter_definitions: {
               hungarian_stop: { type: 'stop', stopwords: '_hungarian_' },
               hungarian_stemmer: { type: 'stemmer', language: 'hungarian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'hungarian_stemmer']
+              filter: ['lowercase', 'hungarian_stop', 'hungarian_stemmer']
             }
           ),
           new(
             name: :indonesian,
-            short_name: :id,
-            filter: {
+            lang: :id,
+            filter_definitions: {
               indonesian_stop: { type: 'stop', stopwords: '_indonesian_' },
               indonesian_stemmer: { type: 'stemmer', language: 'indonesian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'indonesian_stemmer']
+              filter: ['lowercase', 'indonesian_stop', 'indonesian_stemmer']
             }
           ),
           new(
             name: :irish,
-            short_name: :ga,
-            filter: {
+            lang: :ga,
+            filter_definitions: {
               irish_elision: { type: 'elision', 'articles': [ 'h', 'n', 't' ] },
               irish_stop: { type: 'stop', stopwords: '_irish_' },
               irish_lowercase: { type: 'lowercase', language: 'irish' },
               irish_stemmer: { type: 'stemmer', language: 'irish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['irish_elision', 'irish_lowercase', 'irish_stemmer']
+              filter: ['irish_stop', 'irish_elision', 'irish_lowercase', 'irish_stemmer']
             }
           ),
           new(
             name: :italian,
-            short_name: :it,
-            filter: {
+            lang: :it,
+            filter_definitions: {
               italian_elision: { type: 'elision', 'articles': [ 'c', 'l', 'all', 'dall', 'dell', 'nell', 'sull', 'coll', 'pell', 'gl', 'agl', 'dagl', 'degl', 'negl', 'sugl', 'un', 'm', 't', 's', 'v', 'd' ] },
               italian_stop: { type: 'stop', stopwords: '_italian_' },
               italian_stemmer: { type: 'stemmer', language: 'light_italian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['italian_elision', 'lowercase', 'italian_stemmer']
+              filter: ['italian_elision', 'lowercase', 'italian_stop', 'italian_stemmer']
             }
           ),
           new(
             name: :latvian,
-            short_name: :lv,
-            filter: {
+            lang: :lv,
+            filter_definitions: {
               latvian_stop: { type: 'stop', stopwords: '_latvian_' },
               latvian_stemmer: { type: 'stemmer', language: 'latvian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'latvian_stemmer']
+              filter: ['lowercase', 'latvian_stop', 'latvian_stemmer']
             }
           ),
           new(
             name: :lithuanian,
-            short_name: :lt,
-            filter: {
+            lang: :lt,
+            filter_definitions: {
               lithuanian_stop: { type: 'stop', stopwords: '_lithuanian_' },
               lithuanian_stemmer: { type: 'stemmer', language: 'lithuanian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'lithuanian_stemmer']
+              filter: ['lowercase', 'lithuanian_stop', 'lithuanian_stemmer']
             }
           ),
           new(
             name: :norwegian,
-            short_name: :no,
-            filter: {
+            lang: :no,
+            filter_definitions: {
               norwegian_stop: { type: 'stop', stopwords: '_norwegian_' },
               norwegian_stemmer: { type: 'stemmer', language: 'norwegian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'norwegian_stemmer']
+              filter: ['lowercase', 'norwegian_stop', 'norwegian_stemmer']
             }
           ),
           new(
             name: :portuguese,
-            short_name: :pt,
-            filter: {
+            lang: :pt,
+            filter_definitions: {
               portuguese_stop: { type: 'stop', stopwords: '_portuguese_' },
               portuguese_stemmer: { type: 'stemmer', language: 'light_portuguese' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'portuguese_stemmer']
+              filter: ['lowercase', 'portuguese_stop', 'portuguese_stemmer']
             }
           ),
           new(
             name: :romanian,
-            short_name: :ro,
-            filter: {
+            lang: :ro,
+            filter_definitions: {
               romanian_stop: { type: 'stop', stopwords: '_romanian_' },
               romanian_stemmer: { type: 'stemmer', language: 'romanian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'romanian_stemmer']
+              filter: ['lowercase', 'romanian_stop', 'romanian_stemmer']
             }
           ),
           new(
             name: :russian,
-            short_name: :ru,
-            filter: {
+            lang: :ru,
+            filter_definitions: {
               russian_stop: { type: 'stop', stopwords: '_russian_' },
               russian_stemmer: { type: 'stemmer', language: 'russian' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'russian_stemmer']
+              filter: ['lowercase', 'russian_stop', 'russian_stemmer']
             }
           ),
           new(
             name: :spanish,
-            short_name: :es,
-            filter: {
+            lang: :es,
+            filter_definitions: {
               spanish_stop: { type: 'stop', stopwords: '_spanish_' },
               spanish_stemmer: { type: 'stemmer', language: 'light_spanish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'spanish_stemmer']
+              filter: ['lowercase', 'spanish_stop', 'spanish_stemmer']
             }
           ),
           new(
             name: :swedish,
-            short_name: :sv,
-            filter: {
+            lang: :sv,
+            filter_definitions: {
               swedish_stop: { type: 'stop', stopwords: '_swedish_' },
               swedish_stemmer: { type: 'stemmer', language: 'swedish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['lowercase', 'swedish_stemmer']
+              filter: ['lowercase', 'swedish_stop', 'swedish_stemmer']
             }
           ),
           new(
             name: :turkish,
-            short_name: :tr,
-            filter: {
+            lang: :tr,
+            filter_definitions: {
               turkish_stop: { type: 'stop', stopwords: '_turkish_' },
               turkish_lowercase: { type: 'lowercase', language: 'turkish' },
               turkish_stemmer: { type: 'stemmer', language: 'turkish' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'standard',
-              filter: ['apostrophe', 'turkish_lowercase', 'turkish_stemmer']
+              filter: ['apostrophe', 'turkish_lowercase', 'turkish_stop', 'turkish_stemmer']
             }
           ),
           new(
             name: :thai,
-            short_name: :th,
-            filter: {
+            lang: :th,
+            filter_definitions: {
               thai_stop: { type: 'stop', stopwords: '_thai_' }
             },
-            analyzer: {
+            analyzer_definition: {
               tokenizer: 'thai',
               filter: ['lowercase', 'thai_stop']
             }

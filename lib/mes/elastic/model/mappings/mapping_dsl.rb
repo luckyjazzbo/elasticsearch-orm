@@ -48,7 +48,7 @@ module Mes
           add_dynamic_template(multilang_opts(opts), path_suffix: name, name_suffix: 'multilang')
           object name do
             Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
-              field analyzer.short_name, multilang_opts(opts.merge(analyzer: analyzer.name), lang: analyzer.short_name)
+              field analyzer.lang, multilang_opts(opts.merge(analyzer: analyzer.name), lang: analyzer.lang)
             end
           end
         end
@@ -57,15 +57,13 @@ module Mes
 
         def multilang_opts(opts, lang: nil)
           opts = opts.deep_dup
-          if lang
-            opts[:analyzer] = opts.dig(:lang_analyzers, lang) if opts.dig(:lang_analyzers, lang)
-            (opts[:fields] || {}).each do |field_name, field_opts|
-              field_opts[:analyzer] = field_opts.dig(:lang_analyzers, lang) if field_opts.dig(:lang_analyzers, lang)
-            end
-          end
-          opts.delete(:lang_analyzers)
+          opts.merge!(opts.dig(:lang_opts, lang) || {})
           (opts[:fields] || {}).each do |field_name, field_opts|
-            field_opts.delete(:lang_analyzers)
+            field_opts.merge!(field_opts.dig(:lang_opts, lang) || {})
+          end
+          opts.delete(:lang_opts)
+          (opts[:fields] || {}).each do |field_name, field_opts|
+            field_opts.delete(:lang_opts)
           end
           opts
         end
