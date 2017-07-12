@@ -87,7 +87,7 @@ module Mes
 
         def create_index(index_name: nil, body: nil)
           if index_name.nil?
-            index_name = "lte-#{Time.now.strftime('%Y%m%d%H%M%S')}"
+            index_name = "#{index}-#{Time.now.strftime('%Y%m%d%H%M%S')}"
             puts "Generated index_name: #{index_name}"
           end
 
