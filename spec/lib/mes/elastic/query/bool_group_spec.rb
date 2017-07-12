@@ -31,6 +31,19 @@ RSpec.describe Mes::Elastic::BoolGroup do
     end
   end
 
+  describe '#multi_match' do
+    it 'appends the query to the list' do
+      subject.multi_match(query: 'foofoo', fields: ['foo', 'bar'])
+      subject.multi_match(query: 'barbar', fields: ['foo', 'bar'])
+      expect(subject.queries).to eq(
+        [
+          { multi_match: { query: 'foofoo', fields: ['foo', 'bar'] } },
+          { multi_match: { query: 'barbar', fields: ['foo', 'bar'] } }
+        ]
+      )
+    end
+  end
+
   describe '#terms' do
     it 'appends the query to the list' do
       subject.terms(:foo, 1)

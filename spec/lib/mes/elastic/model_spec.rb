@@ -12,6 +12,7 @@ RSpec.describe Mes::Elastic::Model do
           'sort' => [{ 'modified_at' => { 'order' => 'desc' } }]
         )
         .must do
+          multi_match(query: 'foo', fields: ['bar'])
           any do
             range(:date, gt: 123)
             terms(:date, nil)
@@ -30,6 +31,7 @@ RSpec.describe Mes::Elastic::Model do
           bool: {
             must: [
               { 'terms' => { '_id' => ['1', '2', '3'] } },
+              { multi_match: { query: 'foo', fields: ['bar'] } },
               { bool: { should: [{ range: { date: { gt: 123 } } }, { bool: { must_not: [{ exists: { field: :date } }] } }], minimum_should_match: 1 } },
               { bool: { should: [{ range: { :'license.date' => { gt: 123 } } }, { bool: { must_not: [{ exists: { field: :'license.date' } }] } }], minimum_should_match: 1 } }
             ]

@@ -13,6 +13,10 @@ module Mes
         end
       end
 
+      def multi_match(opts)
+        add_query(multi_match: opts)
+      end
+
       def terms(field, values)
         if values.respond_to?(:each)
           add_filter(terms: { field => Array(values) })
@@ -32,11 +36,11 @@ module Mes
       end
 
       def add_query(query)
-        raise NotImplementedError, 'add_query must be implemented in children'
+        raise NotImplementedError, 'add_query must be implemented in a child'
       end
 
       def add_filter(query)
-        raise NotImplementedError, 'add_filter must be implemented in children'
+        raise NotImplementedError, 'add_filter must be implemented in a child'
       end
     end
   end
