@@ -85,7 +85,7 @@ module Mes
           end
         end
 
-        def create_index(index_name: nil, body: nil)
+        def create_index(index_name: nil, body: { settings: index_settings || {} })
           if index_name.nil?
             index_name = "#{index}-#{Time.now.strftime('%Y%m%d%H%M%S')}"
             puts "Generated index_name: #{index_name}"
@@ -98,6 +98,11 @@ module Mes
               create_alias(index_name)
             end
           end
+        end
+
+        def setup_index
+          create_index
+          create_mapping
         end
 
         def create_alias(index_name)
