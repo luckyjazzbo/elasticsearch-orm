@@ -63,7 +63,7 @@ RSpec.shared_context 'with test indices' do
   end
 
   def alias_exists?(alias_name, index_name)
-    test_client.indices.exists_alias(name: new_test_alias, index: test_index)
+    test_client.indices.exists_alias(name: alias_name, index: test_index)
   end
 
   def purge_test_index

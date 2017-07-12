@@ -85,22 +85,17 @@ module Mes
           end
         end
 
-        def create_index(index_name = nil, alias_name = nil, body = {})
+        def create_index(index_name: nil, body: nil)
           if index_name.nil?
             index_name = "lte-#{Time.now.strftime('%Y%m%d%H%M%S')}"
             puts "Generated index_name: #{index_name}"
           end
 
-          if alias_name.nil?
-            alias_name = 'lte'
-            puts "Usin default alias_name: #{alias_name}"
-          end
-
           with_error_convertion do
             client.indices.create(index: index_name, body: body)
 
-            unless client.indices.exists_alias(name: alias_name)
-              create_alias(alias_name, index_name)
+            unless client.indices.exists_alias(name: index)
+              create_alias(index_name)
             end
           end
         end
@@ -111,25 +106,28 @@ module Mes
           end
         end
 
-        def create_alias(alias_name, index_name)
+        def create_alias(index_name)
           with_error_convertion do
-            client.indices.put_alias(name: alias_name, index: index_name)
+            client.indices.put_alias(name: index, index: index_name)
           end
         end
 
-        def delete_alias(alias_name, index_name)
+        def delete_alias(index_name)
           with_error_convertion do
-            client.indices.delete_alias(name: alias_name, index: index_name)
+            client.indices.delete_alias(name: index, index: index_name)
           end
         end
 
-        def switch_alias(alias_name, from_index, to_index)
+        def switch_alias(to_index)
+          return unless index_exists?
+          from_index = client.indices.get_alias(name: index)&.keys&.first
+
           with_error_convertion do
             client.indices.update_aliases(
               body: {
                 actions: [
-                  { remove: { index: from_index, alias: alias_name } },
-                  { add:    { index: to_index, alias: alias_name } },
+                  { remove: { index: from_index, alias: index } },
+                  { add:    { index: to_index, alias: index } },
                 ],
               }
             )

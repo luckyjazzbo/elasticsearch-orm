@@ -79,7 +79,6 @@ RSpec.describe 'Elastic API methods' do
 
   describe '.create_index' do
     let(:new_test_index) { 'lte-awake' }
-    let(:new_test_alias) { 'asd' }
 
     before do
       drop_test_index
@@ -87,14 +86,14 @@ RSpec.describe 'Elastic API methods' do
     end
 
     it 'creates index with provided value' do
-      expect { subject.create_index(new_test_index, new_test_alias) }
+      expect { subject.create_index(index_name: new_test_index) }
         .to change { subject.client.indices.exists?(index: new_test_index) }
         .from(false).to(true)
     end
 
-    it 'create provided alias' do
-      expect { subject.create_index(new_test_index, new_test_alias) }
-        .to change { subject.client.indices.exists_alias(name: new_test_alias) }
+    it 'create default alias' do
+      expect { subject.create_index(index_name: new_test_index) }
+        .to change { subject.client.indices.exists_alias(name: test_index) }
         .from(false).to(true)
     end
   end
@@ -106,66 +105,73 @@ RSpec.describe 'Elastic API methods' do
     end
 
     it 'delete index' do
-      expect { subject.drop_index! }
+      expect { subject.delete_index(test_index) }
         .to change { subject.index_exists? }
         .from(true).to(false)
     end
   end
 
   describe '.create_alias' do
-    let(:new_test_alias) { 'southtown' }
+    let(:new_test_index) { 'southtown' }
     before do
-      create_test_index
+      drop_index(new_test_index)
+      create_index(new_test_index)
+
+      drop_test_index
       test_elastic_flush
     end
 
     it 'create provided alias' do
-      expect { subject.create_alias(new_test_alias, test_index) }
-        .to change { subject.client.indices.exists_alias(name: new_test_alias) }
+      expect { subject.create_alias(new_test_index) }
+        .to change { subject.client.indices.exists_alias(name: test_index) }
         .from(false).to(true)
     end
   end
 
   describe '.delete_alias' do
-    let(:new_test_alias) { 'all-or-nothing' }
+    let(:new_test_index) { 'golovach' }
     before do
-      create_test_index
-      create_alias(new_test_alias, test_index)
+      drop_test_index
+      drop_index(new_test_index)
+
+      create_index(new_test_index)
+      create_alias(test_index, new_test_index)
       test_elastic_flush
     end
 
     it 'create provided alias' do
-      expect { subject.delete_alias(new_test_alias, test_index) }
-        .to change { subject.client.indices.exists_alias(name: new_test_alias) }
+      expect { subject.delete_alias(new_test_index) }
+        .to change { subject.client.indices.exists_alias(name: test_index) }
         .from(true).to(false)
     end
   end
 
   describe '.switch_alias' do
-    let(:new_test_alias) { 'aerials' }
-    let(:new_test_index) { 'lte-meet' }
+    let(:old_test_index) { 'lte-meet' }
+    let(:new_test_index) { 'lte-me' }
 
     before do
       drop_test_index
-      drop_alias(new_test_alias, new_test_index)
-      drop_alias(new_test_alias, test_index)
+      drop_alias(test_index, new_test_index)
+      drop_alias(test_index, old_test_index)
       drop_index(new_test_index)
+      drop_index(old_test_index)
 
-      create_test_index
       create_index(new_test_index)
-      create_alias(new_test_alias, test_index)
+      create_index(old_test_index)
+      create_alias(test_index, old_test_index)
       test_elastic_flush
     end
 
     it 'create delete alias from old index' do
-      expect { subject.switch_alias(new_test_alias, test_index, new_test_index) }
-        .to change { subject.client.indices.get_alias(name: new_test_alias, index: test_index).size }
+      expect { subject.switch_alias(new_test_index) }
+        .to change { subject.client.indices.get_alias(name: test_index, index: old_test_index).size }
         .from(1).to(0)
     end
 
     it 'create create alias for new index' do
-      expect { subject.switch_alias(new_test_alias, test_index, new_test_index) }
-        .to change { subject.client.indices.get_alias(name: new_test_alias, index: new_test_index).size }
+      expect { subject.switch_alias(new_test_index) }
+        .to change { subject.client.indices.get_alias(name: test_index, index: new_test_index).size }
         .from(0).to(1)
     end
   end
