@@ -73,9 +73,9 @@ module Mes
           @index_settings ||= superclass.try(:index_settings) || {}
         end
 
-        def index_exists?
+        def index_exists?(index_name = index)
           with_error_convertion do
-            client.indices.exists?(index: index)
+            client.indices.exists?(index: index_name)
           end
         end
 
@@ -100,12 +100,6 @@ module Mes
           end
         end
 
-        def delete_index(index_name)
-          with_error_convertion do
-            client.indices.delete(index: index_name)
-          end
-        end
-
         def create_alias(index_name)
           with_error_convertion do
             client.indices.put_alias(name: index, index: index_name)
@@ -119,8 +113,9 @@ module Mes
         end
 
         def switch_alias(to_index)
-          return unless index_exists?
-          from_index = client.indices.get_alias(name: index)&.keys&.first
+          return create_alias(to_index) unless index_exists?
+
+          from_index = client.indices.get_alias(name: index).keys.first
 
           with_error_convertion do
             client.indices.update_aliases(
@@ -134,14 +129,14 @@ module Mes
           end
         end
 
-        def drop_index!
+        def delete_index!(index_name: index)
           with_error_convertion do
-            delete_index(index) if index_exists?
+            client.indices.delete(index: index_name) if index_exists?(index_name)
           end
         end
 
         def purge_index!
-          drop_index!
+          delete_index!
           create_index!
         end
 

@@ -98,19 +98,6 @@ RSpec.describe 'Elastic API methods' do
     end
   end
 
-  describe '.delete_index' do
-    before do
-      create_test_index
-      test_elastic_flush
-    end
-
-    it 'delete index' do
-      expect { subject.delete_index(test_index) }
-        .to change { subject.index_exists? }
-        .from(true).to(false)
-    end
-  end
-
   describe '.create_alias' do
     let(:new_test_index) { 'southtown' }
     before do
@@ -176,22 +163,22 @@ RSpec.describe 'Elastic API methods' do
     end
   end
 
-  describe '.drop_index!' do
+  describe '.delete_index!' do
     before do
       create_test_index
       test_elastic_flush
     end
 
     it 'drops index' do
-      expect { subject.drop_index! }
+      expect { subject.delete_index! }
         .to change { subject.index_exists? }
         .from(true).to(false)
     end
 
     it "doesn't fail if index doesn't exist" do
-      subject.drop_index!
+      subject.delete_index!
       test_elastic_flush
-      expect { subject.drop_index! }.not_to raise_error
+      expect { subject.delete_index! }.not_to raise_error
     end
   end
 
@@ -211,7 +198,7 @@ RSpec.describe 'Elastic API methods' do
     end
 
     it 'does not fail if index does not exist' do
-      subject.drop_index!
+      subject.delete_index!
       expect { subject.purge_index! }.not_to raise_error
     end
   end
