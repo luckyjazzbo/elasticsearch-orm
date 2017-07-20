@@ -40,7 +40,7 @@ module Mes
       array :*, type: :keyword
     end
 
-    field :num_views, type: :integer
+    field :num_views, type: :long
 
     field :created_at, type: :datetime
     field :modified_at, type: :datetime
