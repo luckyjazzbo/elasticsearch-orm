@@ -33,7 +33,7 @@ RSpec.describe Mes::Video do
       ]
     end
     it 'returns the video' do
-      expect(described_class.match('titles.en.relaxed', 'tst').total_count).to eq(1)
+      expect(described_class.match('titles.en.relaxed', 'est').total_count).to eq(1)
     end
   end
 end

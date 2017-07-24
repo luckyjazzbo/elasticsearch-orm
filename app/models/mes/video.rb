@@ -28,7 +28,8 @@ module Mes
     MULTILANG_RELAXED_OPTS = {
       type: :text,
       analyzer: :default_relaxed,
-      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_relaxed" }] }.to_h
+      search_analyzer: :standard,
+      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_relaxed", search_analyzer: "glomex_#{analyzer.name}" }] }.to_h
     }
 
     field :tenant_id, type: :keyword
