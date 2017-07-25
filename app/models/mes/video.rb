@@ -4,7 +4,7 @@ module Mes
 
     def_filter :ngrams_2_20, { type: 'ngram', min_gram: 2, max_gram: 20 }
     def_analyzer :lowercased_keyword,   { type: 'custom', tokenizer: 'keyword', filter: ['lowercase'] }
-    def_analyzer :default_relaxed, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'ngrams_2_20'] }
+    def_analyzer :default_autocomplete, { type: 'custom', tokenizer: 'standard', filter: ['lowercase', 'ngrams_2_20'] }
 
     Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
       analyzer.filter_definitions.each do |name, filter|
@@ -12,7 +12,7 @@ module Mes
       end
       def_analyzer "glomex_#{analyzer.name}", analyzer.to_h
       def_analyzer "glomex_#{analyzer.name}_stop_words_indexed", analyzer.reject_filters { |f| f.end_with?('_stop') }.to_h
-      def_analyzer "glomex_#{analyzer.name}_relaxed", analyzer.reject_filters { |f| f.end_with?('_stop') || f.end_with?('_stemmer') }.add_filters('ngrams_2_20').to_h
+      def_analyzer "glomex_#{analyzer.name}_autocomplete", analyzer.reject_filters { |f| f.end_with?('_stop') || f.end_with?('_stemmer') }.add_filters('ngrams_2_20').to_h
     end
 
     MULTILANG_OPTS = {
@@ -25,11 +25,11 @@ module Mes
       analyzer: :standard,
       lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_stop_words_indexed" }] }.to_h
     }
-    MULTILANG_RELAXED_OPTS = {
+    MULTILANG_AUTOCOMPLETE_OPTS = {
       type: :text,
-      analyzer: :default_relaxed,
+      analyzer: :default_autocomplete,
       search_analyzer: :standard,
-      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_relaxed", search_analyzer: "glomex_#{analyzer.name}" }] }.to_h
+      lang_opts: Analyzer::LANGUAGE_ANALYZERS.map { |analyzer| [analyzer.lang, { analyzer: "glomex_#{analyzer.name}_autocomplete", search_analyzer: "glomex_#{analyzer.name}" }] }.to_h
     }
 
     field :tenant_id, type: :keyword
@@ -38,13 +38,13 @@ module Mes
     array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
     multilang_field :titles, type: :text, index: :no, fields: {
-      basic:   MULTILANG_STOP_WORDS_INDEXED_OPTS,
-      relaxed: MULTILANG_RELAXED_OPTS
+      regular:      MULTILANG_STOP_WORDS_INDEXED_OPTS,
+      autocomplete: MULTILANG_AUTOCOMPLETE_OPTS
     }
     multilang_field :descriptions, MULTILANG_OPTS
     multilang_field :taxonomy_titles, type: :text, index: :no, fields: {
-      basic:   MULTILANG_STOP_WORDS_INDEXED_OPTS,
-      relaxed: MULTILANG_RELAXED_OPTS
+      regular:      MULTILANG_STOP_WORDS_INDEXED_OPTS,
+      autocomplete: MULTILANG_AUTOCOMPLETE_OPTS
     }
     array :keywords, type: :text
 

@@ -21,7 +21,7 @@ RSpec.describe Mes::Video do
   context 'searching for können' do
     let!(:video) { FactoryGirl.create(:video, titles: { de: 'können' }) }
     it 'returns the video' do
-      expect(described_class.match('titles.de.basic', 'können').total_count).to eq(1)
+      expect(described_class.match('titles.de.regular', 'können').total_count).to eq(1)
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe Mes::Video do
       ]
     end
     it 'returns the video' do
-      expect(described_class.match('titles.en.relaxed', 'est').total_count).to eq(1)
+      expect(described_class.match('titles.en.autocomplete', 'est').total_count).to eq(1)
     end
   end
 end
