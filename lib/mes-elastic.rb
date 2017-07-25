@@ -11,6 +11,7 @@ module Mes
     end
   end
 
+  autoload :Analyzers, File.join(Elastic::ROOT, 'app/models/mes/analyzers')
   autoload :Video, File.join(Elastic::ROOT, 'app/models/mes/video')
   autoload :Taxonomy, File.join(Elastic::ROOT, 'app/models/mes/taxonomy')
 end
