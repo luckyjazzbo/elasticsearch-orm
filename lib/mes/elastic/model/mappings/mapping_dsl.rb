@@ -47,7 +47,7 @@ module Mes
         def multilang_field(name, opts)
           add_dynamic_template(multilang_opts(opts), path_suffix: name, name_suffix: 'multilang')
           object name do
-            Analyzer::LANGUAGE_ANALYZERS.each do |analyzer|
+            LanguageAnalyzer::LANGUAGE_ANALYZERS.each do |analyzer|
               field analyzer.lang, multilang_opts(opts.merge(analyzer: analyzer.name), lang: analyzer.lang)
             end
           end

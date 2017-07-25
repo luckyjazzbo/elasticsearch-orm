@@ -221,7 +221,7 @@ RSpec.describe 'Mappings' do
   describe '.multilang_field' do
     subject { test_model }
     let(:multilang_mapping) do
-      Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS
+      Mes::Elastic::Model::LanguageAnalyzer::LANGUAGE_ANALYZERS
         .map { |analyzer| [analyzer.lang, { type: :text, analyzer: analyzer.name }] }
         .to_h
     end
@@ -251,7 +251,7 @@ RSpec.describe 'Mappings' do
         properties: {
           id: { type: :keyword },
           titles: {
-            properties: Mes::Elastic::Model::Analyzer::LANGUAGE_ANALYZERS
+            properties: Mes::Elastic::Model::LanguageAnalyzer::LANGUAGE_ANALYZERS
                         .map { |analyzer| [analyzer.lang, { type: :text, analyzer: analyzer.name, fields: { autocomplete: { type: :text, analyzer: (analyzer.lang == :de ? :german : :english) }}}] }
                         .to_h
             }

@@ -1,5 +1,7 @@
 module Mes
   class Video < Mes::Elastic::Model
+    include Analyzers
+
     config url: ENV['ELASTICSEARCH_URL'], index: 'lte'
 
     field :tenant_id, type: :keyword
@@ -8,13 +10,13 @@ module Mes
     array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
     multilang_field :titles, type: :text, index: :no, fields: {
-      regular:      Analyzers::MULTILANG_STOP_WORDS_INDEXED_OPTS,
-      autocomplete: Analyzers::MULTILANG_AUTOCOMPLETE_OPTS
+      regular:      MULTILANG_STOP_WORDS_INDEXED_OPTS,
+      autocomplete: MULTILANG_AUTOCOMPLETE_OPTS
     }
-    multilang_field :descriptions, Analyzers::MULTILANG_OPTS
+    multilang_field :descriptions, MULTILANG_OPTS
     multilang_field :taxonomy_titles, type: :text, index: :no, fields: {
-      regular:      Analyzers::MULTILANG_STOP_WORDS_INDEXED_OPTS,
-      autocomplete: Analyzers::MULTILANG_AUTOCOMPLETE_OPTS
+      regular:      MULTILANG_STOP_WORDS_INDEXED_OPTS,
+      autocomplete: MULTILANG_AUTOCOMPLETE_OPTS
     }
     array :keywords, type: :text
 

@@ -1,7 +1,7 @@
 module Mes
   module Elastic
     class Model
-      class Analyzer
+      class LanguageAnalyzer
         attr_reader :name, :lang, :analyzer_definition, :filter_definitions
 
         def initialize(name:, lang:, analyzer_definition:, filter_definitions:)
@@ -24,7 +24,7 @@ module Mes
         end
 
         def dup
-          Analyzer.new(name: name, lang: lang, analyzer_definition: analyzer_definition.deep_dup, filter_definitions: filter_definitions.deep_dup)
+          LanguageAnalyzer.new(name: name, lang: lang, analyzer_definition: analyzer_definition.deep_dup, filter_definitions: filter_definitions.deep_dup)
         end
 
         def to_h
