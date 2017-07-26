@@ -73,6 +73,12 @@ module Mes
           @index_settings ||= superclass.try(:index_settings) || {}
         end
 
+        def type_exists?
+          with_error_convertion do
+            client.indices.exists_type?(index: index, type: type)
+          end
+        end
+
         def index_exists?(index_name = index)
           with_error_convertion do
             client.indices.exists?(index: index_name)

@@ -46,6 +46,20 @@ RSpec.describe 'Elastic API methods' do
     end
   end
 
+  describe '.type_exists?' do
+    it 'returns false for not-existing index' do
+      create_test_index
+      test_elastic_flush
+      expect(subject.type_exists?).to be_truthy
+    end
+
+    it 'returns false for not-existing index' do
+      drop_test_index
+      test_elastic_flush
+      expect(subject.type_exists?).to be_falsey
+    end
+  end
+
   describe '.index_exists?' do
     it 'returns false for not-existing index' do
       create_test_index
