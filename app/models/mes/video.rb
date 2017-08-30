@@ -33,6 +33,7 @@ module Mes
 
     field :start_date, type: :datetime
     field :end_date, type: :datetime
+    field :portal_release_date, type: :datetime
 
     field :start_day, type: :date
 

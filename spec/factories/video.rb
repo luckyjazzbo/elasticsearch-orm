@@ -25,6 +25,7 @@ FactoryGirl.define do
 
     start_date { 10.minutes.ago }
     end_date { 10.minutes.from_now }
+    portal_release_date { 10.minutes.ago }
     start_day { 1.minutes.ago.to_date }
     blacklisted_publisher_ids { ['t-blacklisted'] }
   end
