@@ -6,7 +6,7 @@ FactoryGirl.define do
   to_create { |instance| instance.save(refresh: true) }
 
   factory :taxonomy, class: Mes::Taxonomy do
-    id { "tx-#{SecureRandom.uuid}" }
+    id { "tx-#{SecureRandom.uuid.gsub(/\W/, '')}" }
     parent_id { nil }
 
     type do
