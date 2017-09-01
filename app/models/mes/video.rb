@@ -4,6 +4,7 @@ module Mes
 
     config url: ENV['ELASTICSEARCH_URL'], index: 'lte'
 
+    field :source_id, type: :keyword
     field :tenant_id, type: :keyword
     array :business_rules, type: :keyword
     field :language, type: :text, analyzer: :lowercased_keyword, fielddata: true

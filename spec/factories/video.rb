@@ -7,6 +7,7 @@ FactoryGirl.define do
 
   factory :video, class: Mes::Video do
     id { "v-#{SecureRandom.uuid.gsub(/\W/, '')}" }
+    source_id { SecureRandom.uuid.gsub(/\W/, '') }
     tenant_id { 't-co' }
     business_rules { %w[stored_to_vas available_on_portal] }
     language 'de'
