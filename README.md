@@ -1,5 +1,10 @@
-# MES-Elastic
+# Elastic (System:MES,Squad:publisher,Type:Components)
+Component for accessing/modifying elastic from ruby apps.
 
+## Technology
+* ruby
+
+## Build
 [![Build Status](https://travis-ci.com/glomex/mes-elastic.svg?token=wTxfWxNSPNpHpdJc4pif&branch=master)](https://travis-ci.com/glomex/mes-elastic)
 
 This gem aggregates ElasticSearch logics, which can be reused in MES applications
