@@ -27,6 +27,17 @@ module Mes
     end
 
     field :num_views, type: :long
+    object :num_views_by_period do
+      field :'10min',     type: :long
+      field :'30min',     type: :long
+      field :'1hour',     type: :long
+      field :'3hours',    type: :long
+      field :'today',     type: :long
+      field :'yesterday', type: :long
+      field :'week',      type: :long
+      field :'month',     type: :long
+    end
+    field :num_views_updated_at, type: :datetime
 
     field :created_at, type: :datetime
     field :modified_at, type: :datetime

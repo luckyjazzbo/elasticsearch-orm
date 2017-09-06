@@ -29,5 +29,18 @@ FactoryGirl.define do
     portal_release_date { 10.minutes.ago }
     start_day { 1.minutes.ago.to_date }
     blacklisted_publisher_ids { ['t-blacklisted'] }
+
+    num_views 1000
+    num_views_by_period(
+      '10min':     1,
+      '30min':     10,
+      '1hour':     20,
+      '3hours':    30,
+      'today':     40,
+      'yesterday': 50,
+      'week':      60,
+      'month':     70
+    )
+    num_views_updated_at { Time.current }
   end
 end
