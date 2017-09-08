@@ -1,4 +1,4 @@
-# Elastic (System:MES,Squad:publisher,Type:Components)
+# Elastic (System:MES,Squad:publisher,Type:Component)
 Component for accessing/modifying elastic from ruby apps.
 
 ## Technology
