@@ -30,8 +30,17 @@ module Mes
         }
       end
 
-      def all(&block)
+      def must(&block)
         bool { must(&block) }
+      end
+
+      def must_not(&block)
+        bool { must_not(&block) }
+      end
+
+      def all(&block)
+        Kernel.warn 'DEPRECATION WARNING: `all` filter is deprecated, use `must` instead'
+        must(&block)
       end
 
       def bool(&block)
