@@ -30,6 +30,8 @@ FactoryGirl.define do
     start_day { 1.minutes.ago.to_date }
     blacklisted_publisher_ids { ['t-blacklisted'] }
 
+    inspection_state 'open'
+
     num_views 1000
     num_views_by_period(
       '10min':     1,
