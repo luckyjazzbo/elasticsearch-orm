@@ -10,6 +10,8 @@ module Mes
     field :language, type: :text, analyzer: :lowercased_keyword, fielddata: true
     array :geo_locations, type: :text, analyzer: :lowercased_keyword, fielddata: true
 
+    array :ad_countries, type: :text, analyzer: :lowercased_keyword, fielddata: true
+
     multilang_field :titles, type: :text, index: :no, fields: {
       regular:      MULTILANG_STOP_WORDS_INDEXED_OPTS,
       autocomplete: MULTILANG_AUTOCOMPLETE_OPTS

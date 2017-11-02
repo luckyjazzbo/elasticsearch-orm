@@ -11,7 +11,8 @@ FactoryGirl.define do
     tenant_id { 't-co' }
     business_rules { %w[stored_to_vas available_on_portal] }
     language 'de'
-    geo_locations ['de', 'en']
+    geo_locations %w[de en]
+    ad_countries %w[de en]
 
     sequence(:titles) { |n| multilang.call { |l| "Title #{l} #{n}" } }
     sequence(:descriptions) { |n| multilang.call { |l| "Descriptions #{l} #{n}" } }
