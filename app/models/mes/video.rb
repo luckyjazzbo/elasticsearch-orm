@@ -53,6 +53,7 @@ module Mes
     field :start_day, type: :date
 
     array :blacklisted_publisher_ids, type: :keyword
+    array :whitelisted_publisher_ids, type: :keyword
 
     field :inspection_state, type: :keyword
   end

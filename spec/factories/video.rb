@@ -30,6 +30,7 @@ FactoryGirl.define do
     portal_release_date { 10.minutes.ago }
     start_day { 1.minutes.ago.to_date }
     blacklisted_publisher_ids { ['t-blacklisted'] }
+    whitelisted_publisher_ids { ['t-whitelisted'] }
 
     inspection_state 'open'
 
