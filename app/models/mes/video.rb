@@ -47,6 +47,9 @@ module Mes
     field :modified_at, type: :datetime
     field :deleted_at, type: :datetime
 
+    field :api_checksum, type: :keyword
+    field :api_modified_at, type: :datetime
+
     field :start_date, type: :datetime
     field :end_date, type: :datetime
     field :portal_release_date, type: :datetime
