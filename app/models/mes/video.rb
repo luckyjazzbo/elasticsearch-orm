@@ -61,7 +61,7 @@ module Mes
     array :blacklisted_publisher_ids, type: :keyword
     array :whitelisted_publisher_ids, type: :keyword
 
-    field :duration, type: :integer
+    field :duration, type: :float
     field :inspection_state, type: :keyword
     field :internal_status, type: :keyword
     field :feed_id, type: :keyword
