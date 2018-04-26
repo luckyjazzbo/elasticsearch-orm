@@ -23,6 +23,7 @@ FactoryGirl.define do
 
     modified_at Time.current
     created_at Time.current
+    available_at Time.current
     deleted_at nil
 
     start_date { 10.minutes.ago }
@@ -32,7 +33,13 @@ FactoryGirl.define do
     blacklisted_publisher_ids { ['t-blacklisted'] }
     whitelisted_publisher_ids { [] }
 
+    duration 60
     inspection_state 'open'
+    internal_status nil
+
+    international true
+    entitlement true
+    drm true
 
     num_views 1000
     num_views_by_period(

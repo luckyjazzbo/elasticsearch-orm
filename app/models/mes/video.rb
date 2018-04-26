@@ -45,6 +45,7 @@ module Mes
 
     field :created_at, type: :datetime
     field :modified_at, type: :datetime
+    field :available_at, type: :datetime
     field :deleted_at, type: :datetime
 
     field :api_checksum, type: :keyword
@@ -60,6 +61,13 @@ module Mes
     array :blacklisted_publisher_ids, type: :keyword
     array :whitelisted_publisher_ids, type: :keyword
 
+    field :duration, type: :integer
     field :inspection_state, type: :keyword
+    field :internal_status, type: :keyword
+    field :feed_id, type: :keyword
+
+    field :international, type: :boolean
+    field :entitlement, type: :boolean
+    field :drm, type: :boolean
   end
 end
