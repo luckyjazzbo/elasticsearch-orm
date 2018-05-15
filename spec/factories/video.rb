@@ -40,6 +40,7 @@ FactoryGirl.define do
     international true
     entitlement true
     drm true
+    rating 2
 
     num_views 1000
     num_views_by_period(

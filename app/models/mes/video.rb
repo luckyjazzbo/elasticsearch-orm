@@ -69,5 +69,6 @@ module Mes
     field :international, type: :boolean
     field :entitlement, type: :boolean
     field :drm, type: :boolean
+    field :rating, type: :integer
   end
 end
