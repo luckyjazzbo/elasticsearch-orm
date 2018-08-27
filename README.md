@@ -1,5 +1,5 @@
 # ElasticsearchOrm (System:MES,Squad:publisher,Type:Component)
-[![Build Status](https://travis-ci.com/glomex/mes-elastic.svg?token=wTxfWxNSPNpHpdJc4pif&branch=master)](https://travis-ci.com/glomex/mes-elastic)
+[![Build Status](https://travis-ci.org/glomex/elasticsearch-orm.svg?branch=master)](https://travis-ci.org/glomex/elasticsearch-orm)
 
 Component for accessing/modifying elastic from ruby apps.
 
