@@ -1,9 +1,9 @@
-language: python
 sudo: required
+language: ruby
 cache:
   directories:
     - .bundle
-    - downloads
+    - .downloads
 
 branches:
   only:
@@ -12,25 +12,20 @@ branches:
 services:
   - docker
 
-env:
-  # encrypted aws keys
-  - secure: "hUaztEA5djxqHxCvvFHFE3e2TzK6VXt1rL62p78qggChQY6Q6GRtHzHEtI0GYH5AuGvgT3pTKj58tvJJzYUxKUgSPke6vLDZXMT1mf9IwzChJUPnLz8MrpinRI8bqPRM5OiQ19FuWXbRyqn3OenGdQllF00xI8W7htpW19Qrd9FIreW8ezpWmnn+UhDW1tDwRcerpljeEU3AVx+7MQtT7pGFYxLhQo7irInvqsbpPoBuNWL4qGRzuFhkAGHG7cieGRI7iXSPhoCVqXBj0XMNYMhXgKOB1A0V+U7RP5iNJhkL7MBIL+wQjJuxmPDt2R3hPwgKoZK9I7b8cWnPYlLkBGeA4rbJGRxCEf/IswK4Vguk4RE2cObVY8Y+63RqQ2M6BNFY9rSntmEI0cBLQimvCKlZDe5A/P1U5iQRjN4GfdJRtC84DQFriwxmCPAzDfpYeCHjQEZQJeIRZCVr0d1XjuUPUuzpZ3WCRHkI2Y4RnaC/qXvTfpSzVSH61CYvNzRvk0olKHjyUZ7ljsHHxSJpt1DZ4HYJK+QXsvGNJkk5/yAe4OogB91ou9g3M0Lhnoon2y7tmO1Z0fQCfNt7S75cQCbMATWfCQ4N/jMdvggbG5W8Xt+LG49mKKk2S1QqEA7bR8Emc2i3JAYL7ShLtdU1mzM0j2pPmjBOhP75aPjwOlY="
-
 install:
   - sudo apt-get update -qq
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install -qq docker-ce
   - sudo pip install awscli --ignore-installed six
 
 before_script:
-  - mkdir -p downloads
-  - if [ ! -f downloads/docker-compose ]; then
+  - mkdir -p .downloads
+  - if [ ! -f .downloads/docker-compose ]; then
     export COMPOSE_URL="https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m`";
-    curl -sL $COMPOSE_URL > downloads/docker-compose;
-    chmod +x downloads/docker-compose;
+    curl -sL $COMPOSE_URL > .downloads/docker-compose;
+    chmod +x .downloads/docker-compose;
     fi
-  - sudo cp downloads/docker-compose /usr/local/bin
-  - eval $(aws ecr get-login --region eu-west-1 | sed -e 's/-e none//g')
-  - mkdir ~/.aws && printf "[default]\nregion=eu-west-1" > ~/.aws/config && printf "[superuser-portal-dev]\nregion=eu-west-1\n\n[superuser-portal-staging]\nregion=eu-west-1" > ~/.aws/credentials
+  - sudo cp .downloads/docker-compose /usr/local/bin
 
 script:
-  - docker-compose -f docker-compose.travis.yml run app bundle exec rspec
+  - docker-compose -e BUNDLE_PATH=/app/.bundle run app bundle install
+  - docker-compose -e BUNDLE_PATH=/app/.bundle run app bundle exec rspec

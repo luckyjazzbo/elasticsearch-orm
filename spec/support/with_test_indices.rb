@@ -6,23 +6,23 @@ RSpec.shared_context 'with test indices' do
   let(:test_client) { ::Elasticsearch::Client.new(url: test_elastic_url) }
 
   let(:test_model) do
-    class Mes::TestModel < Mes::Elastic::Model; end
-    Mes::TestModel.config(
+    class TestModel < ElasticsearchOrm::Model; end
+    TestModel.config(
       url: test_elastic_url,
       index: test_index,
       index_settings: index_settings_for_one_shard
     )
-    Mes::TestModel
+    TestModel
   end
 
   let(:test_multitype_model) do
-    class Mes::TestModel < Mes::Elastic::Model; multitype; end
-    Mes::TestModel.config(
+    class TestModel < ElasticsearchOrm::Model; multitype; end
+    TestModel.config(
       url: test_elastic_url,
       index: test_index,
       index_settings: index_settings_for_one_shard
     )
-    Mes::TestModel
+    TestModel
   end
 
   after do
@@ -30,7 +30,7 @@ RSpec.shared_context 'with test indices' do
   end
 
   def undef_model(name)
-    Mes.send(:remove_const, name) if Mes.constants.include?(name)
+    Object.send(:remove_const, name) if Object.constants.include?(name)
   end
 
   def index_exists?(index_name)

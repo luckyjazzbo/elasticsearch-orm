@@ -8,7 +8,7 @@ module ElasticIndexHelpers
 
     # Anonymous classes for each elastic
     models = ENV.keys.grep(/ELASTICSEARCH_URL/).map do |k|
-      Class.new(Mes::Elastic::Model) do
+      Class.new(ElasticsearchOrm::Model) do
         config url: ENV[k], index: CHECK_AVAILABILITY_INDEX
         multitype
       end
@@ -76,5 +76,5 @@ RSpec.configure do |config|
 end
 
 if defined?(FactoryGirl)
-  FactoryGirl.definition_file_paths << File.join(Mes::Elastic::ROOT, 'spec/factories/').to_s
+  FactoryGirl.definition_file_paths << File.join(ElasticsearchOrm::ROOT, 'spec/factories/').to_s
 end

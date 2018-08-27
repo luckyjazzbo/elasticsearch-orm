@@ -1,13 +1,10 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in mes-elastic.gemspec
+# Specify your gem's dependencies in elasticsearch-orm.gemspec
 gemspec
 
 group :development do
   gem 'dotenv'
-  gem 'pronto'
-  gem 'pronto-rubocop'
-  gem 'pronto-reek'
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
 end

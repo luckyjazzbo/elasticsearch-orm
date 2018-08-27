@@ -1,7 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.4
   Exclude:
-    - 'infrastructure/mes-ruby-base-infrastructure/**/*'
     - 'db/schema.rb'
     - 'spec/support/**/*'
     - 'config/application.rb'
